@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Models
 {
-    public class BaseEntity
+    public class Manufacturer : BaseEntity
     {
-        public int Id { get; set; }
+        public string ManufacturerName { get; set; } = string.Empty;
+        public string? Description { get; set; }
     }
 }
