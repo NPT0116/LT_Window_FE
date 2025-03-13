@@ -1,7 +1,7 @@
 ﻿using PhoneSelling.Data.Adapters;
 using PhoneSelling.Data.Contracts.Responses.Base;
-using PhoneSelling.Data.Contracts.Responses.Items;
 using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;

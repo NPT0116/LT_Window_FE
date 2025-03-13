@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneSelling.Data.Contracts.Responses.Items
+namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts
 {
     public class ItemListDto
     {
