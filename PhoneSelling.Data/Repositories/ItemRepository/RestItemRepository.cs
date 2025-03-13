@@ -2,6 +2,7 @@
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts;
+using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
         public RestItemRepository()
         {
             _itemApiService = DIContainer.GetKeyedSingleton<IItemApiService>();
+        }
+
+        public Task CreateFullItem(CreateFullItemDto item)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Item>> GetAll()

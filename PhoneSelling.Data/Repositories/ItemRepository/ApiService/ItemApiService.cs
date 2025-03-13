@@ -1,6 +1,7 @@
 ﻿using PhoneSelling.Data.Contracts.Responses.Base;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.Abstraction;
+using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
@@ -20,6 +21,20 @@ namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService
         }
 
         protected override string Prefix { get; } = "Item";
+
+        public async Task CreateFullItem(CreateFullItemRequest request)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(ApiUrl, request);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating new: {ex.Message}");
+                //return null; // Return empty list on failure
+            }
+        }
 
         public async Task<ItemListResponse?> GetAllItems()
         {
