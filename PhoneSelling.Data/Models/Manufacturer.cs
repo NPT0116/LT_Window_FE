@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace PhoneSelling.Data.Models
 {
-    public class Manufacturer : BaseEntity
+    public partial class Manufacturer : BaseEntity
     {
-        public string ManufacturerName { get; set; } = string.Empty;
-        public string? Description { get; set; }
+        [ObservableProperty] private string manufacturerName = string.Empty;
+        [ObservableProperty] private string? description;
     }
 }

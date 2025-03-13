@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace PhoneSelling.Data.Models
 {
-    public class Inventory : BaseEntity
+    public partial class Inventory : BaseEntity
     {
-        public int StockQuantity { get; set; }
-        public DateTime LastUpdated { get; set; }
+        [ObservableProperty] private int stockQuantity;
+        [ObservableProperty] private DateTime lastUpdated;
 
-        // FK
-        public Guid VariantId { get; set; }
+        // Foreign Key
+        [ObservableProperty] private Guid variantId;
     }
 }

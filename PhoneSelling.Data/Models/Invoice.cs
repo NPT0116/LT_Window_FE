@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace PhoneSelling.Data.Models
 {
-    public class Invoice : BaseEntity
+    public partial class Invoice : BaseEntity
     {
-        public float TotalAmount { get; set; }
-        public DateTime Date { get; set; }
+        [ObservableProperty] private float totalAmount;
+        [ObservableProperty] private DateTime date;
 
-        // FK
-        public Guid CustomerId { get; set; }
+        // Foreign Key
+        [ObservableProperty] private Guid customerId;
     }
 }
