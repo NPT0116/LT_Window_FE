@@ -10,6 +10,6 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
 {
     public interface IItemRepository : IGenericRepository<Item>
     {
-
+        
     }
 }
