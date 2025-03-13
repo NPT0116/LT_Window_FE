@@ -23,7 +23,6 @@ namespace PhoneSelling.ViewModel.Navigation
                 historyTypes = new HistoryStack<Type>(maxHistory);
             ViewModel = viewModel;
         }
-
         public BasePageViewModel ViewModel
         {
             get => viewModel;

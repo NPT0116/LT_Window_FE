@@ -9,7 +9,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Content="Login" Command="{Binding LoginCommand}" />
-    </Grid>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBox Header="Username:" Width="200" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Header="Password:" Width="200" Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox IsChecked="{Binding IsRememberme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Content="Remember me"/>
+        <Button Content="Login" Command="{Binding LoginCommand}" Width="200"/>
+    </StackPanel>
 </Page>
