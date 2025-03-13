@@ -8,12 +8,12 @@ namespace PhoneSelling.Data.Models
 {
     public class InvoiceDetail : BaseEntity
     {
-        public int Quantity { get; }
-        public float Price { get; }
-        public Variant Variant { get; } = new();
+        public int Quantity { get; set; }
+        public float Price { get; set; }
+        public Variant Variant { get; set; } = new();
 
         // FK
-        public int InvoiceId { get; }
-        public int VariantId { get; }
+        public Guid InvoiceId { get; set; }
+        public Guid VariantId { get; set; }
     }
 }

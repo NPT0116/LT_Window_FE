@@ -12,6 +12,6 @@ namespace PhoneSelling.Data.Models
         public DateTime LastUpdated { get; set; }
 
         // FK
-        public int VariantId { get; set; }
+        public Guid VariantId { get; set; }
     }
 }

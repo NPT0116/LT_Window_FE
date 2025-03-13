@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Repositories.PhoneRepository;
+﻿using PhoneSelling.Data.Repositories.ItemRepository;
+using PhoneSelling.Data.Repositories.PhoneRepository;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,11 @@ namespace PhoneSelling.Data
     {
         public void ConfigureServices()
         {
+            HttpClient httpClient = new HttpClient();
+            DIContainer.AddInstance<HttpClient>(httpClient);
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
+            DIContainer.AddKeyedSingleton<IItemRepository, RestItemRepository>();
+
         }
     }
 }

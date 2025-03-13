@@ -8,8 +8,8 @@ namespace PhoneSelling.Data.Models
 {
     public class ItemGroup : BaseEntity
     {
-        public string ItemGroupName { get; } = string.Empty;
-        public string Category { get; } = string.Empty;
+        public string ItemGroupName { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
         public List<Item> Items { get; set; } = new();
     }
 }
