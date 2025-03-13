@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.PhoneRepository;
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
@@ -15,18 +16,18 @@ namespace PhoneSelling.ViewModel.Pages.Sample
 {
     public class PhonePageViewModel : BasePageViewModel
     {
-        public PaginationQueryViewModel<Phone> QueryViewModel { get; set; }
-        private readonly IPhoneRepository _phoneRepository;
+        public PaginationQueryViewModel<Item> QueryViewModel { get; set; }
+        private readonly IItemRepository _itemRepository;
         public PhonePageViewModel() : base()
         {
-            _phoneRepository = DIContainer.GetKeyedSingleton<IPhoneRepository>();
+            _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
             QueryViewModel = new(LoadDataAsync);
             QueryViewModel.LoadDataCommand.Execute(null);
         }
 
-        private async Task<IEnumerable<Phone>> LoadDataAsync()
+        private async Task<IEnumerable<Item>> LoadDataAsync()
         {
-            var data = await _phoneRepository.GetAll();
+            var data = await _itemRepository.GetAll();
             Debug.WriteLine(data.Count());
             return data;
         }

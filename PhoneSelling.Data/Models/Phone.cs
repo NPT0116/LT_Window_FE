@@ -8,8 +8,8 @@ namespace PhoneSelling.Data.Models
 {
     public class Phone : BaseEntity
     {
-        public string Name { get; private set; } = string.Empty;
-        public long Price { get; private set; }
+        public string Name { get; } = string.Empty;
+        public long Price { get; }
 
         public Phone(
             string name,

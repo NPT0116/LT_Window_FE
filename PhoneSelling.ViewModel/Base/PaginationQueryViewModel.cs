@@ -52,6 +52,8 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
         finally
         {
             IsLoading = false;
+            NextPageCommand.NotifyCanExecuteChanged();
+            PreviousPageCommand.NotifyCanExecuteChanged();
         }
     }
 

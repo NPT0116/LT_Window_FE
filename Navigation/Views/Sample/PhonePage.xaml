@@ -15,10 +15,10 @@
             <!-- List of Phones -->
             <ListView ItemsSource="{x:Bind _viewModel.QueryViewModel.Items, Mode=TwoWay}" Margin="0,0,0,10">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="data:Phone">
+                    <DataTemplate x:DataType="data:Item">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="{x:Bind Name}" FontWeight="Bold" Margin="0,0,10,0"/>
-                            <TextBlock Text="{x:Bind Price}"/>
+                            <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" Margin="0,0,10,0"/>
+                            <TextBlock Text="{x:Bind Description}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
