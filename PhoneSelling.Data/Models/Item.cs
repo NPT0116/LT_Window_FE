@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Models
 {
-    public class Item : BaseEntity
+    public partial class Item : BaseEntity
     {
-        public string ItemName { get; set; } = string.Empty;
-        public string? Description { get; set; }
-        public string? Picture { get; set; }
-        public DateTime ReleasedDate { get; set; }
-        public List<Variant> Variants { get; set; } = new();
+        [ObservableProperty] private string itemName = string.Empty;
+        [ObservableProperty] private string? description;
+        [ObservableProperty] private string? picture;
+        [ObservableProperty] private DateTime releasedDate = DateTime.UtcNow;
+        [ObservableProperty] private List<Variant> variants = new();
 
-        //FK
-        public required Guid ItemGroupId { get; set; }
-        public required Guid ManufacturerId { get; set; }
+        // Foreign Keys
+        [ObservableProperty] private Guid itemGroupId;
+        [ObservableProperty] private Guid manufacturerId;
 
     }
 }
