@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneSelling.Data.Models
+namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService
 {
-    public class BaseEntity
+    public interface IItemApiService
     {
-        public Guid Id { get; set; }
+        
     }
 }

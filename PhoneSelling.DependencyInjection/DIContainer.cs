@@ -10,6 +10,12 @@
             _singletons[parent.Name] = Activator.CreateInstance(child)!;
         }
 
+        public static void AddInstance<IParent>(IParent instance)
+        {
+            Type parent = typeof(IParent);
+            _singletons[parent.Name] = instance!;
+        }
+
         public static IParent GetKeyedSingleton<IParent>()
         {
             Type parent = typeof(IParent);
