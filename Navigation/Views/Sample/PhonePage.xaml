@@ -11,16 +11,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <ListView ItemsSource="{Binding Phones}" Margin="20">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:Phone">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <!-- Bind properties of Phone. Adjust property names as needed -->
-                        <TextBlock Text="{x:Bind Name}" FontWeight="Bold" Margin="0,0,10,0"/>
-                        <TextBlock Text="{x:Bind Price}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackPanel Orientation="Vertical" Margin="20">
+            <!-- List of Phones -->
+            <ListView ItemsSource="{x:Bind _viewModel.QueryViewModel.Items, Mode=TwoWay}" Margin="0,0,0,10">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Phone">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="{x:Bind Name}" FontWeight="Bold" Margin="0,0,10,0"/>
+                            <TextBlock Text="{x:Bind Price}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Pagination Controls -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                <Button Content="Previous" Command="{x:Bind _viewModel.QueryViewModel.PreviousPageCommand}" />
+                <TextBlock Text="Page: " />
+                <TextBlock Text="{x:Bind _viewModel.QueryViewModel.PageNumber, Mode=TwoWay}" FontWeight="Bold" />
+                <Button Content="Next" Command="{x:Bind _viewModel.QueryViewModel.NextPageCommand}" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>
