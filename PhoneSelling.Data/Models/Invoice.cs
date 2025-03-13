@@ -12,6 +12,6 @@ namespace PhoneSelling.Data.Models
         public DateTime Date { get; set; }
 
         // FK
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
     }
 }

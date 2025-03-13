@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneSelling.Data.Models
+namespace PhoneSelling.ViewModel.Pages.Items
 {
-    public class BaseEntity
+    public class ItemViewModel
     {
-        public Guid Id { get; set; }
     }
 }

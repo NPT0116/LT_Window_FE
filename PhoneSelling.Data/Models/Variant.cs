@@ -16,6 +16,6 @@ namespace PhoneSelling.Data.Models
         public Inventory Inventory { get; set; } = new();
 
         // FK
-        public int ItemId { get; set; }
+        public Guid ItemId { get; set; }
     }
 }
