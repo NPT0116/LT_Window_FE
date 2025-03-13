@@ -12,5 +12,8 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
     public interface IItemRepository : IGenericRepository<Item>
     {
         Task CreateFullItem(CreateFullItemDto item);
+        Task AddItemToItemGroup(Guid itemGroupId);
+        Task<List<Item>> GetItemsBelongsToItemGroup(Guid itemGroupId);
+        Task<Item> UpdateItem(Item item);
     }
 }

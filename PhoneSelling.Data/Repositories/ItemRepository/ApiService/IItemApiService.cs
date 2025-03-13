@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
+﻿using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Common;
+using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 using System;
@@ -14,5 +15,8 @@ namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService
         Task<ItemListResponse?> GetAllItems();
         Task<SingleItemRepsonse?> GetItemById(string id);
         Task CreateFullItem(CreateFullItemRequest request);
+        Task<bool> AddItemToItemGroup(string id);
+        Task<ItemListResponse?> GetItemsInItemGroup(string id);
+        Task UpdateItem(ItemDto item);
     }
 }

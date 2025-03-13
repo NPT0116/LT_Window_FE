@@ -24,6 +24,11 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             _itemApiService = DIContainer.GetKeyedSingleton<IItemApiService>();
         }
 
+        public async Task AddItemToItemGroup(Guid itemGroupId)
+        {
+            await _itemApiService.AddItemToItemGroup(itemGroupId.ToString());
+        }
+
         public Task CreateFullItem(CreateFullItemDto item)
         {
             throw new NotImplementedException();
@@ -68,6 +73,32 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                 Picture = dto.picture,
                 ReleasedDate = DateTime.Parse(dto.releasedDate)
             };
+        }
+
+        public async Task<List<Item>> GetItemsBelongsToItemGroup(Guid itemGroupId)
+        {
+            var response = await _itemApiService.GetItemsInItemGroup(itemGroupId.ToString());
+            if(response == null  || response.Data == null || response.Data.Count() == 0 ) return Enumerable.Empty<Item>().ToList();
+            
+            var dtos = response.Data;
+            return dtos.Select(dto =>
+            {
+                var item = new Item
+                {
+                    ItemGroupId = Guid.Parse(dto.itemGroupId),
+                    ManufacturerId = Guid.Parse(dto.manufacturerId),
+                    ItemName = dto.itemName,
+                    Description = dto.Description,
+                    Picture = dto.picture,
+                    ReleasedDate = DateTime.Parse(dto.releasedDate)
+                };
+                return item;
+            }).ToList();
+        }
+
+        public Task<Item> UpdateItem(Item item)
+        {
+            throw new NotImplementedException();
         }
     }
 }
