@@ -10,4 +10,9 @@
     <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\ColorRepository\ApiService\Contracts\" />
+    <Folder Include="Repositories\VariantRepository\ApiService\Contracts\" />
+  </ItemGroup>
+
 </Project>
