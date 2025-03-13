@@ -1,5 +1,5 @@
-﻿using PhoneSelling.Data.Contracts.Responses.Items;
-using PhoneSelling.Data.Models;
+﻿using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
