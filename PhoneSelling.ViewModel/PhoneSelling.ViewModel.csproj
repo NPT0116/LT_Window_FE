@@ -15,4 +15,8 @@
     <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Items\Validation\" />
+  </ItemGroup>
+
 </Project>

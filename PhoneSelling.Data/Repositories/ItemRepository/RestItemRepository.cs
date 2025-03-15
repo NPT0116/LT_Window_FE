@@ -2,6 +2,7 @@
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts;
+using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 using PhoneSelling.DependencyInjection;
 using System;
@@ -29,9 +30,17 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             await _itemApiService.AddItemToItemGroup(itemGroupId.ToString());
         }
 
-        public Task CreateFullItem(CreateFullItemDto item)
+        public async Task CreateFullItem(CreateFullItemDto item)
         {
-            throw new NotImplementedException();
+
+            var request = new CreateFullItemRequest
+            {
+                item = item.Item,
+                colors = item.Colors,
+                variants = item.Variants
+            };
+
+            await _itemApiService.CreateFullItem(request);
         }
 
         public async Task<IEnumerable<Item>> GetAll()
@@ -45,13 +54,13 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                 Guid.TryParse(dto.manufacturerId, out Guid manufacturerId);
 
                 // Safely parse DateTime
-                DateTime.TryParse(dto.releasedDate, out DateTime releaseDate);
+                DateTime.TryParse(dto.releaseDate, out DateTime releaseDate);
                 return new Item
                 {
                     ItemGroupId = itemGroupId,
                     ManufacturerId = manufacturerId,
                     ItemName = dto.itemName,
-                    Description = dto.Description,
+                    Description = dto.description,
                     Picture = dto.picture,
                     ReleasedDate = releaseDate
                 };
@@ -69,9 +78,9 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                 ItemGroupId = Guid.Parse(dto.itemGroupId),
                 ManufacturerId = Guid.Parse(dto.manufacturerId),
                 ItemName = dto.itemName,
-                Description = dto.Description,
+                Description = dto.description,
                 Picture = dto.picture,
-                ReleasedDate = DateTime.Parse(dto.releasedDate)
+                ReleasedDate = DateTime.Parse(dto.releaseDate)
             };
         }
 
@@ -88,9 +97,9 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                     ItemGroupId = Guid.Parse(dto.itemGroupId),
                     ManufacturerId = Guid.Parse(dto.manufacturerId),
                     ItemName = dto.itemName,
-                    Description = dto.Description,
+                    Description = dto.description,
                     Picture = dto.picture,
-                    ReleasedDate = DateTime.Parse(dto.releasedDate)
+                    ReleasedDate = DateTime.Parse(dto.releaseDate)
                 };
                 return item;
             }).ToList();

@@ -8,12 +8,14 @@ namespace PhoneSelling.Data.Constants
 {
     public class StorageCapacity
     {
-        public static readonly IReadOnlyList<int> SupportedCapacities = new List<int>
+        public static readonly Dictionary<int, string> SupportedCapacities = new()
         {
-            128,
-            256,
-            512,
-            1024
+            { 128, "128GB" },
+            { 256, "256GB" },
+            { 512, "512GB" },
+            { 1024, "1TB" }
         };
+
+
     }
 }
