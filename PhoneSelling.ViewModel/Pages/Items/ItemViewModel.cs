@@ -32,17 +32,17 @@ public partial class ItemViewModel : BasePageViewModel
 
     // Command to add a new color
     [RelayCommand]
-    private void AddColor(string colorName)
+    public void AddColor((string colorName, string colorUrl) colorData)
     {
-        if (!string.IsNullOrWhiteSpace(colorName))
+        if (!string.IsNullOrWhiteSpace(colorData.colorName))
         {
             var newColor = new TempColor()
             {
-               Name = colorName,
+               Name = colorData.colorName,
                TempId = TempColor.CURRENT_TEMP_ID++
             };
             Colors.Add(newColor);
-            foreach(var storage in selectedStorages)
+            foreach(var storage in SelectedStorages)
             {
                 var variant = new TempVariant()
                 {
@@ -63,6 +63,7 @@ public partial class ItemViewModel : BasePageViewModel
     private void RemoveColor(TempColor color)
     {
         var colorToRemove = Colors.FirstOrDefault(c => c.TempId == color.TempId);
+        if(colorToRemove != null)
         Colors.Remove(colorToRemove);
 
         var variantsToRemove = Variants.Where(v => v.ColorTempId == color.TempId).ToList();
