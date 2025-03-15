@@ -1,14 +1,19 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Navigation;
+using PhoneSelling.ViewModel.Pages.Inventory;
 
 namespace PhoneSelling.ViewModel.Pages
 {
     public class MainPageViewModel : BasePageViewModel
     {
-        public RelayCommand GoToDashboardPageCommand { get; }
+        // Inventory
         public RelayCommand GoToViewItemsPageCommand { get; }
         public RelayCommand GoToCreateItemsPageCommand { get; }
+        public RelayCommand GoToInventoryAdjustmentsPageCommand {get;}
+        // Go to others Main Page
+        public RelayCommand GoToDashboardPageCommand { get; }
         public RelayCommand GoToReportPageCommand { get; }
         public RelayCommand GoToPhoneCommand { get; }
         public RelayCommand GoBackCommand { get; }
@@ -16,13 +21,15 @@ namespace PhoneSelling.ViewModel.Pages
         {
             ChildPageNavigation = new PageNavigation(viewModel, BackwardNavigationCompatibleMode.StoreTypes);
             ChildPageNavigation.PropertyChanged += ChildPageNavigation_PropertyChanged;
-
+            // Main Page
             GoToReportPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new ReportPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(ReportPageViewModel));
             GoToDashboardPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new DashboardPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(DashboardPageViewModel));
+            // Inventory Management
+            GoToInventoryAdjustmentsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InventoryAdjustmentsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InventoryAdjustmentsPageViewModel));        
             GoToViewItemsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new ViewItemsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(ViewItemsPageViewModel));
             GoToCreateItemsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateItemsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateItemsPageViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(),() => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
-            
+            // Goback Command
             GoBackCommand = new RelayCommand(ChildPageNavigation.GoBack,ChildPageNavigation.CanGoBack);
         }
         private void ChildPageNavigation_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

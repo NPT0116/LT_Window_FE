@@ -9,8 +9,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
+                <!-- Other merged dictionaries here -->
             <converters:ViewModelToView x:Key="Vm2V"/>
             <!-- Other app resources here -->
         </ResourceDictionary>

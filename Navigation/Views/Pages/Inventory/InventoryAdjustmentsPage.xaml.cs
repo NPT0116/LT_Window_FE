@@ -7,11 +7,11 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Navigation.Views.Inventory
 {
-    public sealed partial class ViewItemsPage : Page
+    public sealed partial class InventoryAdjustmentsPage : Page
     {
-        public ViewItemsPage()
+        public InventoryAdjustmentsPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

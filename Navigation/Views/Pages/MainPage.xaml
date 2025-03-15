@@ -14,7 +14,7 @@
     <Page.Resources>
         <converter:VisibilityConverter x:Key="VisibilityConverter"/>
     </Page.Resources>
-
+    
     <Grid>
         <NavigationView x:Name="nvSample"
                         BackRequested="OnBackRequested"
@@ -108,27 +108,47 @@
                 <!-- Inventory Manager -->
                 <NavigationViewItem Icon="Play" Content="Inventory">
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Icon="Refresh" Content="Items" IsExpanded="true"></NavigationViewItem>
-                        <NavigationViewItem Icon="Refresh" Content="Item Groups" IsExpanded="true"></NavigationViewItem>
-                        <NavigationViewItem Icon="Refresh" Content="Inventory Adjustments" IsExpanded="true"></NavigationViewItem>
+                        <!-- View Items Page -->
+                        <NavigationViewItem Icon="Refresh" Content="Items" IsExpanded="true">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToViewItemsPageCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+                        <!-- Create Items Page -->
+                        <NavigationViewItem Icon="Refresh" Content="Item Groups" IsExpanded="true">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateItemsPageCommand}"/>
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+                        <!-- Inventory Adjustment -->
+                        <NavigationViewItem Icon="Refresh" Content="Inventory Adjustments" IsExpanded="true">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToInventoryAdjustmentsPageCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <!-- Report Manager -->
                 <NavigationViewItem Icon="Play" Content="Reports">
                     <Interactivity:Interaction.Behaviors>
-                        <Core:EventTriggerBehavior>
+                        <Core:EventTriggerBehavior EventName="Tapped">
                             <Core:InvokeCommandAction Command="{Binding GoToReportPageCommand}" />
                         </Core:EventTriggerBehavior>
                     </Interactivity:Interaction.Behaviors>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-
             <!-- NavigationView Pane Footer -->
-            <NavigationView.PaneFooter>
-                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical">
-                    <!--<NavigationViewItem Icon="Download" AutomationProperties.Name="download" />-->
-                </StackPanel>
-            </NavigationView.PaneFooter>
+            <!-- <navigationview.panefooter>
+                <stackpanel x:name="footerstackpanel" orientation="vertical">
+                    <navigationviewitem icon="download" automationproperties.name="download"/>
+                </stackpanel>
+            </navigationview.panefooter> --> 
 
             <!-- Content Frame -->
             <Border Margin="0,-20,0,0"

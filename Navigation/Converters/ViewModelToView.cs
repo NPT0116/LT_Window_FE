@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 
-using Navigation.Views;
 using PhoneSelling.ViewModel.Pages.Authentication;
+using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages;
+
+using Navigation.Views.Inventory;
+using Navigation.Views;
 
 
 namespace Navigation.Converters
@@ -15,18 +18,18 @@ namespace Navigation.Converters
         private static readonly Dictionary<Type, Type> pairs = new Dictionary<Type, Type>()
         {
             {typeof(MainPageViewModel),typeof(MainPage)},
-
             {typeof(LoginPageViewModel),typeof(LoginPage)},
-
-            {typeof(ViewItemsPageViewModel), typeof(ViewItemsPage) },
-
-            {typeof(DashboardPageViewModel), typeof(DashboardPage) },
-
-            {typeof(ReportPageViewModel), typeof(ReportPage) },
-
+            // Inventory
+            {typeof(ViewItemsPageViewModel), typeof(ViewItemsPage)},
+            {typeof(CreateItemsPageViewModel), typeof(CreateItemsPage)},
+            {typeof(InventoryAdjustmentsPageViewModel), typeof(InventoryAdjustmentsPage) },
+            // Dashboard
+            {typeof(DashboardPageViewModel), typeof(DashboardPage)},
+            // ReportPage
+            {typeof(ReportPageViewModel), typeof(ReportPage)},
+            // PhonePage
             {typeof(PhonePageViewModel),typeof(PhonePage)}
         };
-
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             pairs.TryGetValue(value.GetType(), out var page);
@@ -34,7 +37,6 @@ namespace Navigation.Converters
             x.DataContext = value;
             return x;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();

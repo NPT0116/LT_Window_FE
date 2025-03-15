@@ -18,6 +18,7 @@
     <None Remove="Views\Page1_2.xaml" />
     <None Remove="Views\Page2.xaml" />
     <None Remove="Views\Pages\CreateItemsPage.xaml" />
+    <None Remove="Views\Pages\Inventory\InventoryAdjustmentsPage.xaml" />
     <None Remove="Views\Pages\MainPage.xaml" />
     <None Remove="Views\Pages\ViewItemsPage.xaml" />
     <None Remove="Views\PhonePage.xaml" />
@@ -96,10 +97,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Authentication\" />
-    <Folder Include="Views\Pages\Inventory\" />
-    <Folder Include="Views\Sample\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\Pages\Inventory\InventoryAdjustmentsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="Views\Pages\ReportPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

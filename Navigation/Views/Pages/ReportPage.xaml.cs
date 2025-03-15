@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 
 namespace Navigation.Views
 {
@@ -12,7 +6,6 @@ namespace Navigation.Views
     {
         public ReportPage()
         {
-            Debug.WriteLine("Report Page Initialization !");
             InitializeComponent();
         }
     }

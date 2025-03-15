@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Navigation.Views
+namespace Navigation.Views.Inventory
 {
     public sealed partial class CreateItemsPage : Page
     {
