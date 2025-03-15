@@ -13,12 +13,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Controls\AddColorButton.xaml" />
     <None Remove="Views\Page1.xaml" />
     <None Remove="Views\Page1_1.xaml" />
     <None Remove="Views\Page1_2.xaml" />
     <None Remove="Views\Page2.xaml" />
     <None Remove="Views\PhonePage.xaml" />
     <None Remove="Views\RootPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="views\themes\Generic.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,7 +93,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Authentication\" />
+    <Folder Include="Views\Themes\" />
     <Folder Include="Views\Sample\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\AddColorButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <None Update="Views\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
   <!--
