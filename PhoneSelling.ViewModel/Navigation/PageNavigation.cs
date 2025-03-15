@@ -1,10 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PhoneSelling.ViewModel.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhoneSelling.ViewModel.Navigation
 {
@@ -12,17 +7,8 @@ namespace PhoneSelling.ViewModel.Navigation
     {
         private readonly HistoryStack<BasePageViewModel> historyStates;
         private readonly HistoryStack<Type> historyTypes;
-        private readonly BackwardNavigationCompatibleMode backNavigationCompatiblity;
+        private readonly BackwardNavigationCompatibleMode backNavigationCompatibility;
         private BasePageViewModel viewModel;
-        public PageNavigation(BasePageViewModel viewModel, BackwardNavigationCompatibleMode mode = BackwardNavigationCompatibleMode.None, int maxHistory = 5)
-        {
-            backNavigationCompatiblity = mode;
-            if (mode == BackwardNavigationCompatibleMode.StoreStates)
-                historyStates = new HistoryStack<BasePageViewModel>(maxHistory);
-            else if (mode == BackwardNavigationCompatibleMode.StoreTypes)
-                historyTypes = new HistoryStack<Type>(maxHistory);
-            ViewModel = viewModel;
-        }
         public BasePageViewModel ViewModel
         {
             get => viewModel;
@@ -30,15 +16,23 @@ namespace PhoneSelling.ViewModel.Navigation
             {
                 if (viewModel != null)
                 {
-                    if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreStates)
+                    if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreStates)
                         historyStates.Push(viewModel);
-                    else if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreTypes)
+                    else if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreTypes)
                         historyTypes.Push(viewModel.GetType());
                 }
                 ChangeViewModel(value);
             }
         }
-
+        public PageNavigation(BasePageViewModel viewModel, BackwardNavigationCompatibleMode mode = BackwardNavigationCompatibleMode.None, int maxHistory = 5)
+        {
+            backNavigationCompatibility = mode;
+            if (mode == BackwardNavigationCompatibleMode.StoreStates)
+                historyStates = new HistoryStack<BasePageViewModel>(maxHistory);
+            else if (mode == BackwardNavigationCompatibleMode.StoreTypes)
+                historyTypes = new HistoryStack<Type>(maxHistory);
+            ViewModel = viewModel;
+        }
         private void ChangeViewModel(BasePageViewModel value)
         {
             SetProperty(ref viewModel, value, nameof(ViewModel));
@@ -46,18 +40,16 @@ namespace PhoneSelling.ViewModel.Navigation
         }
         public void GoBack()
         {
-            if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreStates
-                && historyStates.TryPop(out var oldVm))
+            if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreStates && historyStates.TryPop(out var oldVm))
                 ChangeViewModel(oldVm);
-            if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreTypes
-                && historyTypes.TryPop(out var oldVmType))
+            if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreTypes && historyTypes.TryPop(out var oldVmType))
                 ChangeViewModel((BasePageViewModel)Activator.CreateInstance(oldVmType));
         }
         public bool CanGoBack()
         {
-            if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreStates)
+            if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreStates)
                 return historyStates.Items.Count > 0;
-            else if (backNavigationCompatiblity == BackwardNavigationCompatibleMode.StoreTypes)
+            else if (backNavigationCompatibility == BackwardNavigationCompatibleMode.StoreTypes)
                 return historyTypes.Items.Count > 0;
             return false;
         }

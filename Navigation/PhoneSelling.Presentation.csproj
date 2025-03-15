@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
@@ -17,8 +17,14 @@
     <None Remove="Views\Page1_1.xaml" />
     <None Remove="Views\Page1_2.xaml" />
     <None Remove="Views\Page2.xaml" />
+    <None Remove="Views\Pages\CreateItemsPage.xaml" />
+    <None Remove="Views\Pages\MainPage.xaml" />
+    <None Remove="Views\Pages\ViewItemsPage.xaml" />
     <None Remove="Views\PhonePage.xaml" />
     <None Remove="Views\RootPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="views\pages\inventory\ReportPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +50,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
@@ -89,7 +96,26 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Authentication\" />
+    <Folder Include="Views\Pages\Inventory\" />
     <Folder Include="Views\Sample\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Views\Pages\ReportPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Pages\CreateItemsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Pages\ViewItemsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Pages\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

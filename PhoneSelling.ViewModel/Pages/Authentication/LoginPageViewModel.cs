@@ -65,7 +65,7 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
                     var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
                     LocalStorageHelper.SaveUserSettings(Username, encryptedInBase64, entropyInBase64);
                 }
-                ParentPageNavigation.ViewModel = new Page1ViewModel(new Page1_1ViewModel());
+                ParentPageNavigation.ViewModel = new MainPageViewModel(new DashboardPageViewModel());
             }
         }
         public bool CanLogin()

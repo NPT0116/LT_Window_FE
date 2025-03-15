@@ -1,22 +1,23 @@
+﻿
+using System;
 using Microsoft.UI.Xaml.Controls;
-using PhoneSelling.ViewModel.Pages;
 using PhoneSelling.ViewModel.Pages.Sample;
+using PhoneSelling.ViewModel.Pages;
 
 namespace Navigation.Views
 {
-    public sealed partial class Page1 : Page
+    public sealed partial class MainPage : Page
     {
-        public readonly Page1ViewModel _viewModel;
-        public Page1()
+        public readonly MainPageViewModel _viewModel;
+        public MainPage()
         {
             this.InitializeComponent();
-            _viewModel = new Page1ViewModel(new PhonePageViewModel());
+            _viewModel = new MainPageViewModel(new DashboardPageViewModel());
             this.DataContext = _viewModel;
         }
 
         private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
-            // For example, call your ViewModel's command manually:
             if (_viewModel.GoBackCommand.CanExecute(null))
             {
                 _viewModel.GoBackCommand.Execute(null);
