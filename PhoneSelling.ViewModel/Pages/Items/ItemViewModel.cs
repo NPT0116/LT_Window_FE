@@ -24,6 +24,10 @@ public partial class ItemViewModel : BasePageViewModel
 
     public ItemViewModel()
     {
+        Item = new Item();
+        SelectedStorages = new ObservableCollection<string>();
+        Colors = new();
+        Variants = new();
         _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
     }
 
@@ -41,7 +45,7 @@ public partial class ItemViewModel : BasePageViewModel
         {
             var newColor = new TempColor()
             {
-                Name = colorData.colorName,
+               Name = colorData.colorName,
                 TempId = TempColor.CURRENT_TEMP_ID++,
                 UrlImage = colorData.colorUrl
             };
