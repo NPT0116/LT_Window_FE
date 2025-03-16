@@ -17,7 +17,6 @@ namespace PhoneSelling.ViewModel.Pages.Sample
     public class PhonePageViewModel : BasePageViewModel
     {
         public PaginationQueryViewModel<Item> QueryViewModel { get; set; }
-        public ItemViewModel ItemViewModel { get; set; }
         private readonly IItemRepository _itemRepository;
         public PhonePageViewModel() : base()
         {
