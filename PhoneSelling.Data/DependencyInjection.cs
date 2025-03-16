@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace PhoneSelling.Data
 {
     public class DependencyInjection : IDependencyInjection
@@ -17,6 +16,10 @@ namespace PhoneSelling.Data
             DIContainer.AddInstance<HttpClient>(httpClient);
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
             DIContainer.AddKeyedSingleton<IItemRepository, RestItemRepository>();
+            // Minh Add mock data for testing
+            DIContainer.AddInstance<IItemRepository>(new MockItemRepository());
+            DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
+
 
         }
     }

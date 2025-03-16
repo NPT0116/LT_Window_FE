@@ -5,7 +5,6 @@ using System.Text;
 using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.Data.Models;
 using PhoneSelling.ViewModel.Base;
-using PhoneSelling.ViewModel.Pages.Sample;
 using PhoneSelling.ViewModel.Helpers;
 
 

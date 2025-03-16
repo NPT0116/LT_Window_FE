@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 
+using Navigation.Views.Inventory;
+using Navigation.Views;
+
 using PhoneSelling.ViewModel.Pages.Authentication;
 using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages;
 
-using Navigation.Views.Inventory;
-using Navigation.Views;
 
 
 namespace Navigation.Converters
@@ -17,18 +18,18 @@ namespace Navigation.Converters
     {
         private static readonly Dictionary<Type, Type> pairs = new Dictionary<Type, Type>()
         {
+            // MainPage
             {typeof(MainPageViewModel),typeof(MainPage)},
             {typeof(LoginPageViewModel),typeof(LoginPage)},
             // Inventory
-            {typeof(ViewItemsPageViewModel), typeof(ViewItemsPage)},
+            {typeof(ItemDetailPageViewModel), typeof(ItemDetailPage)},
             {typeof(CreateItemsPageViewModel), typeof(CreateItemsPage)},
             {typeof(InventoryAdjustmentsPageViewModel), typeof(InventoryAdjustmentsPage) },
+            {typeof(PhonePageViewModel),typeof(PhonePage)},
             // Dashboard
             {typeof(DashboardPageViewModel), typeof(DashboardPage)},
             // ReportPage
             {typeof(ReportPageViewModel), typeof(ReportPage)},
-            // PhonePage
-            {typeof(PhonePageViewModel),typeof(PhonePage)}
         };
         public object Convert(object value, Type targetType, object parameter, string language)
         {

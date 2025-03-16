@@ -9,7 +9,7 @@ namespace PhoneSelling.ViewModel.Pages
     public class MainPageViewModel : BasePageViewModel
     {
         // Inventory
-        public RelayCommand GoToViewItemsPageCommand { get; }
+        public RelayCommand GoToItemDetailPageCommand { get; }
         public RelayCommand GoToCreateItemsPageCommand { get; }
         public RelayCommand GoToInventoryAdjustmentsPageCommand {get;}
         // Go to others Main Page
@@ -26,7 +26,7 @@ namespace PhoneSelling.ViewModel.Pages
             GoToDashboardPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new DashboardPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(DashboardPageViewModel));
             // Inventory Management
             GoToInventoryAdjustmentsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InventoryAdjustmentsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InventoryAdjustmentsPageViewModel));        
-            GoToViewItemsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new ViewItemsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(ViewItemsPageViewModel));
+            GoToItemDetailPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new ItemDetailPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(ItemDetailPageViewModel));
             GoToCreateItemsPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateItemsPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateItemsPageViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(),() => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
             // Goback Command
@@ -37,7 +37,7 @@ namespace PhoneSelling.ViewModel.Pages
             if (e.PropertyName == nameof(ChildPageNavigation.ViewModel))
             {
                 GoToDashboardPageCommand.NotifyCanExecuteChanged();
-                GoToViewItemsPageCommand.NotifyCanExecuteChanged();
+                GoToItemDetailPageCommand.NotifyCanExecuteChanged();
                 GoToCreateItemsPageCommand.NotifyCanExecuteChanged();
                 GoToReportPageCommand.NotifyCanExecuteChanged();
                 GoToPhoneCommand.NotifyCanExecuteChanged();

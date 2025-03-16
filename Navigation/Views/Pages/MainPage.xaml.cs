@@ -1,7 +1,6 @@
 ﻿
 using System;
 using Microsoft.UI.Xaml.Controls;
-using PhoneSelling.ViewModel.Pages.Sample;
 using PhoneSelling.ViewModel.Pages;
 
 namespace Navigation.Views

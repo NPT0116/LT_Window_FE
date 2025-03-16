@@ -112,26 +112,19 @@
                         <NavigationViewItem Icon="Refresh" Content="Items" IsExpanded="true">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToViewItemsPageCommand}" />
+                                    <Core:InvokeCommandAction Command="{Binding GoToItemDetailPageCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!-- Create Items Page -->
-                        <NavigationViewItem Icon="Refresh" Content="Item Groups" IsExpanded="true">
+                        <NavigationViewItem Icon="Refresh" Content="Create Item" IsExpanded="true">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToCreateItemsPageCommand}"/>
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
-                        <!-- Inventory Adjustment -->
-                        <NavigationViewItem Icon="Refresh" Content="Inventory Adjustments" IsExpanded="true">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToInventoryAdjustmentsPageCommand}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+         
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <!-- Report Manager -->
