@@ -19,6 +19,8 @@ using PhoneSelling.Data.Services.FileUpload;
 using PhoneSelling.DependencyInjection;
 using System.Threading.Tasks;
 using PhoneSelling.Data.Models;
+using PhoneSelling.ViewModel.Pages.Items;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,9 +42,19 @@ namespace Navigation.Controls
 
         private async void OnAddColorClicked(object sender, RoutedEventArgs e)
         {
+            var viewModel = new TempColor(); // ViewModel instance for validation
+
             var stackPanel = new StackPanel { Spacing = 10 };
 
+            // Name input with validation
             var nameTextBox = new TextBox { PlaceholderText = "Nhập tên màu..." };
+            nameTextBox.TextChanged += (s, args) =>
+            {
+                viewModel.Name = nameTextBox.Text; // Update ViewModel when user types
+            };
+
+            var nameErrorText = new TextBlock { Foreground = new SolidColorBrush(Colors.Red), Visibility = Visibility.Collapsed };
+
             var selectFileButton = new Button { Content = "Chọn File" };
             var previewImage = new Image { Height = 100, Width = 100, Visibility = Visibility.Collapsed };
 
@@ -63,14 +75,19 @@ namespace Navigation.Controls
                 selectedFile = await picker.PickSingleFileAsync();
                 if (selectedFile != null)
                 {
-                    var bitmapImage = new BitmapImage(new Uri(selectedFile.Path));
-                    previewImage.Source = bitmapImage;
-                    previewImage.Visibility = Visibility.Visible;
+                    using (var stream = await selectedFile.OpenAsync(FileAccessMode.Read))
+                    {
+                        var bitmapImage = new BitmapImage();
+                        await bitmapImage.SetSourceAsync(stream);
+                        previewImage.Source = bitmapImage;
+                        previewImage.Visibility = Visibility.Visible;
+                    }
                 }
             };
 
             stackPanel.Children.Add(new TextBlock { Text = "Tên Màu:" });
             stackPanel.Children.Add(nameTextBox);
+            stackPanel.Children.Add(nameErrorText);
             stackPanel.Children.Add(new TextBlock { Text = "Chọn Hình Ảnh:" });
             stackPanel.Children.Add(selectFileButton);
             stackPanel.Children.Add(previewImage);
@@ -84,10 +101,31 @@ namespace Navigation.Controls
                 XamlRoot = this.XamlRoot
             };
 
-            var result = await dialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
+            while (true)
             {
+                var result = await dialog.ShowAsync();
+                if (result != ContentDialogResult.Primary)
+                    return; // User cancelled
+
+                // Validate input before proceeding
+                viewModel.Name = nameTextBox.Text; // Ensure latest input is checked
+                if (viewModel.HasErrors)
+                {
+                    var errors = viewModel.GetErrors(nameof(viewModel.Name)) as IEnumerable<string>;
+
+                    if (errors != null)
+                    {
+                        nameErrorText.Text = string.Join("\n", errors);
+                    }
+                    else
+                    {
+                        nameErrorText.Text = "Unknown validation error.";
+                    }
+
+                    nameErrorText.Visibility = Visibility.Visible;
+                    continue; // Keep showing the dialog until valid
+                }
+
                 if (selectedFile != null)
                 {
                     // ✅ Assume we have an upload service
@@ -98,8 +136,10 @@ namespace Navigation.Controls
                     // ✅ Notify the ViewModel (e.g., PhonePageViewModel.OnColorAdded)
                     ColorAdded?.Invoke(nameTextBox.Text, uploadedFile.Url);
                 }
+                break;
             }
         }
+
 
         private async Task<byte[]> ConvertStorageFileToByteArray(StorageFile file)
         {
