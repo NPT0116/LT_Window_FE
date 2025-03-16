@@ -58,7 +58,16 @@ namespace Navigation.Controls
             var selectFileButton = new Button { Content = "Chọn File" };
             var previewImage = new Image { Height = 100, Width = 100, Visibility = Visibility.Collapsed };
 
+            var progressRing = new ProgressRing
+            {
+                Width = 30,
+                Height = 30,
+                Visibility = Visibility.Collapsed, // Initially hidden
+                IsActive = false
+            };
+
             StorageFile selectedFile = null; // Store the selected image file
+            bool isUploading = false; // Tracks upload state
 
             selectFileButton.Click += async (s, args) =>
             {
@@ -91,6 +100,7 @@ namespace Navigation.Controls
             stackPanel.Children.Add(new TextBlock { Text = "Chọn Hình Ảnh:" });
             stackPanel.Children.Add(selectFileButton);
             stackPanel.Children.Add(previewImage);
+            stackPanel.Children.Add(progressRing); // ✅ Add loading indicator
 
             var dialog = new ContentDialog
             {
@@ -128,13 +138,34 @@ namespace Navigation.Controls
 
                 if (selectedFile != null)
                 {
-                    // ✅ Assume we have an upload service
-                    var fileBytes = await ConvertStorageFileToByteArray(selectedFile);
-                    var request = new MediaUploadRequest("", fileBytes, "test", Media.GetMimeType(selectedFile.Name));
-                    var uploadedFile = await _uploadService.UploadFileAsync(request, System.Threading.CancellationToken.None);
+                    try
+                    {
+                        isUploading = true;
+                        progressRing.Visibility = Visibility.Visible;
+                        progressRing.IsActive = true;
+                        selectFileButton.IsEnabled = false; // Disable button while uploading
+                        await Task.Delay(100);
+                        // ✅ Assume we have an upload service
+                        var fileBytes = await ConvertStorageFileToByteArray(selectedFile);
+                        var request = new MediaUploadRequest("", fileBytes, "test", Media.GetMimeType(selectedFile.Name));
+                        var uploadedFile = await _uploadService.UploadFileAsync(request, System.Threading.CancellationToken.None);
 
-                    // ✅ Notify the ViewModel (e.g., PhonePageViewModel.OnColorAdded)
-                    ColorAdded?.Invoke(nameTextBox.Text, uploadedFile.Url);
+                        // ✅ Notify the ViewModel (e.g., PhonePageViewModel.OnColorAdded)
+                        ColorAdded?.Invoke(nameTextBox.Text, uploadedFile.Url);
+                    }
+                    catch (Exception ex)
+                    {
+                        nameErrorText.Text = $"❌ Upload failed: {ex.Message}";
+                        nameErrorText.Visibility = Visibility.Visible;
+                        continue;
+                    }
+                    finally
+                    {
+                        isUploading = false;
+                        progressRing.IsActive = false;
+                        progressRing.Visibility = Visibility.Collapsed;
+                        selectFileButton.IsEnabled = true;
+                    }
                 }
                 break;
             }
