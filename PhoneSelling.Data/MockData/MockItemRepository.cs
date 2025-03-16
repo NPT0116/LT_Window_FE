@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 
 namespace PhoneSelling.Data.Repositories.ItemRepository
 {
     public class MockItemRepository : IItemRepository
     {
+        public Task AddItemToItemGroup(Guid itemGroupId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateFullItem(CreateFullItemDto item)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Item>> GetAll()
         {
             // Retrieve all iPhone groups using a combined function.
@@ -25,6 +36,16 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             Item? item = groups.SelectMany(group => group.Items)
                                .FirstOrDefault(i => i.Id == id);
             return Task.FromResult(item);
+        }
+
+        public Task<List<Item>> GetItemsBelongsToItemGroup(Guid itemGroupId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Item> UpdateItem(Item item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -90,7 +90,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <TextBlock Text="Released: " FontSize="18" FontWeight="SemiBold" Foreground="Gray"/>
                                 <TextBlock Text="{x:Bind _viewModel.SelectedItem.ReleasedDate, Mode=OneWay}"
-                                           FontStyle="Italic" FontSize="18" Foreground="Gray"/>
+                                           FontSize="18" Foreground="Gray"/>
                             </StackPanel>
                             <!-- Grid splitting image and variants -->
                             <Grid>
@@ -101,11 +101,11 @@
                                 <!-- Left Column: Item Image -->
                                 <Border Grid.Column="0" Background="Gray" CornerRadius="10" Margin="0,0,10,0">
                                     <Image Source="{x:Bind _viewModel.SelectedItem.Picture, Mode=OneWay}"
-                                           Height="250" Stretch="UniformToFill"/>
+                                           Stretch="UniformToFill"/>
                                 </Border>
                                 <!-- Right Column: Variants List -->
                                 <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
-                                    <TextBlock Text="Variants:" FontSize="26" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+                                    <!--<TextBlock Text="Variants:" FontSize="26" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>-->
                                     <ListView ItemsSource="{x:Bind _viewModel.SelectedItem.Variants, Mode=OneWay}"
                                               SelectionMode="None">
                                         <ListView.ItemTemplate>
