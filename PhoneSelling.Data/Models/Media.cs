@@ -48,5 +48,23 @@ namespace PhoneSelling.Data.Models
 
             return string.IsNullOrEmpty(prefix) ? newFileName : $"{prefix.TrimEnd('/')}/{newFileName}";
         }
+
+        public static string GetMimeType(string fileName)
+        {
+            var extension = Path.GetExtension(fileName)?.ToLowerInvariant();
+
+            return extension switch
+            {
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                ".bmp" => "image/bmp",
+                ".webp" => "image/webp",
+                ".svg" => "image/svg+xml",
+                ".tiff" => "image/tiff",
+                ".ico" => "image/x-icon",
+                _ => "application/octet-stream" // Default fallback
+            };
+        }
     }
 }

@@ -15,6 +15,10 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using PhoneSelling.Data.Services.FileUpload;
+using PhoneSelling.DependencyInjection;
+using System.Threading.Tasks;
+using PhoneSelling.Data.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,24 +30,29 @@ namespace Navigation.Controls
         private string _selectedImagePath;
 
         public event Action<string, string> ColorAdded;
+        private readonly IUploadService _uploadService;
 
         public AddColorButton()
         {
             this.InitializeComponent();
+            _uploadService = DIContainer.GetKeyedSingleton<IUploadService>();
         }
 
         private async void OnAddColorClicked(object sender, RoutedEventArgs e)
         {
             var stackPanel = new StackPanel { Spacing = 10 };
+
             var nameTextBox = new TextBox { PlaceholderText = "Nhập tên màu..." };
             var selectFileButton = new Button { Content = "Chọn File" };
             var previewImage = new Image { Height = 100, Width = 100, Visibility = Visibility.Collapsed };
 
+            StorageFile selectedFile = null; // Store the selected image file
+
             selectFileButton.Click += async (s, args) =>
             {
-                var picker = new FileOpenPicker
+                var picker = new Windows.Storage.Pickers.FileOpenPicker
                 {
-                    SuggestedStartLocation = PickerLocationId.PicturesLibrary
+                    SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary
                 };
                 picker.FileTypeFilter.Add(".jpg");
                 picker.FileTypeFilter.Add(".png");
@@ -51,11 +60,10 @@ namespace Navigation.Controls
                 var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
                 WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
 
-                StorageFile file = await picker.PickSingleFileAsync();
-                if (file != null)
+                selectedFile = await picker.PickSingleFileAsync();
+                if (selectedFile != null)
                 {
-                    _selectedImagePath = file.Path;
-                    var bitmapImage = new BitmapImage(new Uri(file.Path));
+                    var bitmapImage = new BitmapImage(new Uri(selectedFile.Path));
                     previewImage.Source = bitmapImage;
                     previewImage.Visibility = Visibility.Visible;
                 }
@@ -80,8 +88,29 @@ namespace Navigation.Controls
 
             if (result == ContentDialogResult.Primary)
             {
-                ColorAdded?.Invoke(nameTextBox.Text, _selectedImagePath);
+                if (selectedFile != null)
+                {
+                    // ✅ Assume we have an upload service
+                    var fileBytes = await ConvertStorageFileToByteArray(selectedFile);
+                    var request = new MediaUploadRequest("", fileBytes, "test", Media.GetMimeType(selectedFile.Name));
+                    var uploadedFile = await _uploadService.UploadFileAsync(request, System.Threading.CancellationToken.None);
+
+                    // ✅ Notify the ViewModel (e.g., PhonePageViewModel.OnColorAdded)
+                    ColorAdded?.Invoke(nameTextBox.Text, uploadedFile.Url);
+                }
             }
         }
+
+        private async Task<byte[]> ConvertStorageFileToByteArray(StorageFile file)
+        {
+            using (var stream = await file.OpenStreamForReadAsync())
+            using (var memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream);
+                return memoryStream.ToArray(); // ✅ Return byte array
+            }
+        }
+
+
     }
 }
