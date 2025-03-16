@@ -28,7 +28,7 @@
                     </Interactivity:Interaction.Behaviors>
                 </NavigationViewItem>
 
-                <NavigationViewItem Icon="Play" Content="Go To Page 1_2" Tag="Page 1_1">
+                <NavigationViewItem Icon="Play" Content="Go To Phone Page" Tag="Phone Page">
                     <Interactivity:Interaction.Behaviors>
                         <Core:EventTriggerBehavior EventName="Tapped">
                             <Core:InvokeCommandAction Command="{Binding GoToPhoneCommand}" />

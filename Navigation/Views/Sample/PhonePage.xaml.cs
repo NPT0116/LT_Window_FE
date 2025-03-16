@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +14,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PhoneSelling.Data.Repositories.PhoneRepository;
 using PhoneSelling.ViewModel.Pages.Sample;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using System.Diagnostics;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -24,17 +28,26 @@ namespace Navigation.Views
     /// </summary>
     public sealed partial class PhonePage : Page
     {
-        private readonly PhonePageViewModel _viewModel;
+        public ItemViewModel ViewModel { get; }
         public PhonePage()
         {
             this.InitializeComponent();
-            _viewModel = new PhonePageViewModel();
-            this.DataContext = _viewModel;
+            ViewModel = new ItemViewModel();
+            if (ViewModel == null)
+            {
+                Debug.WriteLine("❌ ERROR: ItemViewModel is NULL!");
+            }
+            else
+            {
+                Debug.WriteLine("✅ ItemViewModel initialized correctly.");
+            }
+            this.DataContext = ViewModel;
+        }
+        public void OnColorAdded(string colorName, string colorUrl)
+        {
+            Debug.WriteLine("This action is invoked");
+            ViewModel.AddColor((colorName, colorUrl)); // ✅ Forward event data to AddColor
         }
 
-        private void navigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            
-        }
     }
 }

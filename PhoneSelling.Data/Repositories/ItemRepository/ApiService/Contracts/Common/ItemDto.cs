@@ -11,9 +11,9 @@ namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Com
         public string itemId { get; set; }
         public string itemGroupId { get; set; }
         public string itemName { get; set; }
-        public string Description { get; set; }
+        public string description { get; set; }
         public string? picture { get; set; }
-        public string releasedDate { get; set; }
+        public string releaseDate { get; set; }
         public string manufacturerId { get; set; }
     }
 }
