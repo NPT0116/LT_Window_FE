@@ -1,5 +1,6 @@
 ﻿using PhoneSelling.Data.Repositories.Abstraction;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Requests;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
@@ -19,11 +20,24 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
 
         protected override string Prefix => "Customer";
 
+        public async Task CreateCustomer(CreateCustomerDto dto)
+        {
+            try
+            {
+                await _httpClient.PostAsJsonAsync<CreateCustomerDto>(ApiUrl + "/Create", dto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating customer: {ex.Message}");
+            }
+
+        }
+
         public async Task<GetAllCustomerResponse> GetAllCustomers()
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl);
+                var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl + "/All");
                 return response;
             }
             catch (Exception ex)

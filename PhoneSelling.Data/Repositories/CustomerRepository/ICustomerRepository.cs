@@ -10,5 +10,6 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
     public interface ICustomerRepository
     {
         Task<List<Customer>> GetAllCustomers();
+        Task CreateCustomer(Customer customer);
     }
 }
