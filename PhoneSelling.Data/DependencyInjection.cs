@@ -20,7 +20,6 @@ namespace PhoneSelling.Data
             DIContainer.AddInstance<IItemRepository>(new MockItemRepository());
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
 
-
         }
     }
 }
