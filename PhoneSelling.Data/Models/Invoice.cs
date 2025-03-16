@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Collections.ObjectModel;
 
 namespace PhoneSelling.Data.Models
 {
@@ -7,6 +8,8 @@ namespace PhoneSelling.Data.Models
     {
         [ObservableProperty] private float totalAmount;
         [ObservableProperty] private DateTime date;
+        [ObservableProperty] private ObservableCollection<InvoiceDetail> invoiceDetails;
+
 
         // Foreign Key
         [ObservableProperty] private Guid customerId;
