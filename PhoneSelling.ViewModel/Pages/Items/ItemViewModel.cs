@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,35 +15,41 @@ using PhoneSelling.ViewModel.Pages.Items;
 
 public partial class ItemViewModel : BasePageViewModel
 {
-    [ObservableProperty] private Item item;
-    [ObservableProperty] private ObservableCollection<string> selectedStorages;
-    [ObservableProperty] private ObservableCollection<TempColor> colors;
-    [ObservableProperty] private ObservableCollection<TempVariant> variants;
+    [ObservableProperty] private Item item = new();
+    [ObservableProperty] private ObservableCollection<string> selectedStorages = new();
+    [ObservableProperty] public ObservableCollection<TempColor> colors = new();
+    [ObservableProperty] public ObservableCollection<TempVariant> variants = new();
     private readonly IItemRepository _itemRepository;
     public List<string> Storages => StorageCapacity.SupportedCapacities.Select(sc => sc.Value).ToList();
 
     public ItemViewModel()
     {
-        Item = new Item();
-        SelectedStorages = new ObservableCollection<string>();
-        Colors = new();
-        Variants = new();
         _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
     }
 
+    
+    public IEnumerable<TempVariant> GetVariantsForColor(int colorTempId)
+    {
+        return Variants.Where(v => v.ColorTempId == colorTempId);
+    }
+
     // Command to add a new color
-    [RelayCommand]
+
     public void AddColor((string colorName, string colorUrl) colorData)
     {
         if (!string.IsNullOrWhiteSpace(colorData.colorName))
         {
             var newColor = new TempColor()
             {
-               Name = colorData.colorName,
-               TempId = TempColor.CURRENT_TEMP_ID++
+                Name = colorData.colorName,
+                TempId = TempColor.CURRENT_TEMP_ID++,
+                UrlImage = colorData.colorUrl
             };
+
             Colors.Add(newColor);
-            foreach(var storage in SelectedStorages)
+            Debug.WriteLine($"🟢 Added color: {newColor.Name} (Total: {Colors.Count})");
+
+            foreach (var storage in SelectedStorages)
             {
                 var variant = new TempVariant()
                 {
@@ -54,6 +61,8 @@ public partial class ItemViewModel : BasePageViewModel
                 };
                 Variants.Add(variant);
             }
+
+            Debug.WriteLine($"🟢 Variants updated (Total: {Variants.Count})");
         }
     }
 
