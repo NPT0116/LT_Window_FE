@@ -1,5 +1,7 @@
 ﻿using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
+using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Contracts.Responses;
+using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,12 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
 {
     public interface IInvoiceRepository
     {
-        //Task<InvoiceDto> CreateInvoiceAsync(CreateInvoiceDto invoiceDto);
-        //Task<InvoiceDto> GetInvoiceByIdAsync(Guid invoiceId);
-        Task<IEnumerable<InvoiceDto>> GetAllInvoices();
-        //Task<IEnumerable<InvoiceDto>> GetInvoicesByCustomer(Customer customer);
+        Task<bool> CreateInvoiceAsync(Invoice CreateInvoiceRequest);
+        Task<Invoice> GetInvoiceByIdAsync(Guid invoiceId);
+
+        Task<IEnumerable<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter);
+        Task<IEnumerable<Invoice>> GetInvoicesByCustomer(Guid CustomerId);
+        Task<byte[]> GetInvoicePdfPrintAsync(Guid invoiceId);
+
     }
 }
