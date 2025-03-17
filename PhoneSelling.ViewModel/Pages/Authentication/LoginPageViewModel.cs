@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.Data.Models;
 using PhoneSelling.ViewModel.Base;
-using PhoneSelling.ViewModel.Pages.Sample;
 
 namespace PhoneSelling.ViewModel.Pages.Authentication
 {
@@ -15,7 +14,7 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
 
         public void Login()
         {
-            ParentPageNavigation.ViewModel = new Page1ViewModel(new Page1_1ViewModel());
+            ParentPageNavigation.ViewModel = new MainPageViewModel(new DashboardPageViewModel());
         }
     }
 }

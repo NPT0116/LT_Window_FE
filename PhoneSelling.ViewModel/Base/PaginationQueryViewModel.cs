@@ -14,7 +14,7 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
     [ObservableProperty] private ObservableCollection<T> items = new();
     [ObservableProperty] private int totalItems;
     [ObservableProperty] private int pageNumber = 1;
-    [ObservableProperty] private int pageSize = 2;
+    [ObservableProperty] private int pageSize = 5;
     [ObservableProperty] private string searchKey = string.Empty;
     [ObservableProperty] private bool isLoading;
     [ObservableProperty] private bool isAscending = true;

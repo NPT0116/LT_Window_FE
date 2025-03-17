@@ -19,6 +19,7 @@
                     <Core:InvokeCommandAction Command="{Binding GoBackCommand}" />
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
+            
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Play" Content="Go To Page 1_1" Tag="Page 1_1">
                     <Interactivity:Interaction.Behaviors>
