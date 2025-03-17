@@ -23,18 +23,21 @@ namespace PhoneSelling.ViewModel.Pages.Customers
 
         public async Task<IEnumerable<Customer>> LoadDataAsync()
         {
-            var customers = await _customerRepository.GetAllCustomers();
-            return customers;
+            throw new NotImplementedException();
+            //var customers = await _customerRepository.GetAllCustomers();
+            //return customers;
         }
 
         public async Task OnCustomerAdded()
         {
-            var customers = await _customerRepository.GetAllCustomers();
-            Customers.Clear();
-            foreach (var customer in customers)
-            {
-                Customers.Add(customer);
-            }
+            throw new NotImplementedException();
+
+            //var customers = await _customerRepository.GetAllCustomers();
+            //Customers.Clear();
+            //foreach (var customer in customers)
+            //{
+            //    Customers.Add(customer);
+            //}
         }
 
     }
