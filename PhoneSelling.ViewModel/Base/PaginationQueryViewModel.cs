@@ -5,6 +5,7 @@ using PhoneSelling.Data.Common.Internal.Responses;
 using PhoneSelling.Data.Models;
 using PhoneSelling.ViewModel.Base;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     [ObservableProperty] private int totalPages;
     [ObservableProperty] private string searchKey = string.Empty;
     [ObservableProperty] private bool isLoading;
-    [ObservableProperty] private TQuery query;
+    [ObservableProperty] private TQuery query = new();
     public PaginationQueryViewModel(Func<TQuery, Task<PaginationResult<T>>> fetchDataFunc)
     {
         _fetchDataFunc = fetchDataFunc;
@@ -33,10 +34,22 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public IRelayCommand PreviousPageCommand { get; }
     public IRelayCommand ToggleSortCommand { get; }
 
+    private void ResetPagination()
+    {
+        Query.PageNumber = 1;
+        Query.PageSize = 10;
+    }
+    private void ResetAndReload()
+    {
+        ResetPagination();
+        LoadDataCommand.Execute(null);
+    }
+
+
     private async Task LoadDataAsync()
     {
         if (_fetchDataFunc == null) return;
-
+        Debug.WriteLine("Sort by:" + Query.Sortby);
         IsLoading = true;
         try
         {

@@ -22,7 +22,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
         public async Task<PaginationResult<Variant>> GetAllVariants(VariantPaginationQuery query)
         {
             var response = await _apiSerivce.GetAllVariants(query);
-            if(response != null && response.succeeded)
+            if(response != null && response.succeeded && response.data.Count() > 0)
             {
                 return new PaginationResult<Variant>
                 {
@@ -38,19 +38,24 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
                             ItemName = dto.itemDto.itemName,
                             Description = dto.itemDto.description,
                             Picture = dto.itemDto.picture,
-                            ReleaseDate = DateTime.Parse(dto.itemDto.releaseDate),
-                            ItemGroupId = Guid.Parse(dto.itemDto.itemGroupID),
-                            ManufacturerId = Guid.Parse(dto.itemDto.manufacturerID)
+                            ReleaseDate = DateTime.TryParse(dto.itemDto.releaseDate, out DateTime releaseDate) ? releaseDate : (DateTime?)null,
+                            ItemGroupId = Guid.TryParse(dto.itemDto.itemGroupID, out Guid itemGroupId) ? itemGroupId : Guid.Empty,
+                            ManufacturerId = Guid.TryParse(dto.itemDto.manufacturerID, out Guid manufacturerId) ? manufacturerId : Guid.Empty
                         },
                         Color = new Color
                         {
-                            ColorId = Guid.Parse(dto.colorDto.colorID),
+                            ColorId = Guid.TryParse(dto.colorDto.colorID, out Guid colorId) ? colorId : Guid.Empty,
                             Name = dto.colorDto.name,
                             UrlImage = dto.colorDto.urlImage,
-                            ItemId = Guid.Parse(dto.colorDto.itemID)
+                            ItemId = Guid.TryParse(dto.colorDto.itemID, out Guid itemId) ? itemId : Guid.Empty
                         }
                     }).ToList(),
+                    PageNumber = response.pageNumber,
+                    PageSize = response.pageSize,
+                    TotalPages = response.totalPages,
+                    TotalRecords = response.totalRecords,
                 };
+
             }
 
             return new PaginationResult<Variant>

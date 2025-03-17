@@ -20,6 +20,7 @@
     <None Remove="Views\Page2.xaml" />
     <None Remove="Views\PhonePage.xaml" />
     <None Remove="Views\RootPage.xaml" />
+    <None Remove="Views\Variants\VariantListPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Page Remove="views\themes\Generic.xaml" />
@@ -103,6 +104,9 @@
     <None Update="Views\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Update="Views\Variants\VariantListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

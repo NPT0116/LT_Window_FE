@@ -12,7 +12,7 @@ namespace PhoneSelling.Data.Models
         [ObservableProperty] private string itemName = string.Empty;
         [ObservableProperty] private string? description;
         [ObservableProperty] private string? picture;
-        [ObservableProperty] private DateTime releaseDate = DateTime.UtcNow;
+        [ObservableProperty] private DateTime? releaseDate = DateTime.UtcNow;
         [ObservableProperty] private List<Variant> variants = new();
 
         // Foreign Keys

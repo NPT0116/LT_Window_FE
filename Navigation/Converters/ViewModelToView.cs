@@ -1,8 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Navigation.Views;
+using Navigation.Views.Variants;
 using PhoneSelling.ViewModel.Pages.Authentication;
 using PhoneSelling.ViewModel.Pages.Sample;
+using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,8 @@ namespace Navigation.Converters
             //{typeof(Page1_4ViewModel),typeof(Page1_4)},
             {typeof(Page2ViewModel),typeof(Page2)},
             {typeof(LoginPageViewModel),typeof(LoginPage)},
-            {typeof(PhonePageViewModel),typeof(PhonePage)}
+            {typeof(PhonePageViewModel),typeof(PhonePage)},
+            {typeof(VariantListViewModel),typeof(VariantListPage)},
         };
 
         public object Convert(object value, Type targetType, object parameter, string language)
