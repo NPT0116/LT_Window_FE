@@ -101,12 +101,12 @@ public partial class ItemViewModel : BasePageViewModel
         {
             Item = new PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Common.ItemDto
             {
-                itemGroupId = null,
+                itemGroupID = null,
                 itemName = Item.ItemName,
                 description = Item.Description,
                 picture = Item.Picture,
                 releaseDate = Item.ReleasedDate.ToString(),
-                manufacturerId = null
+                manufacturerID = null
             },
             Colors = Colors.Select(c => new PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests.ColorDto
             {

@@ -101,12 +101,12 @@ namespace PhoneSelling.Data.Repositories.ItemRepository.ApiService
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync<ItemDto>(ApiUrl + $"/{item.itemId}", item);
+                var response = await _httpClient.PutAsJsonAsync<ItemDto>(ApiUrl + $"/{item.itemID}", item);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching items in group id {item.itemId}: {ex.Message}");
+                Console.WriteLine($"Error fetching items in group id {item.itemID}: {ex.Message}");
 
             }
         }

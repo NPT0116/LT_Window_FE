@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PhoneSelling.Data.Common.Contracts.Requests;
+using PhoneSelling.Data.Common.Internal.Responses;
 using PhoneSelling.Data.Models;
 using PhoneSelling.ViewModel.Base;
 using System.Collections.ObjectModel;
@@ -7,24 +9,22 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-public partial class PaginationQueryViewModel<T> : ObservableObject
+public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject where TQuery : PaginationQuery, new()
 {
-    private readonly Func<Task<IEnumerable<T>>> _fetchDataFunc;
+    private readonly Func<TQuery, Task<PaginationResult<T>>> _fetchDataFunc;
 
     [ObservableProperty] private ObservableCollection<T> items = new();
     [ObservableProperty] private int totalItems;
-    [ObservableProperty] private int pageNumber = 1;
-    [ObservableProperty] private int pageSize = 2;
+    [ObservableProperty] private int totalPages;
     [ObservableProperty] private string searchKey = string.Empty;
     [ObservableProperty] private bool isLoading;
-    [ObservableProperty] private bool isAscending = true;
-
-    public PaginationQueryViewModel(Func<Task<IEnumerable<T>>> fetchDataFunc)
+    [ObservableProperty] private TQuery query;
+    public PaginationQueryViewModel(Func<TQuery, Task<PaginationResult<T>>> fetchDataFunc)
     {
         _fetchDataFunc = fetchDataFunc;
         LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        NextPageCommand = new RelayCommand(NextPage, () => PageNumber <= Math.Floor((float)TotalItems / PageSize));
-        PreviousPageCommand = new RelayCommand(PreviousPage, () => PageNumber > 1);
+        NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber <= Math.Floor((float)TotalItems / Query.PageSize));
+        PreviousPageCommand = new RelayCommand(PreviousPage, () => Query.PageNumber > 1);
         ToggleSortCommand = new RelayCommand(ToggleSort);
     }
 
@@ -40,11 +40,14 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
         IsLoading = true;
         try
         {
-            var data = await _fetchDataFunc();
+            var paginationResult = await _fetchDataFunc(Query);
+            Query.PageSize = paginationResult.PageSize;
+            Query.PageNumber = paginationResult.PageNumber;
+            TotalItems = paginationResult.TotalRecords;
+            TotalPages = paginationResult.TotalPages;
             Items.Clear();
-            TotalItems = data.Count();
-            var paginatedData = data.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
-            foreach (var item in paginatedData)
+            TotalItems = paginationResult.Data.Count();
+            foreach (var item in paginationResult.Data)
             {
                 Items.Add(item);
             }
@@ -59,7 +62,7 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
 
     private void NextPage()
     {
-        PageNumber++;
+        Query.PageNumber++;
         LoadDataCommand.Execute(null);
         NextPageCommand.NotifyCanExecuteChanged();
         PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
@@ -67,9 +70,9 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
 
     private void PreviousPage()
     {
-        if (PageNumber > 1)
+        if (Query.PageNumber > 1)
         {
-            PageNumber--;
+            Query.PageNumber--;
             LoadDataCommand.Execute(null);
             NextPageCommand.NotifyCanExecuteChanged();
             PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
@@ -78,9 +81,6 @@ public partial class PaginationQueryViewModel<T> : ObservableObject
 
     private void ToggleSort()
     {
-        IsAscending = !IsAscending;
-        Items = new ObservableCollection<T>(IsAscending
-            ? Items.OrderBy(x => x.ToString()).ToList()
-            : Items.OrderByDescending(x => x.ToString()).ToList());
+        Query.SortDirection = Query.SortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
     }
 }

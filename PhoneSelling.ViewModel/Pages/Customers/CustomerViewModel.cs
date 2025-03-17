@@ -15,12 +15,10 @@ namespace PhoneSelling.ViewModel.Pages.Customers
     public partial class CustomerViewModel : BasePageViewModel
     {
         private readonly ICustomerRepository _customerRepository;
-        public PaginationQueryViewModel<Customer> QueryViewModel;
+        [ObservableProperty] private ObservableCollection<Customer> customers;
         public CustomerViewModel()
         {
             _customerRepository = DIContainer.GetKeyedSingleton<ICustomerRepository>();
-            QueryViewModel = new(LoadDataAsync);
-            QueryViewModel.LoadDataCommand.Execute(null);
         }
 
         public async Task<IEnumerable<Customer>> LoadDataAsync()
@@ -32,10 +30,10 @@ namespace PhoneSelling.ViewModel.Pages.Customers
         public async Task OnCustomerAdded()
         {
             var customers = await _customerRepository.GetAllCustomers();
-            QueryViewModel.Items.Clear();
+            Customers.Clear();
             foreach (var customer in customers)
             {
-                QueryViewModel.Items.Add(customer);
+                Customers.Add(customer);
             }
         }
 

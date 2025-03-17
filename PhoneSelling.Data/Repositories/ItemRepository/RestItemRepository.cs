@@ -50,8 +50,8 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             
             return response.Data.Select(dto => 
             {
-                Guid.TryParse(dto.itemGroupId, out Guid itemGroupId);
-                Guid.TryParse(dto.manufacturerId, out Guid manufacturerId);
+                Guid.TryParse(dto.itemGroupID, out Guid itemGroupId);
+                Guid.TryParse(dto.manufacturerID, out Guid manufacturerId);
 
                 // Safely parse DateTime
                 DateTime.TryParse(dto.releaseDate, out DateTime releaseDate);
@@ -75,8 +75,8 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             var dto = response.Data;
             return new Item
             {
-                ItemGroupId = Guid.Parse(dto.itemGroupId),
-                ManufacturerId = Guid.Parse(dto.manufacturerId),
+                ItemGroupId = Guid.Parse(dto.itemGroupID),
+                ManufacturerId = Guid.Parse(dto.manufacturerID),
                 ItemName = dto.itemName,
                 Description = dto.description,
                 Picture = dto.picture,
@@ -94,8 +94,8 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
             {
                 var item = new Item
                 {
-                    ItemGroupId = Guid.Parse(dto.itemGroupId),
-                    ManufacturerId = Guid.Parse(dto.manufacturerId),
+                    ItemGroupId = Guid.Parse(dto.itemGroupID),
+                    ManufacturerId = Guid.Parse(dto.manufacturerID),
                     ItemName = dto.itemName,
                     Description = dto.description,
                     Picture = dto.picture,

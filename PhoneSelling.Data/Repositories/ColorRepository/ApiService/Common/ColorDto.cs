@@ -8,9 +8,9 @@ namespace PhoneSelling.Data.Repositories.ColorRepository.ApiService.Common
 {
     public class ColorDto
     {
-        public string colorId { get; set; }
+        public string colorID { get; set; }
         public string name { get; set; }
-        public string itemId { get; set; }
+        public string itemID { get; set; }
         public string urlImage { get; set; }
     }
 }
