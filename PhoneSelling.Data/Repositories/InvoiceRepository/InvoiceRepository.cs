@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Contracts.Responses.Base;
+﻿using PhoneSelling.Data.Common.Internal.Responses;
+using PhoneSelling.Data.Contracts.Responses.Base;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.Abstraction;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
@@ -55,11 +56,19 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
         }
 
 
-        public async Task<IEnumerable<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter)
+        public async Task<PaginationResult<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter)
         {
             var response = await _invoiceApiService.GetAllInvoicesAsync(invoiceQueryParameter);
-            if (response == null || response.Data.Count() == 0) return Enumerable.Empty<Invoice>();
-            return InvoiceMapper.MapToModelList(response.Data);
+            var result = new PaginationResult<Invoice>
+            {
+                Data = InvoiceMapper.MapToModelList(response.data),
+                PageNumber = response.pageNumber,
+                PageSize = response.pageSize,
+                TotalPages = response.totalPages,
+                TotalRecords = response.totalRecords
+
+            };
+            return result;
         }
 
         public async Task<Invoice> GetInvoiceByIdAsync(Guid invoiceId)

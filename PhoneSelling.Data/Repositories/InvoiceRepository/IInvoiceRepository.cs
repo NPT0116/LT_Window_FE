@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Models;
+﻿using PhoneSelling.Data.Common.Internal.Responses;
+using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Contracts.Responses;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
@@ -15,7 +16,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
         Task<bool> CreateInvoiceAsync(Invoice CreateInvoiceRequest);
         Task<Invoice> GetInvoiceByIdAsync(Guid invoiceId);
 
-        Task<IEnumerable<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter);
+        Task<PaginationResult<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter);
         Task<IEnumerable<Invoice>> GetInvoicesByCustomer(Guid CustomerId);
         Task<byte[]> GetInvoicePdfPrintAsync(Guid invoiceId);
 
