@@ -68,7 +68,6 @@
             </ListView>
         </ScrollViewer>
 
-
         <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
             <!-- Previous Page Button -->
             <Button Content="Previous" Command="{x:Bind ViewModel.QueryViewModel.PreviousPageCommand}" 
