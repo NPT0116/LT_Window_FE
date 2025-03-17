@@ -1,6 +1,6 @@
 ﻿using PhoneSelling.Data.Repositories.Abstraction;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
-using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Requests;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
@@ -20,11 +20,11 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
 
         protected override string Prefix => "Customer";
 
-        public async Task CreateCustomer(CreateCustomerDto dto)
+        public async Task CreateCustomer(CreateCustomerRequest dto)
         {
             try
             {
-                await _httpClient.PostAsJsonAsync<CreateCustomerDto>(ApiUrl + "/Create", dto);
+                await _httpClient.PostAsJsonAsync<CreateCustomerRequest>(ApiUrl + "/Create", dto);
             }
             catch (Exception ex)
             {

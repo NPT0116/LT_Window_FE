@@ -12,7 +12,6 @@ namespace PhoneSelling.Data.Models
         [ObservableProperty] private float costPrice;
         [ObservableProperty] private float sellingPrice;
         [ObservableProperty] private int stockQuantity;
-        [ObservableProperty] private Inventory inventory = new();
 
         // Foreign Key
         [ObservableProperty] private Guid itemId;

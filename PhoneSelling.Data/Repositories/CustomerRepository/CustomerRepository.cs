@@ -1,6 +1,5 @@
 ﻿using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService;
-using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Requests;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,14 +19,14 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
 
         public async Task CreateCustomer(Customer customer)
         {
-            var createCustomerDto = new CreateCustomerDto()
+            var createCustomerRequest = new ApiService.Contracts.Requests.CreateCustomerRequest()
             {
                 name = customer.Name,
                 phone = customer.Phone,
                 email = customer.Email,
                 address = customer.Address
             };
-            await _apiService.CreateCustomer(createCustomerDto);
+            await _apiService.CreateCustomer(createCustomerRequest);
         }
 
         public async Task<List<Customer>> GetAllCustomers()

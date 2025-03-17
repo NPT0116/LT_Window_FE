@@ -1,5 +1,5 @@
-﻿using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
-using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Requests;
+﻿using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,6 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
     public interface ICustomerApiService
     {
         Task<GetAllCustomerResponse> GetAllCustomers();
-        Task CreateCustomer(CreateCustomerDto dto);
+        Task CreateCustomer(CreateCustomerRequest dto);
     }
 }
