@@ -17,9 +17,9 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     [ObservableProperty] private ObservableCollection<T> items = new();
     [ObservableProperty] private int totalItems;
     [ObservableProperty] private int totalPages;
-    [ObservableProperty] private string searchKey = string.Empty;
     [ObservableProperty] private bool isLoading;
     [ObservableProperty] private TQuery query = new();
+    private string lastSearchKey = string.Empty;
     public PaginationQueryViewModel(Func<TQuery, Task<PaginationResult<T>>> fetchDataFunc)
     {
         _fetchDataFunc = fetchDataFunc;
@@ -34,21 +34,10 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public IRelayCommand PreviousPageCommand { get; }
     public IRelayCommand ToggleSortCommand { get; }
 
-    private void ResetPagination()
-    {
-        Query.PageNumber = 1;
-        Query.PageSize = 10;
-    }
-    private void ResetAndReload()
-    {
-        ResetPagination();
-        LoadDataCommand.Execute(null);
-    }
-
-
     private async Task LoadDataAsync()
     {
         if (_fetchDataFunc == null) return;
+        if(Query.SearchKey == lastSearchKey) return;
         Debug.WriteLine("Sort by:" + Query.Sortby);
         IsLoading = true;
         try
@@ -56,6 +45,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
             var paginationResult = await _fetchDataFunc(Query);
             Query.PageSize = paginationResult.PageSize;
             Query.PageNumber = paginationResult.PageNumber;
+            lastSearchKey = Query.SearchKey;
             TotalItems = paginationResult.TotalRecords;
             TotalPages = paginationResult.TotalPages;
             Items.Clear();
