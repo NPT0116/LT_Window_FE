@@ -16,14 +16,11 @@ namespace PhoneSelling.ViewModel.Pages.Sample
 {
     public class PhonePageViewModel : BasePageViewModel
     {
-        public PaginationQueryViewModel<Item> QueryViewModel { get; set; }
         public ItemViewModel ItemViewModel { get; set; }
-        private readonly IItemRepository _itemRepository;
-        public PhonePageViewModel() : base()
+        private IItemRepository _itemRepository;
+        public PhonePageViewModel()
         {
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
-            QueryViewModel = new(LoadDataAsync);
-            QueryViewModel.LoadDataCommand.Execute(null);
         }
 
         private async Task<IEnumerable<Item>> LoadDataAsync()

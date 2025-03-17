@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Validators\" />
     <Folder Include="Repositories\ColorRepository\ApiService\Contracts\" />
-    <Folder Include="Repositories\VariantRepository\ApiService\Contracts\" />
   </ItemGroup>
 
   <ItemGroup>
