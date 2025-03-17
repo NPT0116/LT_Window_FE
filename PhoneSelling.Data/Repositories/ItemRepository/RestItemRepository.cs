@@ -62,7 +62,7 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                     ItemName = dto.itemName,
                     Description = dto.description,
                     Picture = dto.picture,
-                    ReleasedDate = releaseDate
+                    ReleaseDate = releaseDate
                 };
             }).ToList();
         }
@@ -80,7 +80,7 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                 ItemName = dto.itemName,
                 Description = dto.description,
                 Picture = dto.picture,
-                ReleasedDate = DateTime.Parse(dto.releaseDate)
+                ReleaseDate = DateTime.Parse(dto.releaseDate)
             };
         }
 
@@ -99,7 +99,7 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                     ItemName = dto.itemName,
                     Description = dto.description,
                     Picture = dto.picture,
-                    ReleasedDate = DateTime.Parse(dto.releaseDate)
+                    ReleaseDate = DateTime.Parse(dto.releaseDate)
                 };
                 return item;
             }).ToList();

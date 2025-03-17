@@ -105,7 +105,7 @@ public partial class ItemViewModel : BasePageViewModel
                 itemName = Item.ItemName,
                 description = Item.Description,
                 picture = Item.Picture,
-                releaseDate = Item.ReleasedDate.ToString(),
+                releaseDate = Item.ReleaseDate.ToString(),
                 manufacturerID = null
             },
             Colors = Colors.Select(c => new PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests.ColorDto

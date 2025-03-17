@@ -2,6 +2,8 @@
 using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Navigation;
 using PhoneSelling.ViewModel.Pages.Authentication;
+using PhoneSelling.ViewModel.Pages.Inventory;
+using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace PhoneSelling.ViewModel.Pages.Sample
         public RelayCommand GoToPage1_2Command { get; }
         public RelayCommand GoToPhoneCommand { get; }
         public RelayCommand GoBackCommand { get; }
+        public RelayCommand GoToVariantCommand { get; }
         public Page1ViewModel(BasePageViewModel viewModel)
         {
             ChildPageNavigation = new PageNavigation(viewModel, BackwardNavigationCompatibleMode.StoreTypes);
@@ -30,7 +33,9 @@ namespace PhoneSelling.ViewModel.Pages.Sample
                 () => ChildPageNavigation.ViewModel.GetType() != typeof(Page1_2ViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(),
                 () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
-            //GoToPage1_3Command = new RelayCommand(() =>
+            GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(),
+                () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
+            //GoToPage1_3Command = new RelayCommand(() => 
             //{
             //    ChildPageNavigation.ViewModel = new Page1_3ViewModel();
             //},

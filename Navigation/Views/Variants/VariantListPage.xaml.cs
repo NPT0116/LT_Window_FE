@@ -12,37 +12,27 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using System.ComponentModel;
-using PhoneSelling.ViewModel.Pages;
-using System.Diagnostics;
-using PhoneSelling.ViewModel.Pages.Sample;
+using PhoneSelling.ViewModel.Pages.Variants;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Navigation.Views
+namespace Navigation.Views.Variants
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Page1 : Page
+    public sealed partial class VariantListPage : Page
     {
-        public readonly Page1ViewModel _viewModel;
-        public Page1()
+        public VariantListViewModel ViewModel { get; set; }
+        public VariantListPage()
         {
             this.InitializeComponent();
-            //_viewModel = new Page1ViewModel(new PhonePageViewModel());
-            this.DataContext = _viewModel;
+            ViewModel = new VariantListViewModel();
+            this.DataContext = ViewModel;
         }
 
-        private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-            // For example, call your ViewModel's command manually:
-            if (_viewModel.GoBackCommand.CanExecute(null))
-            {
-                _viewModel.GoBackCommand.Execute(null);
-            }
-        }
-
+        private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+        private void RadioButton_Checked(object sender, RoutedEventArgs e) { }
     }
 }

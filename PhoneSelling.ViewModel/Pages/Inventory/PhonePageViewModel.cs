@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneSelling.ViewModel.Pages.Sample
+namespace PhoneSelling.ViewModel.Pages.Inventory
 {
     public class PhonePageViewModel : BasePageViewModel
     {
@@ -20,6 +20,7 @@ namespace PhoneSelling.ViewModel.Pages.Sample
         private IItemRepository _itemRepository;
         public PhonePageViewModel()
         {
+            Debug.WriteLine("This is phone Page");
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
         }
 

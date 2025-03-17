@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requests
 {
-    public class VariantPaginationQuery : PaginationQuery
+    public partial class VariantPaginationQuery : PaginationQuery
     {
         public string StorageFilter { get; set; } = string.Empty;
         public string? ManufacturerFilter { get; set; }

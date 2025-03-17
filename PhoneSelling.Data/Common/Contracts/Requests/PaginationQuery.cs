@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -15,12 +17,18 @@ namespace PhoneSelling.Data.Common.Contracts.Requests
         [EnumMember(Value = "desc")]
         Descending
     }
-    public class PaginationQuery
+    public partial class PaginationQuery : ObservableObject
     {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-        public string SearchKey { get; set; } = string.Empty;
-        public string Sortby { get; set; } = string.Empty;
-        public SortDirection SortDirection { get; set; }
+        [ObservableProperty] private int pageNumber = 1;
+        [ObservableProperty] private int pageSize = 10;
+        [ObservableProperty] string searchKey = string.Empty;
+        [ObservableProperty] string sortby = string.Empty;
+        [ObservableProperty] SortDirection sortDirection;
+
+        public int SortDirectionIndex
+        {
+            get => SortDirection == SortDirection.Ascending ? 0 : 1;
+            set => SortDirection = (value == 0) ? SortDirection.Ascending : SortDirection.Descending;
+        }
     }
 }

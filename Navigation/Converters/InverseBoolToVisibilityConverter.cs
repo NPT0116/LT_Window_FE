@@ -5,24 +5,24 @@ using System.Diagnostics;
 
 namespace Navigation.Converters
 {
-    public class BoolToVisibilityConverter : IValueConverter
+    public class InverseBoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            Debug.WriteLine("BoolToVisibilityConverter.Convert called with value: " + value);
+            Debug.WriteLine("InverseBoolToVisibilityConverter.Convert called with value: " + value);
             if (value is bool flag)
             {
-                return flag ? Visibility.Visible : Visibility.Collapsed;
+                return flag ? Visibility.Collapsed : Visibility.Visible;
             }
-            return Visibility.Collapsed;
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            Debug.WriteLine("BoolToVisibilityConverter.ConvertBack called with value: " + value);
+            Debug.WriteLine("InverseBoolToVisibilityConverter.ConvertBack called with value: " + value);
             if (value is Visibility vis)
             {
-                return vis == Visibility.Visible;
+                return vis != Visibility.Visible;
             }
             return false;
         }

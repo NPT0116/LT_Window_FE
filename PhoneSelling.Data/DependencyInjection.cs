@@ -9,6 +9,8 @@ using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
 using PhoneSelling.Data.Repositories.PhoneRepository;
+using PhoneSelling.Data.Repositories.VariantRepository;
+using PhoneSelling.Data.Repositories.VariantRepository.ApiService;
 using PhoneSelling.Data.Services.FileUpload;
 using PhoneSelling.DependencyInjection;
 using System;
@@ -29,12 +31,17 @@ namespace PhoneSelling.Data
             DIContainer.AddKeyedSingleton<IConfigService, ConfigService>();
             DIContainer.AddKeyedSingleton<IItemApiService, ItemApiService>();
             DIContainer.AddKeyedSingleton<ICustomerApiService, CustomerApiService>();
+            DIContainer.AddKeyedSingleton<IVariantApiService, VariantApiService>();
 
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
 
             DIContainer.AddKeyedSingleton<IItemRepository, RestItemRepository>();
             DIContainer.AddKeyedSingleton<ICustomerRepository, CustomerRepository>();
+
+            DIContainer.AddKeyedSingleton<IVariantRepository, VariantRepository>();
+
             DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
+
 
             // ✅ Register AWS Image Upload Service
             var awsSettings = new AWSSettings();

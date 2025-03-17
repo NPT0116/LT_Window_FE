@@ -19,6 +19,7 @@
                     <Core:InvokeCommandAction Command="{Binding GoBackCommand}" />
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
+            
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Play" Content="Go To Page 1_1" Tag="Page 1_1">
                     <Interactivity:Interaction.Behaviors>
@@ -36,7 +37,13 @@
                     </Interactivity:Interaction.Behaviors>
                 </NavigationViewItem>
 
-                <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
+                <NavigationViewItem Icon="Refresh" Content="Go To Variant Page" Tag="SamplePage3">
+                    <Interactivity:Interaction.Behaviors>
+                        <Core:EventTriggerBehavior EventName="Tapped">
+                            <Core:InvokeCommandAction Command="{Binding GoToVariantCommand}" />
+                        </Core:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </NavigationViewItem>
                 <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
             </NavigationView.MenuItems>
             <Frame x:Name="PageFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,40,0,0" 
