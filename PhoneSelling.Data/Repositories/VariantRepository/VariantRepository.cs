@@ -22,7 +22,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
         public async Task<PaginationResult<Variant>> GetAllVariants(VariantPaginationQuery query)
         {
             var response = await _apiSerivce.GetAllVariants(query);
-            if(response != null && response.succeeded && response.data.Count() > 0)
+            if(response != null && response.succeeded)
             {
                 return new PaginationResult<Variant>
                 {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,10 +25,10 @@ namespace Navigation.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Page1 : Page
+    public sealed partial class MainPage : Page
     {
-        public readonly Page1ViewModel _viewModel;
-        public Page1()
+        public readonly MainPageViewModel _viewModel;
+        public MainPage()
         {
             this.InitializeComponent();
             //_viewModel = new Page1ViewModel(new PhonePageViewModel());

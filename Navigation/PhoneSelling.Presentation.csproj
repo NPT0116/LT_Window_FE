@@ -14,6 +14,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\AddColorButton.xaml" />
+    <None Remove="Views\DashboardPage.xaml" />
+    <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\Page1.xaml" />
     <None Remove="Views\Page1_1.xaml" />
     <None Remove="Views\Page1_2.xaml" />
@@ -99,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\AddColorButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DashboardPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">

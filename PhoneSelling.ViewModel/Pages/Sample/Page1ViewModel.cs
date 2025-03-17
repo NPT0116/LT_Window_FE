@@ -2,6 +2,7 @@
 using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Navigation;
 using PhoneSelling.ViewModel.Pages.Authentication;
+using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
