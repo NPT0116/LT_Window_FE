@@ -1,0 +1,166 @@
+<Page
+	x:Class="Navigation.Views.Inventory.GroupPages.ItemGroupsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:model="using:PhoneSelling.Data.Models"
+    xmlns:converter="using:Navigation.Converters"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <!--Converter-->
+        <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:VariantNameConverter x:Key="VariantNameConverter" />
+        <!--List Template-->
+        <DataTemplate x:Key="ListItemGroupTemplate" x:DataType="model:ItemGroup">
+            <TextBlock Text="{x:Bind ItemGroupName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Item">
+            <StackPanel Orientation="Vertical" Spacing="2">
+                <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" FontSize="18"/>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="Release Date:" />
+                    <TextBlock Text="{x:Bind ReleaseDate}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="Variants:" />
+                    <TextBlock Text="{x:Bind Variants.Count}" />
+                </StackPanel>
+
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ListVariantTemplate" x:DataType="model:Variant">
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Margin="5" HorizontalAlignment="Left">
+                    <Run Text="{x:Bind Item.ItemName}" />
+                    <Run Text=" - " />
+                    <Run Text="{x:Bind Color.Name}" />
+                    <Run Text=" - " />
+                    <Run Text="{x:Bind Storage}" />
+                </TextBlock>
+                <TextBlock Text="{x:Bind Storage}" Grid.Column="1" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind CostPrice}" Grid.Column="2" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind SellingPrice}" Grid.Column="3" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind StockQuantity}" Grid.Column="4" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind Color.Name}" Grid.Column="5" Margin="5" HorizontalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+        <!--Grid Template-->
+        <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <DataTemplate x:Key="GridVariantTemplate" x:DataType="model:Variant">
+            <Border BorderBrush="Gray" BorderThickness="2" CornerRadius="10" Height="500" Padding="5" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage}" />
+                    <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource VariantNameConverter}}" TextWrapping="Wrap" FontSize="18" FontWeight="Bold" Margin="5" HorizontalAlignment="Left"/>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Storage:" FontWeight="SemiBold" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="{x:Bind Storage}" FontSize="16" Grid.Row="0" Grid.Column="1"/>
+                        <TextBlock Text="Color:" FontWeight="SemiBold"  Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="{x:Bind Color.Name}" FontSize="16"  Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock Text="Cost:" FontWeight="SemiBold"  Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="{x:Bind CostPrice}" FontSize="16"  Grid.Row="2" Grid.Column="1"/>
+                        <TextBlock Text="Selling:" FontWeight="SemiBold"  Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="{x:Bind SellingPrice}" FontSize="16"  Grid.Row="3" Grid.Column="1"/>
+                        <TextBlock Text="Stock:" FontWeight="SemiBold"  Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock Text="{x:Bind StockQuantity}" FontSize="16"  Grid.Row="4" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Pivot Grid.Row="0" x:Name="MainPivot">
+            <!--Pivot 1-->
+            <PivotItem Header="All Groups">
+                <ListView ItemsSource="{x:Bind ViewModel.data}" 
+                          SelectionChanged="GroupList_SelectionChanged"
+                          ItemTemplate="{StaticResource ListItemGroupTemplate}">
+                </ListView>
+            </PivotItem>
+            <!--Pivot 2-->
+            <PivotItem Header="Group Details">
+                <ListView ItemsSource="{x:Bind ViewModel.SelectedItemGroup.Items, Mode=OneWay}"
+                          SelectionChanged="ItemList_SelectionChanged"
+                          ItemTemplate="{StaticResource ListItemTemplate}">
+                </ListView>
+            </PivotItem>
+            <!--Pivot 3-->
+            <PivotItem Header="items Detail">
+                <StackPanel>
+                    <ToggleSwitch Header="Grid Mode"
+                                  IsOn="{x:Bind ViewModel.IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <!--Grid-View-->
+                    <GridView Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                          ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
+                          SelectionChanged="VariantList_SelectionChanged"
+                          ItemTemplate="{StaticResource GridVariantTemplate}" 
+                          MaxHeight="900">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" ItemWidth="300"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+                <!--List-View-->
+                    <StackPanel Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                    <Grid Background="LightGray" Padding="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Name" Style="{StaticResource TableHeaderStyle}" Grid.Column="0"/>
+                        <TextBlock Text="Storage" Style="{StaticResource TableHeaderStyle}" Grid.Column="1"/>
+                        <TextBlock Text="Cost" Style="{StaticResource TableHeaderStyle}" Grid.Column="2"/>
+                        <TextBlock Text="Selling" Style="{StaticResource TableHeaderStyle}" Grid.Column="3"/>
+                        <TextBlock Text="Stock" Style="{StaticResource TableHeaderStyle}" Grid.Column="4"/>
+                        <TextBlock Text="Color" Style="{StaticResource TableHeaderStyle}" Grid.Column="5"/>
+                    </Grid>
+                    <ListView ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
+                            SelectionChanged="VariantList_SelectionChanged"
+                            ItemTemplate="{StaticResource ListVariantTemplate}">
+                    </ListView>
+                </StackPanel>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+    </Grid>
+</Page>
