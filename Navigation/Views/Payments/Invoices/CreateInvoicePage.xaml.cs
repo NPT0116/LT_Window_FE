@@ -59,11 +59,11 @@ namespace Navigation.Views.Payments.Invoices
                 Debug.WriteLine(text);
                 customer = await ViewModel.SearchCustomerByPhone(text);
             }
-            //else
-            //{
-            //    Debug.WriteLine("Search by email");
-            //    customers = await ViewModel.SearchCustomersByEmail(text);
-            //}
+            else
+            {
+                Debug.WriteLine("Search by email");
+                customer = await ViewModel.SearchCustomersByEmail(text);
+            }
             sender.ItemsSource = customer != null ? new List<Customer>() { customer } : new List<Customer>();
         }
 

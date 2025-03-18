@@ -50,11 +50,11 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
             }
         }
 
-        public async Task<GetAllCustomerResponse> GetAllCustomersByEmail(string email)
+        public async Task<ApiResponse<CustomerDto>> GetAllCustomersByEmail(string email)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl + $"/Email/{email}");
+                var response = await _httpClient.GetFromJsonAsync<ApiResponse<CustomerDto>>(ApiUrl + $"/Email/{email}");
                 return response;
             }
             catch (Exception ex)
@@ -66,10 +66,8 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
 
         public async Task<ApiResponse<CustomerDto>> GetAllCustomersByPhone(string phoneNumber)
         {
-            Debug.WriteLine("Run hereeeeeeeeeeeeeeee");
             try
             {
-                Debug.WriteLine(ApiUrl + $"/Phone/{phoneNumber}");
                 var response = await _httpClient.GetFromJsonAsync<ApiResponse<CustomerDto>>(ApiUrl + $"/Phone/{phoneNumber}");
                 return response;
             }

@@ -39,10 +39,10 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
            
         }
 
-        public async Task<List<Customer>> SearchCustomersByEmail(string email)
+        public async Task<Customer?> SearchCustomersByEmail(string email)
         {
-            var customers = await _customerRepository.GetAllCustomersByEmail(email);
-            return customers;
+            var customer = await _customerRepository.GetCustomerByEmail(email);
+            return customer;
         }
 
         public async Task<Customer?> SearchCustomerByPhone(string phoneNumber)

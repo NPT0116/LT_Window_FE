@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +24,12 @@ namespace Navigation.Views.Payments.Invoices
     /// </summary>
     public sealed partial class InvoiceListPage : Page
     {
+        public InvoiceListViewModel ViewModel { get; set; }
         public InvoiceListPage()
         {
             this.InitializeComponent();
+            ViewModel = new();
+            this.DataContext = ViewModel;
         }
     }
 }

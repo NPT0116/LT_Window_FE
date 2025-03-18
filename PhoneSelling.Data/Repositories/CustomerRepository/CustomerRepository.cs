@@ -37,10 +37,20 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
             return ConvertListCustomerReposonseToListCustomer(response);
         }
 
-        public async Task<List<Customer>> GetAllCustomersByEmail(string email)
+        public async Task<Customer?> GetCustomerByEmail(string email)
         {
             var response = await _apiService.GetAllCustomersByEmail(email);
-            return ConvertListCustomerReposonseToListCustomer(response);
+            if (response == null) return null;
+            var customerDto = response.Data;
+            if (customerDto == null) return null;
+            return new Customer
+            {
+                CustomerID = Guid.Parse(customerDto.customerID),
+                Name = customerDto.name,
+                Email = customerDto.email,
+                Phone = customerDto.phone,
+                Address = customerDto.address
+            };
         }
 
         public async Task<Customer?> GetCustomerByPhone(string phone)

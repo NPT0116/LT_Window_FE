@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using Navigation.Views.Payments.Invoices;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 
 namespace Navigation.Converters
 {
@@ -31,6 +32,7 @@ namespace Navigation.Converters
             {typeof(DashboardPageViewModel), typeof(DashboardPage) },
             {typeof(VariantListViewModel),typeof(VariantListPage)},
             {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
+            {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},
         };
 
         public object Convert(object value, Type targetType, object parameter, string language)

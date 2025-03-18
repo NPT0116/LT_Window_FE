@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject where TQuery : PaginationQuery, new()
@@ -37,8 +39,15 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     private async Task LoadDataAsync()
     {
         if (_fetchDataFunc == null) return;
-        if(Query.SearchKey == lastSearchKey) return;
-        Debug.WriteLine("Sort by:" + Query.Sortby);
+        if(lastSearchKey != string.Empty && Query.SearchKey == lastSearchKey) return;
+        string json = JsonSerializer.Serialize(Query, new JsonSerializerOptions
+        {
+            WriteIndented = true, // Pretty-print JSON output
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Ignore null values
+        });
+
+        Debug.WriteLine(json);
         IsLoading = true;
         try
         {

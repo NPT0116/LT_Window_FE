@@ -6,6 +6,7 @@ using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList
         {
             _invoiceRepository = DIContainer.GetKeyedSingleton<IInvoiceRepository>();
             InvoiceQuery = new(LoadDataAsync);
+            InvoiceQuery.LoadDataCommand.Execute(null);
         }
 
         public async Task<PaginationResult<Invoice>> LoadDataAsync(InvoiceQueryParameter query)
