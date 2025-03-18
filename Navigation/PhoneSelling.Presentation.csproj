@@ -20,6 +20,7 @@
     <None Remove="Views\Page1_1.xaml" />
     <None Remove="Views\Page1_2.xaml" />
     <None Remove="Views\Page2.xaml" />
+    <None Remove="Views\Payments\Invoices\InvoiceListPage.xaml" />
     <None Remove="Views\PhonePage.xaml" />
     <None Remove="Views\RootPage.xaml" />
     <None Remove="Views\Variants\VariantListPage.xaml" />
@@ -110,6 +111,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Payments\Invoices\CreateInvoicePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Payments\Invoices\InvoiceListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">

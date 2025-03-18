@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using PhoneSelling.Common;
 using PhoneSelling.Data.Contracts.Responses.Base;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.Abstraction;
@@ -45,18 +46,18 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
                 // Xây dựng dictionary chứa các query parameters
                 var queryParams = new Dictionary<string, string>();
 
-                if (queryParameters.invoiceDatetimeQueryParameter != null)
+                if (queryParameters.InvoiceDatetimeQueryParameter != null)
                 {
-                    if (queryParameters.invoiceDatetimeQueryParameter.FromDate.HasValue)
+                    if (queryParameters.InvoiceDatetimeQueryParameter.FromDate.HasValue)
                     {
                         // Sử dụng định dạng ISO 8601 cho ngày
-                        queryParams.Add("fromDate", queryParameters.invoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
+                        queryParams.Add("fromDate", queryParameters.InvoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
                     }
-                    if (queryParameters.invoiceDatetimeQueryParameter.ToDate.HasValue)
+                    if (queryParameters.InvoiceDatetimeQueryParameter.ToDate.HasValue)
                     {
-                        queryParams.Add("toDate", queryParameters.invoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
+                        queryParams.Add("toDate", queryParameters.InvoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
                     }
-                    queryParams.Add("sortDirection", queryParameters.invoiceDatetimeQueryParameter.sortDirection);
+                    queryParams.Add("sortDirection", EnumHelper.GetEnumMemberValue(queryParameters.SortDirection));
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParameters.CustomerName))
