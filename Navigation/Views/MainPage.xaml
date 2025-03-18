@@ -39,11 +39,18 @@
                 <!--Inventory-->
                 <NavigationViewItem  Icon="Play" Content="Inventory" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Icon="Play" Content="Item Groups Page">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToItemGroupsPageCommand}" />
+                                </Core:EventTriggerBehavior> 
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
                     
                         <NavigationViewItem Icon="Play" Content="Variants Detail Page" Tag="VariantsDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToVariantsDetailPageCommand}" />
+                                    <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
