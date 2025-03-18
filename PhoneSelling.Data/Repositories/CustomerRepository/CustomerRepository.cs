@@ -52,8 +52,10 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
         public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
         {
             var response = await _apiService.GetCustomerByIdAsync(customerId);
-            if (response == null || !response.Succeeded)
-                throw new Exception($"Customer with id {customerId} not found.");
+            if (response == null)
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
 
             var dto = response.Data;
             var customer = CustomerMapper.MapToCustomer(dto);
@@ -63,8 +65,10 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
         public async Task<Customer> GetCustomerByPhoneAsync(string phone)
         {
             var response = await _apiService.GetCustomerByPhoneAsync(phone);
-            if (response == null || !response.Succeeded)
-                throw new Exception($"Customer with phone {phone} not found.");
+            if (response == null)
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
 
             var dto = response.Data;
             var customer = CustomerMapper.MapToCustomer(dto);
@@ -74,9 +78,10 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
         public async Task<Customer> GetCustomerByEmailAsync(string email)
         {
             var response = await _apiService.GetCustomerByEmailAsync(email);
-            if (response == null || !response.Succeeded)
-                throw new Exception($"Customer with email {email} not found.");
-
+            if (response == null )
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
             var dto = response.Data;
             var customer = CustomerMapper.MapToCustomer(dto);
             return customer;
@@ -94,8 +99,10 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
             };
 
             var response = await _apiService.UpdateCustomerAsync(customer.Id, request);
-            if (response == null || !response.Succeeded)
-                throw new Exception(response?.Message ?? "Error while updating customer.");
+            if (response == null)
+                throw new Exception($"Internal sever error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
 
             var dto = response.Data;
             var updatedCustomer = CustomerMapper.MapToCustomer(dto);

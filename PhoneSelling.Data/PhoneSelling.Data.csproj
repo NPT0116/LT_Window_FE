@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\ColorRepository\ApiService\Contracts\**" />
+    <EmbeddedResource Remove="Repositories\ColorRepository\ApiService\Contracts\**" />
+    <None Remove="Repositories\ColorRepository\ApiService\Contracts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Repositories\ColorRepository\ApiService\Requests\" />
     <Folder Include="Validators\" />
-    <Folder Include="Repositories\ColorRepository\ApiService\Contracts\" />
   </ItemGroup>
 
   <ItemGroup>
