@@ -25,7 +25,7 @@ namespace PhoneSelling.ViewModel.Pages.Customers
         {
             throw new NotImplementedException();
             //var customers = await _customerRepository.GetAllCustomers();
-            //return customers;
+            //return customers;`
         }
 
         public async Task OnCustomerAdded()
