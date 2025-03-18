@@ -2,6 +2,7 @@
 using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Navigation;
 using PhoneSelling.ViewModel.Pages.Inventory;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToVariantsDetailPageCommand { get; }
         public RelayCommand GoToVariantCommand { get; }
         public RelayCommand GoToPhoneCommand { get; }
+        public RelayCommand GoToCreateInvoiceCommand { get; }
+
 
         public MainPageViewModel(BasePageViewModel viewModel)
         {
@@ -32,6 +35,7 @@ namespace PhoneSelling.ViewModel.Pages
             GoToVariantsDetailPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantsDetailPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantsDetailPageViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
+            GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
         }
 
         private void ChildPageNavigation_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

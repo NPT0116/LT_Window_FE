@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using PhoneSelling.Data.Configurations;
 using PhoneSelling.Data.Repositories.CustomerRepository;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService;
+using PhoneSelling.Data.Repositories.InvoiceRepository;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
@@ -32,15 +33,15 @@ namespace PhoneSelling.Data
             DIContainer.AddKeyedSingleton<IItemApiService, ItemApiService>();
             DIContainer.AddKeyedSingleton<ICustomerApiService, CustomerApiService>();
             DIContainer.AddKeyedSingleton<IVariantApiService, VariantApiService>();
+            DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
 
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
 
             DIContainer.AddKeyedSingleton<IItemRepository, RestItemRepository>();
             DIContainer.AddKeyedSingleton<ICustomerRepository, CustomerRepository>();
-
+            DIContainer.AddKeyedSingleton<IInvoiceRepository, InvoiceRepository>();
             DIContainer.AddKeyedSingleton<IVariantRepository, VariantRepository>();
 
-            DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
 
 
             // ✅ Register AWS Image Upload Service

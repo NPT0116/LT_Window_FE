@@ -30,8 +30,8 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
             // Chuyển đổi đối tượng Invoice sang CreateInvoiceDto để gửi cho API
             var createInvoiceDto = new CreateInvoiceDto
             {
-                customerID = createInvoiceRequest.CustomerId.ToString(),
-                date = createInvoiceRequest.Date.ToString(),
+                customerID = createInvoiceRequest.CustomerID.ToString(),
+                date = createInvoiceRequest.Date.ToString("yyyy-MM-ddTHH:mm:ssZ"),
                 totalAmount = createInvoiceRequest.TotalAmount,
                 invoiceDetailDtos = createInvoiceRequest.InvoiceDetails.Select(invoiceDetail => new CreateInvoiceDetailDto
                 {

@@ -56,7 +56,7 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
+    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.Common.csproj" />
     <ProjectReference Include="..\PhoneSelling.ViewModel\PhoneSelling.ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +107,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\DashboardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Payments\Invoices\CreateInvoicePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">

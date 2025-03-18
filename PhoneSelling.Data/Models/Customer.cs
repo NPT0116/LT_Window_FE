@@ -10,6 +10,7 @@ namespace PhoneSelling.Data.Models
 {
     public partial class Customer : BaseEntity, IValidatableObject
     {
+        [ObservableProperty] private Guid customerID;
         [ObservableProperty] private string name = string.Empty;
         [ObservableProperty] private string email = string.Empty;
         [ObservableProperty] private string phone = string.Empty;

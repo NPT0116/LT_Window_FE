@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Diagnostics;
 
 namespace PhoneSelling.Data.Models
 {
@@ -12,5 +13,6 @@ namespace PhoneSelling.Data.Models
         // Foreign Keys
         [ObservableProperty] private Guid invoiceId;
         [ObservableProperty] private Guid variantId;
+
     }
 }

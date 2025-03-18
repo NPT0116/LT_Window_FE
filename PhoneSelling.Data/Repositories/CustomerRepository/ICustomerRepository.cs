@@ -11,5 +11,7 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
     {
         Task<List<Customer>> GetAllCustomers();
         Task CreateCustomer(Customer customer);
+        Task<Customer?> GetCustomerByPhone(string phone);
+        Task<List<Customer>> GetAllCustomersByEmail(string email);
     }
 }

@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices;
+using Navigation.Views.Payments.Invoices;
 
 namespace Navigation.Converters
 {
@@ -28,6 +30,7 @@ namespace Navigation.Converters
             {typeof(VariantsDetailPageViewModel), typeof(VariantsDetailPage) },
             {typeof(DashboardPageViewModel), typeof(DashboardPage) },
             {typeof(VariantListViewModel),typeof(VariantListPage)},
+            {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
         };
 
         public object Convert(object value, Type targetType, object parameter, string language)

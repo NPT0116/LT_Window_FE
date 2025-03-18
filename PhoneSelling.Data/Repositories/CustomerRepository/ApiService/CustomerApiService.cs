@@ -1,10 +1,13 @@
-﻿using PhoneSelling.Data.Repositories.Abstraction;
+﻿using PhoneSelling.Data.Contracts.Responses.Base;
+using PhoneSelling.Data.Repositories.Abstraction;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Common;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -38,6 +41,36 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
             try
             {
                 var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl + "/All");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching customers: {ex.Message}");
+                return null; // Return empty list on failure
+            }
+        }
+
+        public async Task<GetAllCustomerResponse> GetAllCustomersByEmail(string email)
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl + $"/Email/{email}");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching customers: {ex.Message}");
+                return null; // Return empty list on failure
+            }
+        }
+
+        public async Task<ApiResponse<CustomerDto>> GetAllCustomersByPhone(string phoneNumber)
+        {
+            Debug.WriteLine("Run hereeeeeeeeeeeeeeee");
+            try
+            {
+                Debug.WriteLine(ApiUrl + $"/Phone/{phoneNumber}");
+                var response = await _httpClient.GetFromJsonAsync<ApiResponse<CustomerDto>>(ApiUrl + $"/Phone/{phoneNumber}");
                 return response;
             }
             catch (Exception ex)

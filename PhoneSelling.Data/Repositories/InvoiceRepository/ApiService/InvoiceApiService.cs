@@ -8,6 +8,7 @@ using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -17,13 +18,16 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
 {
     public class InvoiceApiService : BaseApiService, IInvoiceApiService
     {
-        protected override string Prefix => "Invoice";
+        protected override string Prefix => "invoices";
 
         public async Task<CreateInvoiceResponse> CreateInvoiceAsync(CreateInvoiceDto createInvoiceRequest)
         {
             try
             {
                 var response = await _httpClient.PostAsJsonAsync(ApiUrl, createInvoiceRequest);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"Raw JSON Response: {responseBody}");
+
                 var CreateInvoiceResponse = await response.Content.ReadFromJsonAsync<CreateInvoiceResponse>();
                 return CreateInvoiceResponse;
             }

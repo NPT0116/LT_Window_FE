@@ -5,7 +5,7 @@ namespace PhoneSelling.Data.Models
 {
     public partial class Variant : BaseEntity
     {
-        [ObservableProperty] private string variantId;
+        [ObservableProperty] private Guid variantID;
         [ObservableProperty] private Item item;
         [ObservableProperty] private Color color;
         [ObservableProperty] private string storage;
