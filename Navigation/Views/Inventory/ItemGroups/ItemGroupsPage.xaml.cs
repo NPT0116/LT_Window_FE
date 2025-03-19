@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
 using PhoneSelling.Data.Models;
 
-namespace Navigation.Views.Inventory.GroupPages
+namespace Navigation.Views.Inventory.ItemGroups
 {
     public sealed partial class ItemGroupsPage : Page
     {

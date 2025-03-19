@@ -13,6 +13,7 @@ using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Pages.Common;
 using PhoneSelling.ViewModel.Pages.Items;
 
+
 public partial class ItemViewModel : BasePageViewModel
 {
     [ObservableProperty] private Item item = new();
@@ -96,7 +97,6 @@ public partial class ItemViewModel : BasePageViewModel
             // Show error message to user (implementation depends on UI framework)
             return;
         }
-
         var createFullItemDto = new CreateFullItemDto
         {
             Item = new PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Common.ItemDto
@@ -116,7 +116,6 @@ public partial class ItemViewModel : BasePageViewModel
                 colorId = c.ColorId.ToString()
             }).ToList()
         };
-
         await _itemRepository.CreateFullItem(createFullItemDto);
     }
 

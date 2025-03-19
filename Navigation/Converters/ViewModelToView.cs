@@ -6,15 +6,21 @@ using Navigation.Views.Inventory;
 using Navigation.Views.Variants;
 
 using Navigation.Views.Inventory.Variants;
-using Navigation.Views.Inventory.GroupPages;
+using Navigation.Views.Inventory.ItemGroups;
+using Navigation.Views.Inventory.CreateItems;
+
+using PhoneSelling.ViewModel.Pages.Inventory.Variants;
+using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
+using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
+
 
 using PhoneSelling.ViewModel.Pages;
 using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Variants;
 using PhoneSelling.ViewModel.Pages.Authentication;
 
-using PhoneSelling.ViewModel.Pages.Inventory.Variants;
-using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
+
+
 using System;
 using System.Collections.Generic;
 
@@ -30,9 +36,10 @@ namespace Navigation.Converters
             {typeof(PhonePageViewModel),typeof(PhonePage)},
             // Inventory
             {typeof(ItemGroupsPageViewModel), typeof(ItemGroupsPage)},
+            {typeof(CreateItemPageViewModel), typeof(CreateItemPage)},
             {typeof(VariantsListPageViewModel), typeof(VariantsListPage)},
-            {typeof(DashboardPageViewModel), typeof(DashboardPage)},
             {typeof(VariantListViewModel),typeof(VariantListPage)},
+            {typeof(DashboardPageViewModel), typeof(DashboardPage)},
         };
 
         public object Convert(object value, Type targetType, object parameter, string language)
