@@ -11,6 +11,7 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject where TQuery : PaginationQuery, new()
 {
@@ -26,7 +27,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     {
         _fetchDataFunc = fetchDataFunc;
         LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber <= Math.Floor((float)TotalItems / Query.PageSize));
+        NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber < TotalPages);
         PreviousPageCommand = new RelayCommand(PreviousPage, () => Query.PageNumber > 1);
         ToggleSortCommand = new RelayCommand(ToggleSort);
     }
@@ -39,7 +40,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     private async Task LoadDataAsync()
     {
         if (_fetchDataFunc == null) return;
-        if(lastSearchKey != string.Empty && Query.SearchKey == lastSearchKey) return;
+        //if(lastSearchKey != string.Empty && Query.SearchKey == lastSearchKey) return;
         string json = JsonSerializer.Serialize(Query, new JsonSerializerOptions
         {
             WriteIndented = true, // Pretty-print JSON output
@@ -52,13 +53,10 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
         try
         {
             var paginationResult = await _fetchDataFunc(Query);
-            Query.PageSize = paginationResult.PageSize;
-            Query.PageNumber = paginationResult.PageNumber;
             lastSearchKey = Query.SearchKey;
             TotalItems = paginationResult.TotalRecords;
             TotalPages = paginationResult.TotalPages;
             Items.Clear();
-            TotalItems = paginationResult.Data.Count();
             foreach (var item in paginationResult.Data)
             {
                 Items.Add(item);

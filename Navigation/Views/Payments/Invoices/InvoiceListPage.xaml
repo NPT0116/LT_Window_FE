@@ -41,13 +41,21 @@
 
             <!-- Date Range Filters -->
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <DatePicker Header="From Date"
-                        Date="{x:Bind ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate, 
-                               Mode=TwoWay, Converter={StaticResource time}}" />
+                <CalendarView x:Name="CalendarFromDate"
+              SelectedDatesChanged="CalendarFromDate_SelectedDatesChanged"
+              SelectionMode="Single"
+              />
 
-                <DatePicker Header="To Date"
-                        Date="{x:Bind ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate, 
-                               Mode=TwoWay, Converter={StaticResource time}}" />
+                <CalendarView x:Name="CalendarToDate"
+              SelectedDatesChanged="CalendarToDate_SelectedDatesChanged"
+              SelectionMode="Single"
+              />
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="Previous" Command="{x:Bind ViewModel.InvoiceQuery.PreviousPageCommand}" />
+                <Button Content="Next" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
             </StackPanel>
 
             <!-- Apply Filters Button -->

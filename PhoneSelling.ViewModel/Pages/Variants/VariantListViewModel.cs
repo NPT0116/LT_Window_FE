@@ -17,7 +17,7 @@ namespace PhoneSelling.ViewModel.Pages.Variants
     {
         public VariantQueryViewModel QueryViewModel { get; set; }
         private readonly IVariantRepository _variantRepository;
-        public VariantListViewModel()
+        public VariantListViewModel() : base()
         {
             QueryViewModel = new(LoadDataAsync);
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();

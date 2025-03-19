@@ -11,6 +11,7 @@ using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -64,10 +65,10 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
                 Data = response == null || response.data.Count() == 0 
                 ? Enumerable.Empty<Invoice>().ToList() 
                 : InvoiceMapper.MapToModelList(response.data).ToList(),
-                PageNumber = response?.pageNumber ?? 1,
-                PageSize = response?.pageSize ?? 10,
-                TotalPages = response?.totalPages ?? 0,
-                TotalRecords = response?.totalRecords ?? 0
+                PageNumber = response.pageNumber,
+                PageSize = response.pageSize,
+                TotalPages = response.totalPages,
+                TotalRecords = response.totalRecords
             };
         }
 

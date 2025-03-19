@@ -9,6 +9,7 @@ using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requ
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 {
@@ -78,15 +79,11 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             };
 
             Invoice.InvoiceDetails.Add(newDetail); // Ensure we update the existing collection
-            Debug.WriteLine($"Added: Quantity={newDetail.Quantity}, Price={newDetail.Price}, number of details: {Invoice.InvoiceDetails.Count}");
         }
 
         public void RecalculateTotal()
         {
-            float total = 0;
-            Debug.WriteLine(DateTime.Now.ToString());
-            Debug.WriteLine($"InvoiceDetails Count Before Calculation: {Invoice.InvoiceDetails.Count}");
-
+            float total = 0;           
             foreach (var detail in Invoice.InvoiceDetails)
             {
                 Debug.WriteLine($"Quantity: {detail.Quantity}, Price: {detail.Price}");

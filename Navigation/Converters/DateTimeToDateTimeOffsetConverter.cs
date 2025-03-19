@@ -8,9 +8,14 @@ namespace Navigation.Converters
         {
             if (value is DateTime dateTime)
             {
+                // ✅ Ensure the DateTime is valid before converting
+                if (dateTime == DateTime.MinValue)
+                {
+                    return null; // Return null instead of an invalid DateTimeOffset
+                }
                 return new DateTimeOffset(dateTime);
             }
-            return null; // Return null if the value is null
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -19,7 +24,8 @@ namespace Navigation.Converters
             {
                 return dateTimeOffset.DateTime;
             }
-            return null; // Return null if the value is null
+            return null;
         }
     }
+
 }
