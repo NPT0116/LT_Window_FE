@@ -12,6 +12,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel>
+        <ContentDialog x:Name="CreateCustomerDialog"
+               Title="Create New Customer"
+               PrimaryButtonText="Save"
+               SecondaryButtonText="Cancel"
+               >
+            <StackPanel Spacing="10">
+                <TextBox x:Name="NewCustomerName" PlaceholderText="Customer Name"/>
+                <TextBox x:Name="NewCustomerPhone" PlaceholderText="Phone Number"/>
+                <TextBox x:Name="NewCustomerEmail" PlaceholderText="Email"/>
+                <TextBox x:Name="NewCustomerAddress" PlaceholderText="Address"/>
+            </StackPanel>
+        </ContentDialog>
+
         <!-- Search Section -->
         <StackPanel>
             <!-- Label -->

@@ -56,6 +56,18 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             return response;
         }
 
+        public async Task CreateCustomer(string name, string email, string phone, string address)
+        {
+            var customer = new Customer
+            {
+                Name = name,
+                Email = email,
+                Phone = phone,
+                Address = address
+            };
+            await _customerRepository.CreateCustomer(customer);
+        }
+
         public async Task<List<Variant>> SearchVariants(string text)
         {
             var query = new VariantPaginationQuery

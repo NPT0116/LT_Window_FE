@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -64,18 +64,46 @@ namespace Navigation.Views.Payments.Invoices
                 Debug.WriteLine("Search by email");
                 customer = await ViewModel.SearchCustomersByEmail(text);
             }
-            sender.ItemsSource = customer != null ? new List<Customer>() { customer } : new List<Customer>();
+            var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
+            customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
+
+            sender.ItemsSource = customerSuggestions;
         }
 
-        private void CustomerSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        private async void CustomerSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is Customer selectedCustomer)
             {
-                sender.Text = selectedCustomer.Name; // Set input to customer's name
-                ViewModel.Customer = selectedCustomer; // Update ViewModel if needed
-                ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
+                if (selectedCustomer.Name == "➕ Create New Customer")
+                {
+                    // Open modal to add new customer
+                    await ShowCreateCustomerDialog();
+                }
+                else
+                {
+                    sender.Text = selectedCustomer.Name; // Set input to customer's name
+                    ViewModel.Customer = selectedCustomer; // Update ViewModel if needed
+                    ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
+                }
             }
         }
+
+        private async Task ShowCreateCustomerDialog()
+        {
+            NewCustomerName.Text = "";
+            NewCustomerPhone.Text = "";
+            NewCustomerEmail.Text = "";
+            NewCustomerAddress.Text = "";
+
+            var result = await CreateCustomerDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                // Save new customer
+                await ViewModel.CreateCustomer(NewCustomerName.Text, NewCustomerEmail.Text, NewCustomerPhone.Text, NewCustomerAddress.Text);
+            }
+        }
+
 
         private void DatePickerButton_Click(object sender, RoutedEventArgs e)
         {
