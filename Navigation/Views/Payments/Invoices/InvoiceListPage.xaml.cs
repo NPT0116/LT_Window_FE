@@ -37,7 +37,8 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.AddedDates.Count > 0)
             {
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = args.AddedDates[0].DateTime;
+                var selectedDate = args.AddedDates[0].DateTime;
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
                 Debug.WriteLine($"From Date selected: {ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate}");
             }
         }
@@ -46,7 +47,8 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.AddedDates.Count > 0)
             {
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = args.AddedDates[0].DateTime;
+                var selectedDate = args.AddedDates[0].DateTime;
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
                 Debug.WriteLine($"To Date selected: {ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate}");
             }
         }

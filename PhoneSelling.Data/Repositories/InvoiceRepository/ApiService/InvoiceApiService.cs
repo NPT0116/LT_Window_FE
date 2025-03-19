@@ -51,11 +51,11 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
                     if (queryParameters.InvoiceDatetimeQueryParameter.FromDate.HasValue)
                     {
                         // Sử dụng định dạng ISO 8601 cho ngày
-                        queryParams.Add("fromDate", queryParameters.InvoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
+                        queryParams.Add("invoiceDatetimeQueryParameter.fromDate", queryParameters.InvoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
                     }
                     if (queryParameters.InvoiceDatetimeQueryParameter.ToDate.HasValue)
                     {
-                        queryParams.Add("toDate", queryParameters.InvoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
+                        queryParams.Add("invoiceDatetimeQueryParameter.toDate", queryParameters.InvoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
                     }
                     queryParams.Add("sortDirection", EnumHelper.GetEnumMemberValue(queryParameters.SortDirection));
                 }
@@ -71,7 +71,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
 
                 // Nối query string vào ApiUrl
                 var urlWithQuery = QueryHelpers.AddQueryString(ApiUrl, queryParams);
-
+                Debug.WriteLine(urlWithQuery);
                 var response = await _httpClient.GetFromJsonAsync<GetAllInvoiceReponse>(urlWithQuery);
                 return response;
             }
