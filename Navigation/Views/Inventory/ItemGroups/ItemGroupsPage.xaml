@@ -1,5 +1,5 @@
 <Page
-	x:Class="Navigation.Views.Inventory.GroupPages.ItemGroupsPage"
+	x:Class="Navigation.Views.Inventory.ItemGroups.ItemGroupsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

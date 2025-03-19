@@ -15,6 +15,7 @@
   <ItemGroup>
     <None Remove="Controls\AddColorButton.xaml" />
     <None Remove="Views\DashboardPage.xaml" />
+    <None Remove="Views\Inventory\CreateItems\CreateItemPage.xaml" />
     <None Remove="Views\Inventory\ItemGroupsPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\Page1.xaml" />
@@ -113,6 +114,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Inventory\ItemGroupsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Inventory\CreateItems\CreateItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">
