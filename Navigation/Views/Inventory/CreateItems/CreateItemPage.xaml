@@ -38,7 +38,7 @@
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <ComboBox Header="CHOOSE ITEM GROUP"
                           Width="200"
-                          ItemsSource="{Binding ItemGroups}"
+                          ItemsSource="{Binding ItemGroups, Mode=OneWay}"
                           SelectedItem="{Binding SelectedItemGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="model:ItemGroup">
@@ -46,8 +46,8 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Margin="0,28,0,0"  Content="Add new" />
-            </StackPanel>
+                <Button Margin="0,28,0,0" Content="Add new" Click="AddNewGroup_Click"/>
+                </StackPanel>
             <!-- Picking Manufacturer -->
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <ComboBox ItemsSource="{Binding Manufacturers}"

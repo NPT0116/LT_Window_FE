@@ -18,6 +18,8 @@ using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Common;
 using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 using PhoneSelling.Data.Repositories.ColorRepository.ApiService.Common;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
+using PhoneSelling.Data.Repositories.ItemGroupRepository;
+using System.Text.Json.Serialization;
 
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
@@ -32,21 +34,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [ObservableProperty] private Guid itemGroupId;
         [ObservableProperty] private Guid manufacturerId;
 
-        //private string picture { get; set; }
-        //public string Picture
-        //{
-        //    get { return picture; }
-        //    set
-        //    {
-        //        if (picture != value)
-        //        {
-        //            picture = value;
-        //            Debug.WriteLine("Name");
-        //            Debug.WriteLine(ItemName);
-        //            Debug.Write(value);
-        //        }
-        //    }
-        //}
+        private readonly IItemGroupService _itemGroupService;
 
         // Handle selected
         private ItemGroup _selectedItemGroup { get; set; }
@@ -112,12 +100,18 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                     }
                 }
             }
-        }        
+        }
         // Mock data
-        [ObservableProperty] private List<ItemGroup> itemGroups = new()
+        [ObservableProperty] private List<ItemGroup> itemGroups = new();
+
+        public async Task LoadItemGroupsAsync()
         {
-            new ItemGroup {ItemGroupName="Iphone 17", Id=Guid.Parse("00000000-0000-0000-0000-000000000100")},
-        };
+            var groups = await _itemGroupService.GetItemGroupsAsync();
+            if (groups != null)
+            {
+                ItemGroups = groups;
+            }
+        }
         [ObservableProperty]
         private List<Manufacturer> manufacturers = new()
         {
@@ -135,7 +129,10 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             _newColor = string.Empty;
             variants = new ObservableCollection<Variant>();
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
+            _itemGroupService = DIContainer.GetKeyedSingleton<IItemGroupService>();
+            _ = LoadItemGroupsAsync();
         }
+
 
         // Relay command
         //[RelayCommand]
@@ -169,7 +166,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [RelayCommand]
         private void RemoveVariant(Variant variant)
         {
-            Debug.WriteLine("Im here");
             if (variant != null && variants.Contains(variant))
             {
                 variants.Remove(variant);
@@ -251,7 +247,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             }
 
             Debug.WriteLine("Mapping ItemDto...");
-
 
             // Map item details to the ItemDto.
             var itemDto = new ItemDto

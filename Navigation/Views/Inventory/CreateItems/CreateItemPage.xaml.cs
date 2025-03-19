@@ -12,6 +12,9 @@ using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
 using PhoneSelling.Data.Models;
 using System;
 using System.Diagnostics;
+using PhoneSelling.Data.Repositories.ItemGroupRepository;
+using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Requests;
+using System.Collections.Generic;
 
 namespace Navigation.Views.Inventory.CreateItems
 {
@@ -75,5 +78,54 @@ namespace Navigation.Views.Inventory.CreateItems
                 return memoryStream.ToArray();
             }
         }
+
+        private async void AddNewGroup_Click(object sender, RoutedEventArgs e)
+        {
+            var panel = new StackPanel { Spacing = 10 };
+            var groupNameTextBox = new TextBox { PlaceholderText = "Enter group name", Width = 300 };
+            panel.Children.Add(groupNameTextBox);
+
+            var dialog = new ContentDialog
+            {
+                Title = "Add New Item Group",
+                Content = panel,
+                PrimaryButtonText = "Save",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result != ContentDialogResult.Primary)
+                return;
+
+            var groupName = groupNameTextBox.Text?.Trim();
+            if (string.IsNullOrEmpty(groupName))
+                return;
+
+            // Create the request.
+            var request = new CreateItemGroupRequest
+            {
+                itemGroupName = groupName
+            };
+
+            // Retrieve the service from DI.
+            var itemGroupService = DIContainer.GetKeyedSingleton<IItemGroupService>();
+            var createResponse = await itemGroupService.CreateItemGroupAsync(request);
+            if (createResponse != null && createResponse.Succeeded)
+            {
+                // Add the newly created group to your ViewModel's collection.
+                if (this.DataContext is CreateItemPageViewModel viewModel)
+                {
+                    Debug.WriteLine("new Group Added !");
+                    viewModel.ItemGroups.Add(createResponse.Data);
+                    viewModel.ItemGroups = new List<ItemGroup>(viewModel.ItemGroups);
+                }
+            }
+            else 
+            {
+                // Optionally, handle errors.
+            }
+        }
+
     }
 }
