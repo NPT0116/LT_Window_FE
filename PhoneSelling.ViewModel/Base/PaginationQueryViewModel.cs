@@ -26,7 +26,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public PaginationQueryViewModel(Func<TQuery, Task<PaginationResult<T>>> fetchDataFunc)
     {
         _fetchDataFunc = fetchDataFunc;
-        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
+        LoadDataCommand = new AsyncRelayCommand<bool?>(LoadDataAsync);
         NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber < TotalPages);
         PreviousPageCommand = new RelayCommand(PreviousPage, () => Query.PageNumber > 1);
         ToggleSortCommand = new RelayCommand(ToggleSort);
@@ -37,7 +37,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public IRelayCommand PreviousPageCommand { get; }
     public IRelayCommand ToggleSortCommand { get; }
 
-    private async Task LoadDataAsync()
+    private async Task LoadDataAsync(bool? shouldResetPagination)
     {
         if (_fetchDataFunc == null) return;
         //if(lastSearchKey != string.Empty && Query.SearchKey == lastSearchKey) return;
@@ -52,6 +52,10 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
         IsLoading = true;
         try
         {
+            if(shouldResetPagination == null || shouldResetPagination == true)
+            {
+                Query.ResetPagination();
+            }
             var paginationResult = await _fetchDataFunc(Query);
             lastSearchKey = Query.SearchKey;
             TotalItems = paginationResult.TotalRecords;
@@ -73,7 +77,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     private void NextPage()
     {
         Query.PageNumber++;
-        LoadDataCommand.Execute(null);
+        LoadDataCommand.Execute(false);
         NextPageCommand.NotifyCanExecuteChanged();
         PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
     }
@@ -83,7 +87,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
         if (Query.PageNumber > 1)
         {
             Query.PageNumber--;
-            LoadDataCommand.Execute(null);
+            LoadDataCommand.Execute(false);
             NextPageCommand.NotifyCanExecuteChanged();
             PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
         }
