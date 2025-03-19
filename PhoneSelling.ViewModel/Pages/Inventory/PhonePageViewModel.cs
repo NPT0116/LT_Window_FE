@@ -20,7 +20,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory
         private IItemRepository _itemRepository;
         public PhonePageViewModel()
         {
-            Debug.WriteLine("This is phone Page");
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
         }
 

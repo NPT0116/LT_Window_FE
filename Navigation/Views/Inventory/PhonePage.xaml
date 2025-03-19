@@ -17,7 +17,6 @@
 
             <!-- Button to Open the Add Color Dialog -->
             <controls:AddColorButton ColorAdded="OnColorAdded"/>
-
             <ListView ItemsSource="{x:Bind ViewModel.Colors}" Margin="0,20,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:TempColor">
