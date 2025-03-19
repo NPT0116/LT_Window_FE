@@ -52,9 +52,8 @@ namespace PhoneSelling.Data
 
 
 
-            var itemGroupService = new ItemGroupService(DIContainer.GetKeyedSingleton<HttpClient>());
-            DIContainer.AddInstance<IItemGroupService>(itemGroupService);
-
+            DIContainer.AddKeyedSingleton<IItemGroupApiService, ItemGroupApiService>();
+            DIContainer.AddKeyedSingleton<IItemGroupRepository, ItemGroupRepository>();
 
             // ✅ Register AWS Image Upload Service
             var awsSettings = new AWSSettings();
