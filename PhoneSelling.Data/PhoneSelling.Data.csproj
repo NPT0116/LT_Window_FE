@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
+    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

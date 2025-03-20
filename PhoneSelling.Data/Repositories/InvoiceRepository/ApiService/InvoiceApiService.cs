@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using PhoneSelling.Common;
 using PhoneSelling.Data.Contracts.Responses.Base;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.Abstraction;
@@ -8,6 +9,7 @@ using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -17,13 +19,16 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
 {
     public class InvoiceApiService : BaseApiService, IInvoiceApiService
     {
-        protected override string Prefix => "Invoice";
+        protected override string Prefix => "invoices";
 
         public async Task<CreateInvoiceResponse> CreateInvoiceAsync(CreateInvoiceDto createInvoiceRequest)
         {
             try
             {
                 var response = await _httpClient.PostAsJsonAsync(ApiUrl, createInvoiceRequest);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"Raw JSON Response: {responseBody}");
+
                 var CreateInvoiceResponse = await response.Content.ReadFromJsonAsync<CreateInvoiceResponse>();
                 return CreateInvoiceResponse;
             }
@@ -41,18 +46,18 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
                 // Xây dựng dictionary chứa các query parameters
                 var queryParams = new Dictionary<string, string>();
 
-                if (queryParameters.invoiceDatetimeQueryParameter != null)
+                if (queryParameters.InvoiceDatetimeQueryParameter != null)
                 {
-                    if (queryParameters.invoiceDatetimeQueryParameter.FromDate.HasValue)
+                    if (queryParameters.InvoiceDatetimeQueryParameter.FromDate.HasValue)
                     {
                         // Sử dụng định dạng ISO 8601 cho ngày
-                        queryParams.Add("fromDate", queryParameters.invoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
+                        queryParams.Add("invoiceDatetimeQueryParameter.fromDate", queryParameters.InvoiceDatetimeQueryParameter.FromDate.Value.ToString("o"));
                     }
-                    if (queryParameters.invoiceDatetimeQueryParameter.ToDate.HasValue)
+                    if (queryParameters.InvoiceDatetimeQueryParameter.ToDate.HasValue)
                     {
-                        queryParams.Add("toDate", queryParameters.invoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
+                        queryParams.Add("invoiceDatetimeQueryParameter.toDate", queryParameters.InvoiceDatetimeQueryParameter.ToDate.Value.ToString("o"));
                     }
-                    queryParams.Add("sortDirection", queryParameters.invoiceDatetimeQueryParameter.sortDirection);
+                    queryParams.Add("sortDirection", EnumHelper.GetEnumMemberValue(queryParameters.SortDirection));
                 }
 
                 if (!string.IsNullOrWhiteSpace(queryParameters.CustomerName))
@@ -66,7 +71,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
 
                 // Nối query string vào ApiUrl
                 var urlWithQuery = QueryHelpers.AddQueryString(ApiUrl, queryParams);
-
+                Debug.WriteLine(urlWithQuery);
                 var response = await _httpClient.GetFromJsonAsync<GetAllInvoiceReponse>(urlWithQuery);
                 return response;
             }

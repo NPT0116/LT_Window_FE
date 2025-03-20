@@ -1,9 +1,16 @@
-﻿using PhoneSelling.Data.Repositories.Abstraction;
+﻿using PhoneSelling.Data.Contracts.Responses.Base;
+using PhoneSelling.Data.Repositories.Abstraction;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Common;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService

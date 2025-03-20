@@ -14,7 +14,7 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Mapper
         {
             return new CustomerDto
             {
-                customerID = customer.Id,
+                customerID = customer.CustomerID.ToString(),
                 name = customer.Name,
                 email = customer.Email,
                 phone = customer.Phone,
@@ -25,7 +25,7 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Mapper
         {
             return new Customer
             {
-                Id = customerDto.customerID,
+                CustomerID = Guid.Parse(customerDto.customerID),
                 Name = customerDto.name,
                 Email = customerDto.email,
                 Phone = customerDto.phone,

@@ -22,6 +22,7 @@
     <None Remove="Views\Page1_1.xaml" />
     <None Remove="Views\Page1_2.xaml" />
     <None Remove="Views\Page2.xaml" />
+    <None Remove="Views\Payments\Invoices\InvoiceListPage.xaml" />
     <None Remove="Views\PhonePage.xaml" />
     <None Remove="Views\RootPage.xaml" />
     <None Remove="Views\Variants\VariantListPage.xaml" />
@@ -58,7 +59,7 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.DependencyInjection.csproj" />
+    <ProjectReference Include="..\PhoneSelling.DependencyInjection\PhoneSelling.Common.csproj" />
     <ProjectReference Include="..\PhoneSelling.ViewModel\PhoneSelling.ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\DashboardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Payments\Invoices\CreateInvoicePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Payments\Invoices\InvoiceListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Inventory\ItemGroupsPage.xaml">

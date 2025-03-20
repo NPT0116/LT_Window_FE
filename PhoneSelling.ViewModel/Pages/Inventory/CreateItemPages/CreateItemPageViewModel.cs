@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PhoneSelling.ViewModel.Base;
-using PhoneSelling.Data.Models;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
-
-using PhoneSelling.ViewModel.Pages.Items;
-using PhoneSelling.Data.Repositories.ItemRepository;
-using PhoneSelling.DependencyInjection;
+using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Common;
-using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
-using PhoneSelling.Data.Repositories.ColorRepository.ApiService.Common;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Requests;
+using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
+using PhoneSelling.DependencyInjection;
+using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemGroupRepository;
 using System.Text.Json.Serialization;
 using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Query;
 using PhoneSelling.Data.Repositories.ManufacturerRepository;
 using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService.Contracts.Query;
+using PhoneSelling.ViewModel.Pages.Items;
 
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages

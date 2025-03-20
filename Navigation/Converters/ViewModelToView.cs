@@ -23,7 +23,12 @@ using PhoneSelling.ViewModel.Pages.Authentication;
 
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices;
+using Navigation.Views.Payments.Invoices;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 
 namespace Navigation.Converters
 {
@@ -32,6 +37,7 @@ namespace Navigation.Converters
         private static readonly Dictionary<Type, Type> pairs = new Dictionary<Type, Type>()
         {
             {typeof(MainPageViewModel), typeof(MainPage) },
+            {typeof(DashboardPageViewModel), typeof(DashboardPage) },
             {typeof(LoginPageViewModel),typeof(LoginPage)},
             {typeof(PhonePageViewModel),typeof(PhonePage)},
             // Inventory
@@ -39,7 +45,8 @@ namespace Navigation.Converters
             {typeof(CreateItemPageViewModel), typeof(CreateItemPage)},
             {typeof(VariantsListPageViewModel), typeof(VariantsListPage)},
             {typeof(VariantListViewModel),typeof(VariantListPage)},
-            {typeof(DashboardPageViewModel), typeof(DashboardPage)},
+            {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
+            {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},
         };
 
         public object Convert(object value, Type targetType, object parameter, string language)

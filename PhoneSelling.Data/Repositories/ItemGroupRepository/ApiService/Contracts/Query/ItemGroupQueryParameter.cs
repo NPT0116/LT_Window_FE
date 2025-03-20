@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Common.Contracts.Requests;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PhoneSelling.Data.Common.Contracts.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contract
 {
     public class ItemGroupQueryParameter : PaginationQuery
     {
-        public string ItemGroupName { get; set; } = string.Empty;
+        [ObservableProperty] private string itemGroupName;
     }
 }

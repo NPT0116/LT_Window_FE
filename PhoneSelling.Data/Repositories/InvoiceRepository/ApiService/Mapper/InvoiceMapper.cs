@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Models;
+﻿using PhoneSelling.Common;
+using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,8 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Mapper
                 Id = Guid.Parse(dto.invoiceID),
                 TotalAmount = dto.totalAmount,
                 Date = DateTime.Parse(dto.Date),
-                CustomerId = Guid.Parse(dto.customerID),
-                InvoiceDetails = new ObservableCollection<InvoiceDetail>(
+                CustomerID = Guid.Parse(dto.customerID),
+                InvoiceDetails = new TrulyObservableCollection<InvoiceDetail>(
                     dto.InvoiceDetails.Select(detailDto => new InvoiceDetail
                     {
                         Id = Guid.Parse(detailDto.invoiceDetailID),
@@ -51,7 +52,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Mapper
             var dto = new InvoiceDto
             {
                 invoiceID = invoice.Id.ToString(),
-                customerID = invoice.CustomerId.ToString(),
+                customerID = invoice.CustomerID.ToString(),
                 totalAmount = invoice.TotalAmount,
                 Date = invoice.Date.ToString("o"),  // Định dạng ISO 8601
                 InvoiceDetails = invoice.InvoiceDetails.Select(detail => new InvoiceDetailDto

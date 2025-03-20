@@ -8,7 +8,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject where TQuery : PaginationQuery, new()
 {
@@ -23,8 +26,8 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public PaginationQueryViewModel(Func<TQuery, Task<PaginationResult<T>>> fetchDataFunc)
     {
         _fetchDataFunc = fetchDataFunc;
-        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
-        NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber <= Math.Floor((float)TotalItems / Query.PageSize));
+        LoadDataCommand = new AsyncRelayCommand<bool?>(LoadDataAsync);
+        NextPageCommand = new RelayCommand(NextPage, () => Query.PageNumber < TotalPages);
         PreviousPageCommand = new RelayCommand(PreviousPage, () => Query.PageNumber > 1);
         ToggleSortCommand = new RelayCommand(ToggleSort);
     }
@@ -34,22 +37,30 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     public IRelayCommand PreviousPageCommand { get; }
     public IRelayCommand ToggleSortCommand { get; }
 
-    private async Task LoadDataAsync()
+    private async Task LoadDataAsync(bool? shouldResetPagination)
     {
         if (_fetchDataFunc == null) return;
-        if(Query.SearchKey == lastSearchKey) return;
-        Debug.WriteLine("Sort by:" + Query.Sortby);
+        //if(lastSearchKey != string.Empty && Query.SearchKey == lastSearchKey) return;
+        string json = JsonSerializer.Serialize(Query, new JsonSerializerOptions
+        {
+            WriteIndented = true, // Pretty-print JSON output
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull // Ignore null values
+        });
+
+        Debug.WriteLine(json);
         IsLoading = true;
         try
         {
+            if(shouldResetPagination == null || shouldResetPagination == true)
+            {
+                Query.ResetPagination();
+            }
             var paginationResult = await _fetchDataFunc(Query);
-            Query.PageSize = paginationResult.PageSize;
-            Query.PageNumber = paginationResult.PageNumber;
             lastSearchKey = Query.SearchKey;
             TotalItems = paginationResult.TotalRecords;
             TotalPages = paginationResult.TotalPages;
             Items.Clear();
-            TotalItems = paginationResult.Data.Count();
             foreach (var item in paginationResult.Data)
             {
                 Items.Add(item);
@@ -66,7 +77,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
     private void NextPage()
     {
         Query.PageNumber++;
-        LoadDataCommand.Execute(null);
+        LoadDataCommand.Execute(false);
         NextPageCommand.NotifyCanExecuteChanged();
         PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
     }
@@ -76,7 +87,7 @@ public partial class PaginationQueryViewModel<T, TQuery> : ObservableObject wher
         if (Query.PageNumber > 1)
         {
             Query.PageNumber--;
-            LoadDataCommand.Execute(null);
+            LoadDataCommand.Execute(false);
             NextPageCommand.NotifyCanExecuteChanged();
             PreviousPageCommand.NotifyCanExecuteChanged(); // Refresh the previous button
         }

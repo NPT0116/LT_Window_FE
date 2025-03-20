@@ -8,7 +8,7 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts
 {
     public class CustomerDto
     {
-        public Guid customerID { get; set; }
+        public string customerID { get; set; }
         public string name { get; set; } = string.Empty;
         public string? email { get; set; }
         public string? phone { get; set; }

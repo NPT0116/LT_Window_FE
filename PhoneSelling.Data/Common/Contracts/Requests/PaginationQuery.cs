@@ -34,7 +34,7 @@ namespace PhoneSelling.Data.Common.Contracts.Requests
             set => SortDirection = (value == 0) ? SortDirection.Ascending : SortDirection.Descending;
         }
 
-        protected void ResetPagination()
+        public void ResetPagination()
         {
             PageNumber = 1;
             PageSize = 10;

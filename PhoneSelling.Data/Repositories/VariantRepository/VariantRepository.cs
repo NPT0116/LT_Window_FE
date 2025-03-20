@@ -29,7 +29,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
                 {
                     Data = response.data.Select(dto => new Variant
                     {
-                        VariantId = dto.variantId,
+                        VariantID = Guid.Parse(dto.variantId),
                         Storage = dto.storage,
                         CostPrice = dto.costPrice,
                         SellingPrice = dto.sellingPrice,

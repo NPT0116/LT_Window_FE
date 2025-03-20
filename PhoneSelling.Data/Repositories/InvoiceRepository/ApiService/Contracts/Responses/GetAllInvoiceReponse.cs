@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime;
-using PhoneSelling.Data.Common.Contracts.Responses;
+﻿using PhoneSelling.Data.Common.Contracts.Responses;
 using PhoneSelling.Data.Contracts.Responses.Base;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
 using System;

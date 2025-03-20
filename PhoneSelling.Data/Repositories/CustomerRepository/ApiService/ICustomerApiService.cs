@@ -1,4 +1,6 @@
-﻿using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
+﻿using PhoneSelling.Data.Contracts.Responses.Base;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Common;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
 using System;
 using System.Threading.Tasks;

@@ -1,4 +1,5 @@
-﻿using PhoneSelling.Data.Common.Contracts.Requests;
+﻿using PhoneSelling.Common;
+using PhoneSelling.Data.Common.Contracts.Requests;
 using PhoneSelling.Data.Repositories.Abstraction;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Responses;
@@ -35,8 +36,10 @@ namespace PhoneSelling.Data.Repositories.VariantRepository.ApiService
             if (!string.IsNullOrWhiteSpace(query.Sortby))
                 queryParams.Add($"sortBy={query.Sortby}");
 
-            if (query.SortDirection == SortDirection.Descending)
-                queryParams.Add("sortDirection=desc");
+            if (query.SortDirection != null)
+            {
+                queryParams.Add($"sortDirection={EnumHelper.GetEnumMemberValue(query.SortDirection)}");
+            }
 
             if (!string.IsNullOrWhiteSpace(query.StorageFilter))
                 queryParams.Add($"storage={Uri.EscapeDataString(query.StorageFilter)}");

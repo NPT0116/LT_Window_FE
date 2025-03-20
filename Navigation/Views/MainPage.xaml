@@ -82,6 +82,29 @@
 
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+
+                <!--Invoice-->
+                <NavigationViewItem  Icon="Page" Content="Invoice" Tag="Inventory">
+                    <NavigationViewItem.MenuItems>
+
+                        <NavigationViewItem Icon="Edit" Content="Create invoice" Tag="InvoiceDetailPage" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInvoiceCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+
+                        <NavigationViewItem Icon="List" Content="All invoices" Tag="Invoice List Page" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToInvoiceListCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             
             <Frame x:Name="PageFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,40,0,0" 

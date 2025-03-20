@@ -1,26 +1,27 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PhoneSelling.Data.Common.Contracts.Requests;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query
 {
-    public class InvoiceQueryParameter
+    public partial class InvoiceQueryParameter : PaginationQuery
     {
-        public InvoiceDatetimeQueryParameter? invoiceDatetimeQueryParameter { get; set; }
-        public string? CustomerName { get; set; }
-        public string? CustomerPhone { get; set; }
-        public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
+        [ObservableProperty] private InvoiceDatetimeQueryParameter invoiceDatetimeQueryParameter = new();
+        [ObservableProperty] private string? customerName;
+        [ObservableProperty] private string? customerPhone;
     }
 
-    public class InvoiceDatetimeQueryParameter
+    public partial class InvoiceDatetimeQueryParameter : ObservableObject
     {
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
+        [ObservableProperty] private DateTime? fromDate = null;
+        [ObservableProperty] private DateTime? toDate = null;
 
-        public string sortDirection { get; set; } = "desc";
+        
     }
 
 }

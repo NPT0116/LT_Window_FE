@@ -5,6 +5,8 @@ using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
 using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
 using PhoneSelling.ViewModel.Pages.Inventory.Variants;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToPhoneCommand { get; }
         public RelayCommand GoToItemGroupsPageCommand { get; }
         public RelayCommand GoToCreateItemPageCommand { get; }
+        public RelayCommand GoToCreateInvoiceCommand { get; }
+        public RelayCommand GoToInvoiceListCommand { get; }
 
         public MainPageViewModel(BasePageViewModel viewModel)
         {
@@ -39,6 +43,12 @@ namespace PhoneSelling.ViewModel.Pages
             GoToVariantsListPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantsListPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantsListPageViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
+            GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
+            
+            // Invoice
+            GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
+            GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InvoiceListViewModel));
+
         }
 
         private void ChildPageNavigation_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
