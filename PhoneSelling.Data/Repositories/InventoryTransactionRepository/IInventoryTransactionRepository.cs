@@ -10,5 +10,6 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository
     public interface IInventoryTransactionRepository
     {
         Task CreateInboundTransaction(CreateInboundTransactionDto dto);
+        Task CreateInboundTransaction(List<CreateInboundTransactionDto> dto);
     }
 }

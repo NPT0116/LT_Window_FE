@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
@@ -52,7 +53,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         }
 
         [RelayCommand]
-        public void CreateTransaction()
+        public async Task CreateTransaction()
         {
             bool hasErrors = false;
             foreach(var item in Items)
@@ -61,7 +62,8 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
                 if(errors) hasErrors = true;
             }
 
-            Debug.WriteLine(hasErrors);
+            if (hasErrors) return;
+            await _inventoryTransactionRepository.CreateInboundTransaction(Items.ToList());
         }
     }
 }

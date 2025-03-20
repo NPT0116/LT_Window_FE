@@ -4,6 +4,8 @@ using PhoneSelling.Data.Repositories.InventoryTransactionRepository.ApiService.C
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository.ApiService.Mapper;
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos;
 using PhoneSelling.DependencyInjection;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository
 {
@@ -17,6 +19,16 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository
         public async Task CreateInboundTransaction(CreateInboundTransactionDto dto)
         {
             var request = dto.ToRequest();
+            await _apiService.CreateInboundInventoryTransaction(request);
+        }
+
+        public async Task CreateInboundTransaction(List<CreateInboundTransactionDto> dto)
+        {
+            var items = dto.Select(x => x.ToRequest()).ToList();
+            var request = new CreateMultipleInboundTransactionRequest
+            {
+                list = items
+            };
             await _apiService.CreateInboundInventoryTransaction(request);
         }
     }
