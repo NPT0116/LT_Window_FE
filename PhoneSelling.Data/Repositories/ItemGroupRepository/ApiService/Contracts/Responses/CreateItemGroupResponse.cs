@@ -5,7 +5,7 @@ using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Common;
 
 namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Responses
 {
-    public class CreateItemGroupResponse : ApiResponse<ItemGroupDto >
+    public class CreateItemGroupResponse : ApiResponse<ItemGroupDto>
     {
     }
 }

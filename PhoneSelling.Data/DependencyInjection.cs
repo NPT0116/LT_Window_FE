@@ -12,6 +12,8 @@ using PhoneSelling.Data.Repositories.ItemGroupRepository;
 using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
+using PhoneSelling.Data.Repositories.ManufacturerRepository;
+using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService;
 using PhoneSelling.Data.Repositories.PhoneRepository;
 using PhoneSelling.Data.Repositories.VariantRepository;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService;
@@ -49,11 +51,11 @@ namespace PhoneSelling.Data
 
             DIContainer.AddKeyedSingleton<IColorRepository, ColorRepository>();
 
-
-
-
             DIContainer.AddKeyedSingleton<IItemGroupApiService, ItemGroupApiService>();
             DIContainer.AddKeyedSingleton<IItemGroupRepository, ItemGroupRepository>();
+
+            DIContainer.AddKeyedSingleton<IManufacturerApiService, ManufacturerApiService>();
+            DIContainer.AddKeyedSingleton<IManufacturerRepository, ManufacturerRepository>();
 
             // ✅ Register AWS Image Upload Service
             var awsSettings = new AWSSettings();
