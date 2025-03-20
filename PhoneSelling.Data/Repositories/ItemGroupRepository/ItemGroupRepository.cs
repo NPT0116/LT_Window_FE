@@ -32,7 +32,6 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository
             };
             return itemGroup;
         }
-
         public async Task<PaginationResult<ItemGroup>> GetItemGroupsAsync(ItemGroupQueryParameter query)
         {
             var response = await _itemGroupApiService.GetItemGroupsAsync(query);

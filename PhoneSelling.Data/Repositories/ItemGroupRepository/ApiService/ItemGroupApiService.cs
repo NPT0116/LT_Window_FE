@@ -20,7 +20,7 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService
 
         public async Task<CreateItemGroupResponse> CreateItemGroupAsync(CreateItemGroupRequest createItemGroupRequest)
         {
-                var response = await _httpClient.PostAsJsonAsync($"{ApiUrl}/Create", createItemGroupRequest);
+            var response = await _httpClient.PostAsJsonAsync($"{ApiUrl}/Create", createItemGroupRequest);
             return await response.Content.ReadFromJsonAsync<CreateItemGroupResponse>();
         }
 
