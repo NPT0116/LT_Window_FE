@@ -28,11 +28,8 @@
                 <TextBlock Text="PICTURE"/>
                 <Button Content="Select Image" Click="SelectImage_Click"/>
                 <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"
-                        Margin="0,10,0,0"/>
+                    Margin="0,10,0,0"/>
             </StackPanel>
-
-
-
             <DatePicker Header="REALEASE DATE" Date="{Binding ReleaseDate, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <!-- Picking Item Group -->
             <StackPanel Orientation="Horizontal" Spacing="5">
@@ -47,7 +44,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <Button Margin="0,28,0,0" Content="Add new" Click="AddNewGroup_Click"/>
-                </StackPanel>
+            </StackPanel>
             <!-- Picking Manufacturer -->
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <ComboBox ItemsSource="{Binding Manufacturers}"
