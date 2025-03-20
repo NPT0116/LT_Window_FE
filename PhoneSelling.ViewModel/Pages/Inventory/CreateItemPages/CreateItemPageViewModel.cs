@@ -20,8 +20,8 @@ using PhoneSelling.ViewModel.Pages.Items;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 {
- 
-    public partial class CreateItemPageViewModel:BasePageViewModel
+
+    public partial class CreateItemPageViewModel : BasePageViewModel
     {
         [ObservableProperty] private string itemName;
         [ObservableProperty] private string? description;
@@ -30,40 +30,13 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [ObservableProperty] private ObservableCollection<Variant> variants;
         [ObservableProperty] private Guid itemGroupId;
         [ObservableProperty] private Guid manufacturerId;
-
         // Handle selected
         [ObservableProperty] private ItemGroup selectedItemGroup;
         [ObservableProperty] private Manufacturer selectedManufacturer;
-        //private ItemGroup _selectedItemGroup { get; set; }
-        //public ItemGroup SelectedItemGroup
-        //{
-        //    get { return _selectedItemGroup; }
-        //    set { 
-        //        if (_selectedItemGroup != value)
-        //        {
-        //            _selectedItemGroup = value;
-        //            OnPropertyChanged(nameof(SelectedItemGroup));
-        //        }
-        //    }
-        //}
-        //private Manufacturer _selectedManufacturer { get; set; }
-        //public Manufacturer SelectedManufacturer
-        //{
-        //    get { return _selectedManufacturer; }
-        //    set
-        //    {
-        //        if (_selectedManufacturer != value)
-        //        {
-        //            _selectedManufacturer = value;
-        //            OnPropertyChanged(nameof(SelectedManufacturer));
-        //        } 
-        //    }
-        //}
 
         // Manually add Storage and Color
         // Storage
         public ObservableCollection<string> StorageList { get; } = new ObservableCollection<string>();
-
         private string _newStorage { set; get; }
         public string NewStorage
         {
@@ -82,7 +55,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         }
         // Color
         public ObservableCollection<string> ColorList { get; } = new ObservableCollection<string>();
-        public ObservableCollection<TempColor> ColorObjectList { get;} = new ObservableCollection<TempColor>();
+        public ObservableCollection<TempColor> ColorObjectList { get; } = new ObservableCollection<TempColor>();
         private string _newColor { set; get; }
         public string NewColor
         {
@@ -99,7 +72,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 }
             }
         }
-        // Mock data
+        // Fetch data for item group and manufacturer
         [ObservableProperty] private List<ItemGroup> itemGroups = new();
         public async Task LoadItemGroupsAsync()
         {
@@ -114,8 +87,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 }
             }
         }
-        [ObservableProperty]
-        private List<Manufacturer> manufacturers = new();
+        [ObservableProperty] private List<Manufacturer> manufacturers = new();
         public async Task LoadManufacturerAsync()
         {
             var manufacturersResponse = await _manufacturerRepository.GetManufacturersAsync(new ManufacturerQueryParameter());
@@ -128,12 +100,10 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 }
             }
         }
-
         // Repository fields (retrieved via DI)
         private readonly IItemRepository _itemRepository;
         private readonly IItemGroupRepository _itemGroupRepository;
         private readonly IManufacturerRepository _manufacturerRepository;
-
         public CreateItemPageViewModel()
         {
             itemName = string.Empty;
@@ -151,10 +121,9 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             // Display and create Manufacturer
             _manufacturerRepository = DIContainer.GetKeyedSingleton<IManufacturerRepository>();
             _ = LoadManufacturerAsync();
-
-
+            //
+            //filteredManufacturersList = manufacturers;
         }
-
 
         // Relay command
         [RelayCommand]
@@ -177,25 +146,16 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [RelayCommand]
         private void AddNewStorage()
         {
-            if (!string.IsNullOrEmpty(NewStorage) &&!StorageList.Contains(NewStorage))
+            if (!string.IsNullOrEmpty(NewStorage) && !StorageList.Contains(NewStorage))
             {
                 StorageList.Add(NewStorage);
                 UpdateVariants();
             }
         }
-        //[RelayCommand]
-        //private void AddNewColor()
-        //{
-        //    if (!string.IsNullOrEmpty(NewColor) && !StorageList.Contains(NewColor))
-        //    {
-        //        ColorList.Add(NewColor);
-        //        UpdateVariants();
-        //    }
-        //}
         [RelayCommand]
         private void DeleteSelectedStorage(string storage)
         {
-            if (!string.IsNullOrEmpty(storage) && StorageList.Contains(storage)) 
+            if (!string.IsNullOrEmpty(storage) && StorageList.Contains(storage))
             {
                 StorageList.Remove(storage);
             }
@@ -308,6 +268,20 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             // Save the item via the repository.
             await _itemRepository.CreateFullItem(createFullItemDto);
             Debug.WriteLine("Item saved successfully.");
+        }
+        // Search Box
+        [ObservableProperty] private List<Manufacturer> filteredManufacturersList = new();
+        public void FilterManufacturers(string query)
+        {
+            IEnumerable<Manufacturer> itemsToDisplay = string.IsNullOrWhiteSpace(query)
+                ? Manufacturers.ToList()
+                : Manufacturers.Where(m => m.ManufacturerName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
+            filteredManufacturersList.Clear();
+            foreach (Manufacturer m in itemsToDisplay)
+            {
+                filteredManufacturersList.Add(m);
+            }
         }
     }
 }

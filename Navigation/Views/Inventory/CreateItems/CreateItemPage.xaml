@@ -46,19 +46,26 @@
                 <Button Margin="0,28,0,0" Content="Add new" Click="AddNewGroup_Click"/>
             </StackPanel>
             <!-- Picking Manufacturer -->
-            <StackPanel Orientation="Horizontal" Spacing="5">
-                <ComboBox ItemsSource="{Binding Manufacturers}"
-                          Width="200"
-                          Header="CHOOSE MANUFACTURER"
-                          SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="model:Manufacturer">
-                            <TextBlock Text="{x:Bind ManufacturerName}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Margin="0,28,0,0" Content="Add new" Click="AddNewManufacturer_Click" />
+            <StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                        <!--<AutoSuggestBox x:Name="manufacturerSearchBox"
+                                TextChanged="manufacturerSearchBox_TextChanged"
+                                PlaceholderText="Search manufacturer..." />-->
+                        <ComboBox ItemsSource="{Binding Manufacturers, Mode=OneWay}"
+                                  Width="200"
+                                  Header="CHOOSE MANUFACTURER"
+                                  SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="model:Manufacturer">
+                                <TextBlock Text="{x:Bind ManufacturerName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Margin="0,28,0,0" Content="Add new" Click="AddNewManufacturer_Click" />
+                </StackPanel>
             </StackPanel>
+
             <!-- Variant Information -->
             <TextBlock Text="VARIANT INFORMATION" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" />
             <Grid RowSpacing="10">
