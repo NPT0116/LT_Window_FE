@@ -37,6 +37,7 @@ namespace Navigation.Converters
         private static readonly Dictionary<Type, Type> pairs = new Dictionary<Type, Type>()
         {
             {typeof(MainPageViewModel), typeof(MainPage) },
+            {typeof(DashboardPageViewModel), typeof(DashboardPage) },
             {typeof(LoginPageViewModel),typeof(LoginPage)},
             {typeof(PhonePageViewModel),typeof(PhonePage)},
             // Inventory

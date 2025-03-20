@@ -46,7 +46,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 
         public async Task<Customer?> SearchCustomersByEmail(string email)
         {
-            var customer = await _customerRepository.GetCustomerByEmail(email);
+            var customer = await _customerRepository.GetCustomerByEmailAsync(email);
             return customer;
         }
 
@@ -54,7 +54,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         {
             Debug.WriteLine("SearchCustomersByPhone called with: " + phoneNumber);
 
-            var response = await _customerRepository.GetCustomerByPhone(phoneNumber);
+            var response = await _customerRepository.GetCustomerByPhoneAsync(phoneNumber);
             Debug.WriteLine("Response received from API call.");
 
             return response;
@@ -65,7 +65,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 
         public async Task CreateCustomer()
         {
-            await _customerRepository.CreateCustomer(Customer);
+            await _customerRepository.CreateQuickCustomerAsync(Customer);
             Customer = new();
         }
 

@@ -11,9 +11,16 @@ using PhoneSelling.Data.Repositories.ItemRepository.Dtos;
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemGroupRepository;
+using System.Text.Json.Serialization;
 using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Query;
+using PhoneSelling.Data.Repositories.ManufacturerRepository;
+using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService.Contracts.Query;
+using PhoneSelling.ViewModel.Pages.Items;
+
+
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 {
+ 
     public partial class CreateItemPageViewModel:BasePageViewModel
     {
         [ObservableProperty] private string itemName;
@@ -23,9 +30,8 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [ObservableProperty] private ObservableCollection<Variant> variants;
         [ObservableProperty] private Guid itemGroupId;
         [ObservableProperty] private Guid manufacturerId;
-        [ObservableProperty] private ItemGroupQueryParameter query;
 
-        private readonly IItemGroupRepository _itemGroupRepository;
+        private readonly IItemGroupRepository _itemGroupService;
 
         // Handle selected
         private ItemGroup _selectedItemGroup { get; set; }
@@ -36,6 +42,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 if (_selectedItemGroup != value)
                 {
                     _selectedItemGroup = value;
+                    Debug.WriteLine($"what {value}");
                     OnPropertyChanged(nameof(SelectedItemGroup));
                 }
             }
@@ -76,6 +83,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         }
         // Color
         public ObservableCollection<string> ColorList { get; } = new ObservableCollection<string>();
+        public ObservableCollection<TempColor> ColorObjectList { get;} = new ObservableCollection<TempColor>();
         private string _newColor { set; get; }
         public string NewColor
         {
@@ -94,23 +102,38 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         }
         // Mock data
         [ObservableProperty] private List<ItemGroup> itemGroups = new();
-
         public async Task LoadItemGroupsAsync()
         {
-            var groups = await _itemGroupRepository.GetItemGroupsAsync(Query);
+            var groups = await _itemGroupRepository.GetItemGroupsAsync(new ItemGroupQueryParameter());
             if (groups != null)
             {
-                ItemGroups = groups.Data;
+                // Clear the existing collection and add the fetched groups.
+                itemGroups.Clear();
+                foreach (var group in groups.Data)
+                {
+                    itemGroups.Add(group);
+                }
             }
         }
         [ObservableProperty]
-        private List<Manufacturer> manufacturers = new()
+        private List<Manufacturer> manufacturers = new();
+        public async Task LoadManufacturerAsync()
         {
-            new Manufacturer {ManufacturerName="Apple", Id=Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")},
-        };
+            var manufacturersResponse = await _manufacturerRepository.GetManufacturersAsync(new ManufacturerQueryParameter());
+            if (manufacturersResponse != null)
+            {
+                manufacturers.Clear();
+                foreach (var manufacturer in manufacturersResponse.Data)
+                {
+                    manufacturers.Add(manufacturer);
+                }
+            }
+        }
 
-
+        // Repository fields (retrieved via DI)
         private readonly IItemRepository _itemRepository;
+        private readonly IItemGroupRepository _itemGroupRepository;
+        private readonly IManufacturerRepository _manufacturerRepository;
         public CreateItemPageViewModel()
         {
             itemName = string.Empty;
@@ -119,39 +142,26 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             _newStorage = string.Empty;
             _newColor = string.Empty;
             variants = new ObservableCollection<Variant>();
+
+            // Create Item to Save
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
+            // Display and create Item Group
             _itemGroupRepository = DIContainer.GetKeyedSingleton<IItemGroupRepository>();
             _ = LoadItemGroupsAsync();
+            // Display and create Manufacturer
+            _manufacturerRepository = DIContainer.GetKeyedSingleton<IManufacturerRepository>();
+            _ = LoadManufacturerAsync();
+
+
         }
 
 
         // Relay command
-        //[RelayCommand]
-        //private void CreateItem()
-        //{
-        //    Debug.WriteLine("Create Item With those information:");
-        //    //Debug.WriteLine(SelectedItemGroup?.ItemGroupName);
-        //    //Debug.WriteLine(itemName);
-        //    //Debug.WriteLine(description);
-        //    //Debug.WriteLine(picture);
-        //    //Debug.WriteLine(releaseDate);
-        //    //Debug.WriteLine(itemGroupId);
-        //    //Debug.WriteLine(manufacturerId);
-        //    foreach(Variant variant in variants)
-        //    {
-        //        Debug.WriteLine(variant.Storage);
-        //        Debug.WriteLine(variant.StockQuantity);
-
-        //        Debug.WriteLine(variant.CostPrice);
-
-        //        Debug.WriteLine(variant.SellingPrice);
-        //    }
-        //}
         [RelayCommand]
         private void CreateVariant()
         {
             variants.Add(
-                new Variant { Storage = "0", Color = new Color { Name = "Black" }, CostPrice = 0, SellingPrice = 0, StockQuantity = 0 }
+                new Variant { Storage = "0", Color = new Color { Name = ColorObjectList.FirstOrDefault().Name }, CostPrice = 0, SellingPrice = 0, StockQuantity = 0 }
             );
         }
         [RelayCommand]
@@ -173,15 +183,15 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 UpdateVariants();
             }
         }
-        [RelayCommand]
-        private void AddNewColor()
-        {
-            if (!string.IsNullOrEmpty(NewColor) && !StorageList.Contains(NewColor))
-            {
-                ColorList.Add(NewColor);
-                UpdateVariants();
-            }
-        }
+        //[RelayCommand]
+        //private void AddNewColor()
+        //{
+        //    if (!string.IsNullOrEmpty(NewColor) && !StorageList.Contains(NewColor))
+        //    {
+        //        ColorList.Add(NewColor);
+        //        UpdateVariants();
+        //    }
+        //}
         [RelayCommand]
         private void DeleteSelectedStorage(string storage)
         {
@@ -200,7 +210,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         }
 
         // Update variants list
-        private void UpdateVariants()
+        public void UpdateVariants()
         {
             //variants.Clear();
             foreach (var storage in StorageList)
@@ -254,12 +264,12 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 
             Debug.WriteLine($"ItemDto mapped: {itemDto.itemName}, ReleaseDate: {itemDto.releaseDate}");
 
-            // Map the ColorList (strings) to ColorDto objects.
-            var colorDtos = ColorList.Select((c, index) => new Data.Repositories.ItemRepository.ApiService.Contracts.Requests.ColorDto
+            // Map the ColorObjectList (strings) to ColorDto objects.
+            var colorDtos = ColorObjectList.Select((c, index) => new Data.Repositories.ItemRepository.ApiService.Contracts.Requests.ColorDto
             {
                 tempId = index + 1,
-                name = c,
-                urlImage = "", // You can update this if you have a URL.
+                name = c.Name,
+                urlImage = c.UrlImage,
                 colorId = Guid.NewGuid().ToString()
             }).ToList();
 
@@ -297,10 +307,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             Debug.WriteLine("Calling _itemRepository.CreateFullItem...");
             // Save the item via the repository.
             await _itemRepository.CreateFullItem(createFullItemDto);
-            Debug.WriteLine("SelectedManufacturer ID: " + SelectedManufacturer?.Id);
             Debug.WriteLine("Item saved successfully.");
         }
-
-
     }
 }
