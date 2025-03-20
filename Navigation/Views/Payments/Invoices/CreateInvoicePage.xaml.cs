@@ -51,26 +51,34 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
             var text = sender.Text.ToLower().Trim();
-            if (string.IsNullOrEmpty(text))
+            try
             {
-                return;
-            }
-            var customer = new Customer();
-            if (text[0] >= '0' && text[0] <= '9')
-            {
-                Debug.WriteLine("Search by phone");
-                Debug.WriteLine(text);
-                customer = await ViewModel.SearchCustomerByPhone(text);
-            }
-            else
-            {
-                Debug.WriteLine("Search by email");
-                customer = await ViewModel.SearchCustomersByEmail(text);
-            }
-            var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
-            customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
+                if (string.IsNullOrEmpty(text))
+                {
+                    return;
+                }
+                var customer = new Customer();
+                if (text[0] >= '0' && text[0] <= '9')
+                {
+                    Debug.WriteLine("Search by phone");
+                    Debug.WriteLine(text);
+                    customer = await ViewModel.SearchCustomerByPhone(text);
+                }
+                else
+                {
+                    Debug.WriteLine("Search by email");
+                    customer = await ViewModel.SearchCustomersByEmail(text);
+                }
+                var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
+                customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
 
-            sender.ItemsSource = customerSuggestions;
+                sender.ItemsSource = customerSuggestions;
+            }
+            catch
+            {
+
+            }
+            
         }
 
         private async void CustomerSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
