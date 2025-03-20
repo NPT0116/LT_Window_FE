@@ -13,7 +13,7 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
     public interface ICustomerApiService
     {
         Task<GetAllCustomerResponse> GetAllCustomers();
-        Task CreateCustomer(CreateCustomerRequest dto);
+        Task<bool> CreateCustomer(CreateCustomerRequest dto);
         Task<ApiResponse<CustomerDto>> GetAllCustomersByPhone(string phoneNumber);
         Task<ApiResponse<CustomerDto>> GetAllCustomersByEmail(string email);
     }

@@ -8,20 +8,54 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PhoneSelling.Data.Models"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:conv="using:Navigation.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Page.Resources>
+        <conv:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </Page.Resources>
 
     <StackPanel>
         <ContentDialog x:Name="CreateCustomerDialog"
                Title="Create New Customer"
                PrimaryButtonText="Save"
+                Closing="CustomerDialog_Closing"
                SecondaryButtonText="Cancel"
                >
             <StackPanel Spacing="10">
-                <TextBox x:Name="NewCustomerName" PlaceholderText="Customer Name"/>
-                <TextBox x:Name="NewCustomerPhone" PlaceholderText="Phone Number"/>
-                <TextBox x:Name="NewCustomerEmail" PlaceholderText="Email"/>
-                <TextBox x:Name="NewCustomerAddress" PlaceholderText="Address"/>
+                <TextBox Text="{x:Bind ViewModel.Customer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Tên khách hàng"/>
+                <TextBlock Text="{
+                    x:Bind ViewModel.Customer.NameError, 
+                    Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Customer.NameError, 
+                                        Converter={StaticResource NullToVisibilityConverter},
+                                        Mode=OneWay}"/>
+
+                <TextBox Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Số điện thoại"/>
+                <TextBlock Text="{
+                    x:Bind ViewModel.Customer.PhoneError, 
+                    Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Customer.PhoneError, 
+                                        Converter={StaticResource NullToVisibilityConverter},
+                                        Mode=OneWay}"/> 
+                <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email"/>
+                <TextBlock Text="{
+                    x:Bind ViewModel.Customer.EmailError, 
+                    Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Customer.EmailError, 
+                                        Converter={StaticResource NullToVisibilityConverter},
+                                        Mode=OneWay}"/>
+
+                <TextBox Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" PlaceholderText="Địa chỉ"/>
             </StackPanel>
         </ContentDialog>
 

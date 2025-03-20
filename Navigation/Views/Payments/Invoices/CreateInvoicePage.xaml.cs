@@ -17,6 +17,8 @@ using PhoneSelling.Data.Models;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Windows.Media.Audio;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text.Json;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,6 +31,7 @@ namespace Navigation.Views.Payments.Invoices
     public sealed partial class CreateInvoicePage : Page
     {
         public CreateInvoicePageViewModel ViewModel { get; set; }
+        
         public CreateInvoicePage()
         {
             this.InitializeComponent();
@@ -90,21 +93,30 @@ namespace Navigation.Views.Payments.Invoices
 
         private async Task ShowCreateCustomerDialog()
         {
-            NewCustomerName.Text = "";
-            NewCustomerPhone.Text = "";
-            NewCustomerEmail.Text = "";
-            NewCustomerAddress.Text = "";
-
-            var result = await CreateCustomerDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-                // Save new customer
-                await ViewModel.CreateCustomer(NewCustomerName.Text, NewCustomerEmail.Text, NewCustomerPhone.Text, NewCustomerAddress.Text);
-            }
+            await CreateCustomerDialog.ShowAsync();
         }
 
+        private async void CustomerDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
+        {
+            if (args.Result == ContentDialogResult.Primary)
+            {
+                bool hasErrors = ViewModel.Customer.ValidateAllProperties();
+                Debug.WriteLine(hasErrors);
+                if (hasErrors)
+                {
+                    args.Cancel = true;  // 🔹 Prevent the dialog from closing
+                    return;
+                }
 
+                Debug.WriteLine(JsonSerializer.Serialize(ViewModel.Customer, new JsonSerializerOptions
+                {
+                    WriteIndented = true, // Pretty-print JSON output
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Ignore null values
+                }));
+                await ViewModel.CreateCustomer();
+            }
+        }
         private void DatePickerButton_Click(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);

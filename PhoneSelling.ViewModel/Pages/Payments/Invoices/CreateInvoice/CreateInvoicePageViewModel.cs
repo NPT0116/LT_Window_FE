@@ -18,7 +18,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         private readonly ICustomerRepository _customerRepository;
         private readonly IVariantRepository _variantRepository;
         private readonly IInvoiceRepository _invoiceRepository;
-        [ObservableProperty] private Customer customer;
+        [ObservableProperty] private Customer customer = new();
         [ObservableProperty] private Invoice invoice;
         [ObservableProperty] private TrulyObservableCollection<Variant> searchItems;
         //[ObservableProperty] private Variant variant = new();
@@ -56,16 +56,12 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             return response;
         }
 
-        public async Task CreateCustomer(string name, string email, string phone, string address)
+        
+
+
+        public async Task CreateCustomer()
         {
-            var customer = new Customer
-            {
-                Name = name,
-                Email = email,
-                Phone = phone,
-                Address = address
-            };
-            await _customerRepository.CreateCustomer(customer);
+            await _customerRepository.CreateCustomer(Customer);
         }
 
         public async Task<List<Variant>> SearchVariants(string text)

@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
@@ -23,15 +24,34 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
 
         protected override string Prefix => "Customer";
 
-        public async Task CreateCustomer(CreateCustomerRequest dto)
+        public async Task<bool> CreateCustomer(CreateCustomerRequest dto)
         {
             try
             {
-                await _httpClient.PostAsJsonAsync<CreateCustomerRequest>(ApiUrl + "/Create", dto);
+                var response = await _httpClient.PostAsJsonAsync<CreateCustomerRequest>(ApiUrl + "/Create", dto);
+                // 🔹 Read the response body
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                // 🔹 Deserialize into `ApiResponse<object>` since "data" is null in this case
+                var result = JsonSerializer.Deserialize<ApiResponse<object>>(responseBody, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true // ✅ Ensures JSON properties are matched case-insensitively
+                });
+
+                // 🔹 Debugging output
+                Debug.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
+
+                // 🔹 Check for errors
+                if (result != null && !result.Succeeded)
+                {
+                    Debug.WriteLine($"Error: {string.Join(", ", result.Errors)}");
+                }
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error creating customer: {ex.Message}");
+                return false;
             }
 
         }
