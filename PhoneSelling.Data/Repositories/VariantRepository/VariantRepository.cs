@@ -6,6 +6,7 @@ using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requ
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
         public async Task<PaginationResult<Variant>> GetAllVariants(VariantPaginationQuery query)
         {
             var response = await _apiSerivce.GetAllVariants(query);
-            if(response != null && response.succeeded)
+            if (response != null && response.succeeded)
             {
                 return new PaginationResult<Variant>
                 {
@@ -57,7 +58,6 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
                 };
 
             }
-
             return new PaginationResult<Variant>
             {
                 Data = new List<Variant> { }

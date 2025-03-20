@@ -1,13 +1,26 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Navigation.Views.Inventory;
+
 using Navigation.Views;
-using PhoneSelling.ViewModel.Pages.Inventory;
-using PhoneSelling.ViewModel.Pages;
+using Navigation.Views.Inventory;
 using Navigation.Views.Variants;
-using PhoneSelling.ViewModel.Pages.Authentication;
-using PhoneSelling.ViewModel.Pages.Sample;
+
+using Navigation.Views.Inventory.Variants;
+using Navigation.Views.Inventory.ItemGroups;
+using Navigation.Views.Inventory.CreateItems;
+
+using PhoneSelling.ViewModel.Pages.Inventory.Variants;
+using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
+using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
+
+
+using PhoneSelling.ViewModel.Pages;
+using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Variants;
+using PhoneSelling.ViewModel.Pages.Authentication;
+
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +37,12 @@ namespace Navigation.Converters
         private static readonly Dictionary<Type, Type> pairs = new Dictionary<Type, Type>()
         {
             {typeof(MainPageViewModel), typeof(MainPage) },
-
             {typeof(LoginPageViewModel),typeof(LoginPage)},
             {typeof(PhonePageViewModel),typeof(PhonePage)},
             // Inventory
-            {typeof(VariantsDetailPageViewModel), typeof(VariantsDetailPage) },
-            {typeof(DashboardPageViewModel), typeof(DashboardPage) },
+            {typeof(ItemGroupsPageViewModel), typeof(ItemGroupsPage)},
+            {typeof(CreateItemPageViewModel), typeof(CreateItemPage)},
+            {typeof(VariantsListPageViewModel), typeof(VariantsListPage)},
             {typeof(VariantListViewModel),typeof(VariantListPage)},
             {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
             {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},

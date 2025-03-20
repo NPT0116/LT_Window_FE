@@ -1,17 +1,17 @@
 ﻿using PhoneSelling.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.CustomerRepository
 {
     public interface ICustomerRepository
     {
-        Task<List<Customer>> GetAllCustomers();
-        Task CreateCustomer(Customer customer);
-        Task<Customer?> GetCustomerByPhone(string phone);
-        Task<Customer?> GetCustomerByEmail(string email);
+        Task<Customer> GetCustomerByIdAsync(Guid customerId);
+        Task<Customer> CreateQuickCustomerAsync(Customer customerDto);
+        Task<Customer> GetCustomerByPhoneAsync(string phone);
+        Task<Customer> GetCustomerByEmailAsync(string email);
+        Task<Customer> UpdateCustomerAsync( Customer customerDto);
+        Task<ICollection<Customer>> GetAllCustomersAsync();
     }
 }

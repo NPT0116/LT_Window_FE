@@ -3,10 +3,14 @@ using Amazon.Extensions.NETCore.Setup;
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using PhoneSelling.Data.Configurations;
+using PhoneSelling.Data.Repositories.ColorRepository;
+using PhoneSelling.Data.Repositories.ColorRepository.ApiService;
 using PhoneSelling.Data.Repositories.CustomerRepository;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService;
 using PhoneSelling.Data.Repositories.InvoiceRepository;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
+using PhoneSelling.Data.Repositories.ItemGroupRepository;
+using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemRepository;
 using PhoneSelling.Data.Repositories.ItemRepository.ApiService;
 using PhoneSelling.Data.Repositories.PhoneRepository;
@@ -42,7 +46,16 @@ namespace PhoneSelling.Data
             DIContainer.AddKeyedSingleton<IInvoiceRepository, InvoiceRepository>();
             DIContainer.AddKeyedSingleton<IVariantRepository, VariantRepository>();
 
+            DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
+            DIContainer.AddKeyedSingleton<IColorApiService, ColorApiService>();
 
+            DIContainer.AddKeyedSingleton<IColorRepository, ColorRepository>();
+
+
+
+
+            DIContainer.AddKeyedSingleton<IItemGroupApiService, ItemGroupApiService>();
+            DIContainer.AddKeyedSingleton<IItemGroupRepository, ItemGroupRepository>();
 
             // ✅ Register AWS Image Upload Service
             var awsSettings = new AWSSettings();

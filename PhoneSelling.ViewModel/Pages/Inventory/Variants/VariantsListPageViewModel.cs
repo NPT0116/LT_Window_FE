@@ -13,12 +13,12 @@ using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Pages.Variants;
 
-namespace PhoneSelling.ViewModel.Pages.Inventory
+namespace PhoneSelling.ViewModel.Pages.Inventory.Variants
 {
-    public class VariantsDetailPageViewModel : BasePageViewModel
+    public class VariantsListPageViewModel : BasePageViewModel
     {
-        private readonly IVariantRepository _variantRepository;
         public VariantQueryViewModel QueryViewModel { get; set; }
+        private readonly IVariantRepository _variantRepository;
         private bool _isGridView;
         public bool IsGridView
         {
@@ -36,9 +36,9 @@ namespace PhoneSelling.ViewModel.Pages.Inventory
 
         public ItemViewModel ItemViewModel { get; set; }
         private readonly IItemRepository _itemRepository;
-        public VariantsDetailPageViewModel() : base()
+        public VariantsListPageViewModel() : base()
         {
-            Debug.WriteLine("This is Variant Detail Page !");
+            Debug.WriteLine("This is Variants List Page !");
             _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
             QueryViewModel = new(LoadDataAsync);

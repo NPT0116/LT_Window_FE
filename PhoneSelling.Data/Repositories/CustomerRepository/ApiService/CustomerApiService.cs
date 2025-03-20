@@ -3,7 +3,6 @@ using PhoneSelling.Data.Repositories.Abstraction;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Common;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
-using PhoneSelling.Data.Repositories.ItemRepository.ApiService.Contracts.Responses;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,83 +17,93 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository.ApiService
 {
     public class CustomerApiService : BaseApiService, ICustomerApiService
     {
-        public CustomerApiService()
-        {
-        }
-
         protected override string Prefix => "Customer";
 
-        public async Task<bool> CreateCustomer(CreateCustomerRequest dto)
+        public CustomerApiService() { }
+
+        public async Task<CreateCustomerResponse> CreateCustomerAsync(CreateCustomerRequest request)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync<CreateCustomerRequest>(ApiUrl + "/Create", dto);
-                // 🔹 Read the response body
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                // 🔹 Deserialize into `ApiResponse<object>` since "data" is null in this case
-                var result = JsonSerializer.Deserialize<ApiResponse<object>>(responseBody, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true // ✅ Ensures JSON properties are matched case-insensitively
-                });
-
-                // 🔹 Debugging output
-                Debug.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
-
-                // 🔹 Check for errors
-                if (result != null && !result.Succeeded)
-                {
-                    Debug.WriteLine($"Error: {string.Join(", ", result.Errors)}");
-                }
-                return true;
+                // Giả sử endpoint tạo khách hàng là: {ApiUrl}/Create
+                var response = await _httpClient.PostAsJsonAsync(ApiUrl + "/Create", request);
+                var result = await response.Content.ReadFromJsonAsync<CreateCustomerResponse>();
+                return result;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error creating customer: {ex.Message}");
-                return false;
+                throw new Exception("Error while creating customer", ex);
             }
-
         }
 
-        public async Task<GetAllCustomerResponse> GetAllCustomers()
+        public async Task<GetAllCustomerResponse> GetAllCustomersAsync()
         {
             try
             {
+                // Giả sử endpoint lấy tất cả khách hàng: {ApiUrl}/All
                 var response = await _httpClient.GetFromJsonAsync<GetAllCustomerResponse>(ApiUrl + "/All");
                 return response;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching customers: {ex.Message}");
-                return null; // Return empty list on failure
+                throw new Exception("Error while fetching all customers", ex);
             }
         }
 
-        public async Task<ApiResponse<CustomerDto>> GetAllCustomersByEmail(string email)
+        public async Task<GetCustomerByIdResponse> GetCustomerByIdAsync(Guid customerId)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<ApiResponse<CustomerDto>>(ApiUrl + $"/Email/{email}");
+                string url = $"{ApiUrl}/{customerId}";
+                var response = await _httpClient.GetFromJsonAsync<GetCustomerByIdResponse>(url);
                 return response;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching customers: {ex.Message}");
-                return null; // Return empty list on failure
+                throw new Exception("Error while fetching customer by id", ex);
             }
         }
 
-        public async Task<ApiResponse<CustomerDto>> GetAllCustomersByPhone(string phoneNumber)
+        public async Task<GetCustomerByPhoneResponse> GetCustomerByPhoneAsync(string phone)
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<ApiResponse<CustomerDto>>(ApiUrl + $"/Phone/{phoneNumber}");
+                string url = $"{ApiUrl}/Phone/{phone}";
+                var response = await _httpClient.GetFromJsonAsync<GetCustomerByPhoneResponse>(url);
                 return response;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching customers: {ex.Message}");
-                return null; // Return empty list on failure
+                throw new Exception("Error while fetching customer by phone", ex);
+            }
+        }
+
+        public async Task<GetCustomerByEmailResponse> GetCustomerByEmailAsync(string email)
+        {
+            try
+            {
+                string url = $"{ApiUrl}/Email/{email}";
+                var response = await _httpClient.GetFromJsonAsync<GetCustomerByEmailResponse>(url);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching customer by email", ex);
+            }
+        }
+
+        public async Task<UpdateCustomerResponse> UpdateCustomerAsync(Guid customerId, UpdateCustomerRequest request)
+        {
+            try
+            {
+                string url = $"{ApiUrl}/{customerId}";
+                var httpResponse = await _httpClient.PutAsJsonAsync(url, request);
+                var response = await httpResponse.Content.ReadFromJsonAsync<UpdateCustomerResponse>();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while updating customer", ex);
             }
         }
     }

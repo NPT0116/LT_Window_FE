@@ -39,11 +39,27 @@
                 <!--Inventory-->
                 <NavigationViewItem  Icon="Play" Content="Inventory" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
-                    
-                        <NavigationViewItem Icon="Play" Content="Variants Detail Page" Tag="VariantsDetailPage" IsExpanded="True">
+                        <!--CreateItemPage-->
+                        <NavigationViewItem Icon="Play" Content="Create Item Page">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToVariantsDetailPageCommand}" />
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateItemPageCommand}"/>
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+                        <!--ItemGroupPage-->
+                        <NavigationViewItem Icon="Play" Content="Item Groups Page">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToItemGroupsPageCommand}" />
+                                </Core:EventTriggerBehavior> 
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+                        <!--VariantsListPage-->
+                        <NavigationViewItem Icon="Play" Content="Variants List Page" Tag="VariantsDetailPage" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>

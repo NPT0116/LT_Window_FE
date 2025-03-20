@@ -60,16 +60,16 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
         public async Task<PaginationResult<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter)
         {
             var response = await _invoiceApiService.GetAllInvoicesAsync(invoiceQueryParameter);
-            return new PaginationResult<Invoice>
+            var result = new PaginationResult<Invoice>
             {
-                Data = response == null || response.data.Count() == 0 
-                ? Enumerable.Empty<Invoice>().ToList() 
-                : InvoiceMapper.MapToModelList(response.data).ToList(),
+                Data = InvoiceMapper.MapToModelList(response.data),
                 PageNumber = response.pageNumber,
                 PageSize = response.pageSize,
                 TotalPages = response.totalPages,
                 TotalRecords = response.totalRecords
+
             };
+            return result;
         }
 
         public async Task<Invoice> GetInvoiceByIdAsync(Guid invoiceId)

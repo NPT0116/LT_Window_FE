@@ -1,12 +1,12 @@
 ﻿using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService;
-using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Responses;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Contracts.Requests;
+using PhoneSelling.Data.Repositories.CustomerRepository.ApiService.Mapper;
 using PhoneSelling.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.CustomerRepository
@@ -19,67 +19,95 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
             _apiService = DIContainer.GetKeyedSingleton<ICustomerApiService>();
         }
 
-        public async Task CreateCustomer(Customer customer)
+        public async Task<Customer> CreateQuickCustomerAsync(Customer customer)
         {
-            var createCustomerRequest = new ApiService.Contracts.Requests.CreateCustomerRequest()
+            // Map từ domain model Customer sang CreateCustomerRequest
+            var request = new CreateCustomerRequest
             {
                 name = customer.Name,
                 phone = customer.Phone,
                 email = customer.Email,
                 address = customer.Address
             };
-            await _apiService.CreateCustomer(createCustomerRequest);
+
+            // Gọi API tạo khách hàng
+            var response = await _apiService.CreateCustomerAsync(request);
+            if (response == null || !response.Succeeded)
+                throw new Exception(response?.Message ?? "Error while creating customer.");
+
+            // Mapping từ response (assumed to have Data property of type CustomerResponseDto) sang domain model Customer
+            var dto = response.Data;
+            var createdCustomer = CustomerMapper.MapToCustomer(dto);
+            return createdCustomer;
         }
 
-        public async Task<List<Customer>> GetAllCustomers()
+        public async Task<ICollection<Customer>> GetAllCustomersAsync()
         {
-            var response = await _apiService.GetAllCustomers();
-            return ConvertListCustomerReposonseToListCustomer(response);
+            var response = await _apiService.GetAllCustomersAsync();
+            if (response == null || response.Data == null)
+                return new List<Customer>();
+
+            return CustomerMapper.MapToCustomers(response.Data);
         }
 
-        public async Task<Customer?> GetCustomerByEmail(string email)
+        public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
         {
-            var response = await _apiService.GetAllCustomersByEmail(email);
-            if (response == null) return null;
-            var customerDto = response.Data;
-            if (customerDto == null) return null;
-            return new Customer
+            var response = await _apiService.GetCustomerByIdAsync(customerId);
+            if (response == null)
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
+
+            var dto = response.Data;
+            var customer = CustomerMapper.MapToCustomer(dto);
+            return customer;
+        }
+
+        public async Task<Customer> GetCustomerByPhoneAsync(string phone)
+        {
+            var response = await _apiService.GetCustomerByPhoneAsync(phone);
+            if (response == null)
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
+
+            var dto = response.Data;
+            var customer = CustomerMapper.MapToCustomer(dto);
+            return customer;
+        }
+
+        public async Task<Customer> GetCustomerByEmailAsync(string email)
+        {
+            var response = await _apiService.GetCustomerByEmailAsync(email);
+            if (response == null )
+                throw new Exception($"Internal Sever Error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
+            var dto = response.Data;
+            var customer = CustomerMapper.MapToCustomer(dto);
+            return customer;
+        }
+
+        public async Task<Customer> UpdateCustomerAsync(Customer customer)
+        {
+            // Map từ domain model Customer sang UpdateCustomerRequest
+            var request = new UpdateCustomerRequest
             {
-                CustomerID = Guid.Parse(customerDto.customerID),
-                Name = customerDto.name,
-                Email = customerDto.email,
-                Phone = customerDto.phone,
-                Address = customerDto.address
+                name = customer.Name,
+                phone = customer.Phone,
+                email = customer.Email,
+                address = customer.Address
             };
-        }
 
-        public async Task<Customer?> GetCustomerByPhone(string phone)
-        {
-            var response = await _apiService.GetAllCustomersByPhone(phone);
-            if (response == null) return null;
-            var customerDto = response.Data;
-            if (customerDto == null) return null;
-            return new Customer
-            {
-                CustomerID = Guid.Parse(customerDto.customerID),
-                Name = customerDto.name,
-                Email = customerDto.email,
-                Phone = customerDto.phone,
-                Address = customerDto.address
-            };
-        }
+            var response = await _apiService.UpdateCustomerAsync(customer.Id, request);
+            if (response == null)
+                throw new Exception($"Internal sever error");
+            if (!response.Succeeded)
+                throw new Exception(response.Message);
 
-        private List<Customer> ConvertListCustomerReposonseToListCustomer(GetAllCustomerResponse customerReposonse)
-        {
-            if (customerReposonse == null || customerReposonse.Data == null || customerReposonse.Data.Count == 0) return new List<Customer>();
-            return customerReposonse.Data.Select(dto => new Customer
-            {
-                CustomerID = Guid.Parse(dto.customerID),
-                Name = dto.name,
-                Email = dto.email,
-                Phone = dto.phone,
-                Address = dto.address,
-            }).ToList();
+            var dto = response.Data;
+            var updatedCustomer = CustomerMapper.MapToCustomer(dto);
+            return updatedCustomer;
         }
     }
 }

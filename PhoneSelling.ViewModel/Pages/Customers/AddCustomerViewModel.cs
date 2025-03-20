@@ -64,7 +64,7 @@ namespace PhoneSelling.ViewModel.Pages.Customers
         {
             try
             {
-                await _customerRepository.CreateCustomer(Customer);
+                await _customerRepository.CreateQuickCustomerAsync(Customer);
                 if (CustomerCreated != null)
                 {
                     CustomerCreated.Invoke(); // Notify Parent ViewModel to Refresh List
