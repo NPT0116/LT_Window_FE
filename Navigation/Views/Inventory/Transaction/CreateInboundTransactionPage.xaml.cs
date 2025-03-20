@@ -60,5 +60,13 @@ namespace Navigation.Views.Inventory.Transaction
 
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is CreateInboundTransactionDto item)
+            {
+                ViewModel.RemoveVariant(item);
+            }
+        }
     }
 }

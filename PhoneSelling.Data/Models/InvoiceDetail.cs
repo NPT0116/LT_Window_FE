@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PhoneSelling.Data.Common.Validators;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -18,11 +19,34 @@ namespace PhoneSelling.Data.Models
 
         // Foreign Keys
         [ObservableProperty] private Guid invoiceID;
-        [ObservableProperty] private Guid variantId;
+        [ObservableProperty]
+        [NotDefault(ErrorMessage ="Sản phẩm không được để trống")]
+        private Guid variantId;
 
         [ObservableProperty] private string quantityError = string.Empty;
+        [ObservableProperty] private string invoiceIDError = string.Empty;
         [ObservableProperty] private string priceError = string.Empty;
 
+        partial void OnQuantityChanged(int newValue)
+        {
+            ValidateProperty(newValue, nameof(Quantity));
+            QuantityError = GetFirstError(nameof(Quantity));
+        }
 
+        partial void OnInvoiceIDChanged(Guid newId)
+        {
+            ValidateProperty(newId, nameof(InvoiceID));
+            InvoiceIDError = GetFirstError(nameof(InvoiceID));   
+        }
+
+        public bool Validate()
+        {
+            ValidateAllProperties();
+
+            QuantityError = GetFirstError(nameof(Quantity));
+            InvoiceIDError = GetFirstError(nameof(InvoiceID));
+
+            return HasErrors;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.Common;
+using PhoneSelling.Data.Common.Validators;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository;
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos;
@@ -24,10 +25,13 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
     {
         private readonly IInventoryTransactionRepository _inventoryTransactionRepository;
         private readonly IVariantRepository _variantRepository;
-        [ObservableProperty] private TrulyObservableCollection<CreateInboundTransactionDto> items = new()
+        [ObservableProperty]
+        [property:MinCollectionCount(1, ErrorMessage = "Danh sách sản phẩm không được để trống")]
+        private TrulyObservableCollection<CreateInboundTransactionDto> items = new()
         {
             new CreateInboundTransactionDto { }
         };
+        [ObservableProperty] private string itemsError = string.Empty;
         public CreateInboundTransactionViewModel()
         {
             _inventoryTransactionRepository = DIContainer.GetKeyedSingleton<IInventoryTransactionRepository>();
@@ -56,6 +60,10 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         public async Task CreateTransaction()
         {
             bool hasErrors = false;
+            ValidateProperty(Items, nameof(Items));
+            var emptyItemErrorString = GetErrors(nameof(Items))?.FirstOrDefault()?.ToString() ?? "";
+            ItemsError = emptyItemErrorString;
+            hasErrors = true;
             foreach(var item in Items)
             {
                 var errors = item.Validate();
@@ -64,6 +72,12 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
 
             if (hasErrors) return;
             await _inventoryTransactionRepository.CreateInboundTransaction(Items.ToList());
+        }
+
+        [RelayCommand]
+        public void RemoveVariant(CreateInboundTransactionDto item)
+        {
+            Items.Remove(item);
         }
     }
 }

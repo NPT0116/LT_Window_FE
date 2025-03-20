@@ -112,8 +112,8 @@
                         <Button Content="✖"
                             Background="Transparent"
                             Foreground="Red"
+                            Click="Button_Click"
                             FontSize="16"
-                            Width="30"
                             Grid.Column="4"
                             HorizontalAlignment="Center"/>
                     </Grid>
@@ -121,6 +121,14 @@
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
+        <TextBlock Text="{
+     x:Bind ViewModel.ItemsError, 
+     Mode=TwoWay, 
+     UpdateSourceTrigger=PropertyChanged}" 
+            Foreground="Red"
+            Visibility="{Binding ViewModel.ItemsError, 
+                         Converter={StaticResource NullToVisibilityConverter},
+                         Mode=OneWay}"/>
         <Button Content="Thêm hàng hóa"
             Background="Transparent"
             Command="{x:Bind ViewModel.AddVariantCommand}"

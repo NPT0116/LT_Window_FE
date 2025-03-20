@@ -14,7 +14,7 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos
     public partial class CreateInboundTransactionDto : BaseEntity
     {
         [ObservableProperty]
-        [property:NotDefault(ErrorMessage ="Sản phẩm không được để trống")]
+        [NotDefault(ErrorMessage ="Sản phẩm không được để trống")]
         private Guid variantId;
         
         [ObservableProperty]
@@ -39,10 +39,9 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos
 
         public bool Validate()
         {
-            ValidateProperty(VariantId, nameof(VariantId));
-            VariantIdError = GetFirstError(nameof(VariantId));
+            ValidateAllProperties();
 
-            ValidateProperty(Quantity, nameof(Quantity));
+            VariantIdError = GetFirstError(nameof(VariantId));
             QuantityError = GetFirstError(nameof(Quantity));
 
             return HasErrors;
