@@ -79,11 +79,13 @@ namespace Navigation.Views.Payments.Invoices
             {
                 if (selectedCustomer.Name == "➕ Create New Customer")
                 {
+                    sender.Text = "";
                     // Open modal to add new customer
                     await ShowCreateCustomerDialog();
                 }
                 else
                 {
+                    Debug.WriteLine("set sender text");
                     sender.Text = selectedCustomer.Name; // Set input to customer's name
                     ViewModel.Customer = selectedCustomer; // Update ViewModel if needed
                     ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;

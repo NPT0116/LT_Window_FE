@@ -36,7 +36,11 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             Invoice = new()
             {
                 InvoiceDetails = new TrulyObservableCollection<InvoiceDetail>()
+                {
+                    new InvoiceDetail() {}
+                }
             };
+            Debug.WriteLine(Invoice.Date);
            
         }
 
@@ -62,6 +66,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         public async Task CreateCustomer()
         {
             await _customerRepository.CreateCustomer(Customer);
+            Customer = new();
         }
 
         public async Task<List<Variant>> SearchVariants(string text)
@@ -105,7 +110,10 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         [RelayCommand]
         public async Task CreateInvoice()
         {
-            await _invoiceRepository.CreateInvoiceAsync(Invoice);
+            var hasErrors = Invoice.Validate();
+            if (hasErrors) Debug.WriteLine("Has errors");
+            else Debug.WriteLine("create invoice");
+                //await _invoiceRepository.CreateInvoiceAsync(Invoice);
         }
     }
 }

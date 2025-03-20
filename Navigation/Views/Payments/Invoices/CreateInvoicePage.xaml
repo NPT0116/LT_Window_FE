@@ -65,7 +65,7 @@
             <TextBlock Text="Tên (hoặc SDT) khách hàng:*" 
                    Foreground="Red"
                    Margin="0,0,0,4"/>
-
+            
             <!-- AutoSuggestBox with Search Button -->
             <Grid>
                 <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
@@ -96,6 +96,14 @@
             <TextBlock Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}"/>
             <TextBlock Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}"/>
             <TextBlock Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}"/>
+            <TextBlock Text="{
+    x:Bind ViewModel.Invoice.CustomerIDError, 
+    Mode=TwoWay, 
+    UpdateSourceTrigger=PropertyChanged}" 
+           Foreground="Red"
+           Visibility="{x:Bind ViewModel.Invoice.CustomerIDError, 
+                        Converter={StaticResource NullToVisibilityConverter},
+                        Mode=OneWay}"/>
         </StackPanel>
 
         <Grid Padding="10">
@@ -160,6 +168,14 @@
                        VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+                <TextBlock Text="{
+                    x:Bind ViewModel.Invoice.DateError, 
+                    Mode=TwoWay, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Invoice.DateError, 
+                                        Converter={StaticResource NullToVisibilityConverter},
+                                        Mode=OneWay}"/>
             </Grid>
 
 
@@ -275,6 +291,14 @@ TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <TextBlock Text="{
+            x:Bind ViewModel.Invoice.InvoiceDetailsError, 
+            Mode=TwoWay, 
+            UpdateSourceTrigger=PropertyChanged}" 
+                   Foreground="Red"
+                   Visibility="{x:Bind ViewModel.Invoice.InvoiceDetailsError, 
+                                Converter={StaticResource NullToVisibilityConverter},
+                                Mode=OneWay}"/>
 
         <Button Content="Add new invoice detail"  Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
         <TextBlock Text="Total Amount:" 

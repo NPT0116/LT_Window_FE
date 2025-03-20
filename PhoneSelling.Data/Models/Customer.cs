@@ -56,9 +56,7 @@ namespace PhoneSelling.Data.Models
 
         public bool ValidateAllProperties()
         {
-            ValidateProperty(Email, nameof(Email));
-            ValidateProperty(Phone, nameof(Phone));
-            ValidateProperty(Name, nameof(Name));
+            base.ValidateAllProperties();
             EmailError = GetFirstError(nameof(Email));
             NameError = GetFirstError(nameof(Name));
             PhoneError = GetFirstError(nameof(Phone));
