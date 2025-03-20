@@ -29,6 +29,8 @@ using System.Threading.Tasks;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using Navigation.Views.Payments.Invoices;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
+using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
+using Navigation.Views.Inventory.Transaction;
 
 namespace Navigation.Converters
 {
@@ -45,6 +47,11 @@ namespace Navigation.Converters
             {typeof(CreateItemPageViewModel), typeof(CreateItemPage)},
             {typeof(VariantsListPageViewModel), typeof(VariantsListPage)},
             {typeof(VariantListViewModel),typeof(VariantListPage)},
+            {typeof(CreateInboundTransactionViewModel),typeof(CreateInboundTransactionPage)},
+
+
+
+            // Invoice
             {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
             {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},
         };

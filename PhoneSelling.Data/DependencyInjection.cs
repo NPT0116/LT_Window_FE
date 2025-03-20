@@ -7,6 +7,8 @@ using PhoneSelling.Data.Repositories.ColorRepository;
 using PhoneSelling.Data.Repositories.ColorRepository.ApiService;
 using PhoneSelling.Data.Repositories.CustomerRepository;
 using PhoneSelling.Data.Repositories.CustomerRepository.ApiService;
+using PhoneSelling.Data.Repositories.InventoryTransactionRepository;
+using PhoneSelling.Data.Repositories.InventoryTransactionRepository.ApiService;
 using PhoneSelling.Data.Repositories.InvoiceRepository;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
 using PhoneSelling.Data.Repositories.ItemGroupRepository;
@@ -40,6 +42,7 @@ namespace PhoneSelling.Data
             DIContainer.AddKeyedSingleton<ICustomerApiService, CustomerApiService>();
             DIContainer.AddKeyedSingleton<IVariantApiService, VariantApiService>();
             DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
+            DIContainer.AddKeyedSingleton<IInventoryTransactionApiService, InventoryTransactionApiService>();
 
             DIContainer.AddKeyedSingleton<IPhoneRepository, MockPhoneRepository>();
 
@@ -47,6 +50,7 @@ namespace PhoneSelling.Data
             DIContainer.AddKeyedSingleton<ICustomerRepository, CustomerRepository>();
             DIContainer.AddKeyedSingleton<IInvoiceRepository, InvoiceRepository>();
             DIContainer.AddKeyedSingleton<IVariantRepository, VariantRepository>();
+            DIContainer.AddKeyedSingleton<IInventoryTransactionRepository, InventoryTransactionRepository>();
 
             DIContainer.AddKeyedSingleton<IInvoiceApiService,InvoiceApiService>();
             DIContainer.AddKeyedSingleton<IColorApiService, ColorApiService>();

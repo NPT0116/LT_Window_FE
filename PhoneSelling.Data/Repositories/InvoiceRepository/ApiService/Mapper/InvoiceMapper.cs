@@ -30,7 +30,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Mapper
                     dto.InvoiceDetails.Select(detailDto => new InvoiceDetail
                     {
                         Id = Guid.Parse(detailDto.invoiceDetailID),
-                        InvoiceId = Guid.Parse(dto.invoiceID), // Sử dụng invoiceID của hóa đơn cha
+                        InvoiceID = Guid.Parse(dto.invoiceID), // Sử dụng invoiceID của hóa đơn cha
                         VariantId = Guid.Parse(detailDto.variantID),
                         Quantity = detailDto.quantity,
                         Price = detailDto.price

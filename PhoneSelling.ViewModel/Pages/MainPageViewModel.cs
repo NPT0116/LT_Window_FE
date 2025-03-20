@@ -4,6 +4,7 @@ using PhoneSelling.ViewModel.Navigation;
 using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
 using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
+using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
 using PhoneSelling.ViewModel.Pages.Inventory.Variants;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
@@ -29,6 +30,7 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToCreateItemPageCommand { get; }
         public RelayCommand GoToCreateInvoiceCommand { get; }
         public RelayCommand GoToInvoiceListCommand { get; }
+        public RelayCommand GoToCreateInboundTransactionCommand { get; }
 
         public MainPageViewModel(BasePageViewModel viewModel)
         {
@@ -44,10 +46,11 @@ namespace PhoneSelling.ViewModel.Pages
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
-            
+            GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
+
             // Invoice
             GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
-            GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InvoiceListViewModel));
+            GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
 
         }
 

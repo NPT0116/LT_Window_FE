@@ -18,18 +18,18 @@ namespace PhoneSelling.Data.Models
         private float totalAmount;
         
         [ObservableProperty]
-        [property: NotDefault(ErrorMessage = "Ngày tạo hóa đơn không được để trống")]
+        [NotDefault(ErrorMessage = "Ngày tạo hóa đơn không được để trống")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
         private DateTime date;
         
         [ObservableProperty]
-        [property: MinCollectionCount(1, ErrorMessage = "Danh sách hóa chi tiết không được để trống")]
+        [MinCollectionCount(1, ErrorMessage = "Danh sách hóa chi tiết không được để trống")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
         private TrulyObservableCollection<InvoiceDetail> _invoiceDetails = new();
         // Foreign Key
         
         [ObservableProperty]
-        [property: NotDefault(ErrorMessage = "Khách hàng không được để trống")]
+        [NotDefault(ErrorMessage = "Khách hàng không được để trống")]
         private Guid customerID;
 
         // Error messages
@@ -43,6 +43,11 @@ namespace PhoneSelling.Data.Models
             Debug.WriteLine("Invoice detail validation is called");
             ValidateProperty(newValue, nameof(InvoiceDetails));
             InvoiceDetailsError = GetFirstError(nameof(InvoiceDetails));
+
+            foreach(var detail in InvoiceDetails)
+            {
+                detail.Validate();
+            }
         }
 
         partial void OnTotalAmountChanged(float newValue)
@@ -65,14 +70,13 @@ namespace PhoneSelling.Data.Models
 
         public bool Validate()
         {
-            ValidateProperty(InvoiceDetails, nameof(InvoiceDetails));
+            ValidateAllProperties();
+
             InvoiceDetailsError = GetFirstError(nameof(InvoiceDetails));
-            ValidateProperty(TotalAmount, nameof(TotalAmount));
             TotalAmountError = GetFirstError(nameof(TotalAmount));
-            ValidateProperty(Date, nameof(Date));
             DateError = GetFirstError(nameof(Date));
-            ValidateProperty(CustomerID, nameof(CustomerID));
             CustomerIDError = GetFirstError(nameof(CustomerID));
+
             return HasErrors;
         }
     }

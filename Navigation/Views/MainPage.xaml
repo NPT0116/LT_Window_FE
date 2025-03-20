@@ -103,6 +103,14 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
 
+                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

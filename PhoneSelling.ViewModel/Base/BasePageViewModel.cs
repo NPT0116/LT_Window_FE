@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using PhoneSelling.ViewModel.Navigation;
 namespace PhoneSelling.ViewModel.Base
 {
-    public class BasePageViewModel : ObservableObject
+    public class BasePageViewModel : ObservableValidator
     {
         public PageNavigation ParentPageNavigation { get; set; }
     }
