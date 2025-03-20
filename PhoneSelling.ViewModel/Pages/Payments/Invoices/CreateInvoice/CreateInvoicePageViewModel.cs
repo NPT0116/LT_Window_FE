@@ -86,7 +86,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         {
             var newDetail = new InvoiceDetail
             {
-                InvoiceId = Invoice.InvoiceID,
+                InvoiceID = Invoice.InvoiceID,
                 Quantity = 1,
                 Price = 100, // Example default value
             };

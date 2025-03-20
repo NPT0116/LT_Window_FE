@@ -14,9 +14,11 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\AddColorButton.xaml" />
+    <None Remove="Controls\Variant\VariantSearch.xaml" />
     <None Remove="Views\DashboardPage.xaml" />
     <None Remove="Views\Inventory\CreateItems\CreateItemPage.xaml" />
     <None Remove="Views\Inventory\ItemGroupsPage.xaml" />
+    <None Remove="Views\Inventory\Transaction\CreateInboundTransactionPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\Page1.xaml" />
     <None Remove="Views\Page1_1.xaml" />
@@ -124,6 +126,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Inventory\CreateItems\CreateItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Inventory\Transaction\CreateInboundTransactionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Controls\Variant\VariantSearch.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">

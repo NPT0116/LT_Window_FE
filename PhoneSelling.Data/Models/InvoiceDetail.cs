@@ -17,7 +17,7 @@ namespace PhoneSelling.Data.Models
         [ObservableProperty] private Variant variant = new();
 
         // Foreign Keys
-        [ObservableProperty] private Guid invoiceId;
+        [ObservableProperty] private Guid invoiceID;
         [ObservableProperty] private Guid variantId;
 
         [ObservableProperty] private string quantityError = string.Empty;
