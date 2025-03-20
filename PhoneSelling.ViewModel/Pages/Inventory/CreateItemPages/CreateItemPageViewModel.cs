@@ -31,35 +31,34 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         [ObservableProperty] private Guid itemGroupId;
         [ObservableProperty] private Guid manufacturerId;
 
-        private readonly IItemGroupRepository _itemGroupService;
-
         // Handle selected
-        private ItemGroup _selectedItemGroup { get; set; }
-        public ItemGroup SelectedItemGroup
-        {
-            get { return _selectedItemGroup; }
-            set { 
-                if (_selectedItemGroup != value)
-                {
-                    _selectedItemGroup = value;
-                    Debug.WriteLine($"what {value}");
-                    OnPropertyChanged(nameof(SelectedItemGroup));
-                }
-            }
-        }
-        private Manufacturer _selectedManufacturer { get; set; }
-        public Manufacturer SelectedManufacturer
-        {
-            get { return _selectedManufacturer; }
-            set
-            {
-                if (_selectedManufacturer != value)
-                {
-                    _selectedManufacturer = value;
-                    OnPropertyChanged(nameof(SelectedManufacturer));
-                } 
-            }
-        }
+        [ObservableProperty] private ItemGroup selectedItemGroup;
+        [ObservableProperty] private Manufacturer selectedManufacturer;
+        //private ItemGroup _selectedItemGroup { get; set; }
+        //public ItemGroup SelectedItemGroup
+        //{
+        //    get { return _selectedItemGroup; }
+        //    set { 
+        //        if (_selectedItemGroup != value)
+        //        {
+        //            _selectedItemGroup = value;
+        //            OnPropertyChanged(nameof(SelectedItemGroup));
+        //        }
+        //    }
+        //}
+        //private Manufacturer _selectedManufacturer { get; set; }
+        //public Manufacturer SelectedManufacturer
+        //{
+        //    get { return _selectedManufacturer; }
+        //    set
+        //    {
+        //        if (_selectedManufacturer != value)
+        //        {
+        //            _selectedManufacturer = value;
+        //            OnPropertyChanged(nameof(SelectedManufacturer));
+        //        } 
+        //    }
+        //}
 
         // Manually add Storage and Color
         // Storage
@@ -134,6 +133,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         private readonly IItemRepository _itemRepository;
         private readonly IItemGroupRepository _itemGroupRepository;
         private readonly IManufacturerRepository _manufacturerRepository;
+
         public CreateItemPageViewModel()
         {
             itemName = string.Empty;
@@ -253,7 +253,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             var itemDto = new ItemDto
             {
                 itemID = Guid.NewGuid().ToString(),
-                itemGroupID = SelectedItemGroup?.Id.ToString(),
+                itemGroupID = selectedItemGroup?.Id.ToString(),
                 itemName = itemName,
                 description = description,
                 picture = Picture,

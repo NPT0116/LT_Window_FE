@@ -236,7 +236,8 @@ namespace Navigation.Views.Inventory.CreateItems
                     Debug.WriteLine("New Group Added: " + newGroup.ItemGroupName);
                     viewModel.ItemGroups.Add(newGroup);
                     // Optionally, set the new group as selected.
-                    //viewModel.SelectedItemGroup = newGroup;
+                    viewModel.ItemGroups = new List<ItemGroup>(viewModel.ItemGroups);
+                    viewModel.SelectedItemGroup = newGroup;
                 }
             }
             else
@@ -289,7 +290,8 @@ namespace Navigation.Views.Inventory.CreateItems
                     Debug.WriteLine("New Manufacturer Added: " + newManufacturer.ManufacturerName);
                     viewModel.Manufacturers.Add(newManufacturer);
                     // Optionally, set it as selected.
-                    //viewModel.SelectedManufacturer = newManufacturer;
+                    viewModel.Manufacturers = new List<Manufacturer>(viewModel.Manufacturers);
+                    viewModel.SelectedManufacturer = newManufacturer;
                 }
             }
             else
