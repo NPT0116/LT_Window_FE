@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Query
 {
-    public class ItemGroupQueryParameter : PaginationQuery
+    public partial class ItemGroupQueryParameter : PaginationQuery
     {
         [ObservableProperty] private string itemGroupName;
     }
