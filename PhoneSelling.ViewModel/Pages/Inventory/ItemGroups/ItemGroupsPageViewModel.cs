@@ -13,47 +13,66 @@ using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requ
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contracts.Query;
 using PhoneSelling.Data.Repositories.ItemGroupRepository;
+using PhoneSelling.Data.Repositories.ItemRepository;
+using PhoneSelling.Data.Repositories.VariantRepository;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.ItemGroups
 {
     public partial class ItemGroupsPageViewModel : BasePageViewModel
     {
-        public List<ItemGroup> data { get; set; }
-        [ObservableProperty]
-        private ItemGroup selectedItemGroup;
-        [ObservableProperty]
-        private Item selectedItem;
-        [ObservableProperty]
-        private bool isGridView;
-        // queryviemodel:pagnin queryviewmodel
+        //public List<ItemGroup> data { get; set; } = new();
+        public ObservableCollection<ItemGroup> Data { get; set; } = new();
+        [ObservableProperty] private ItemGroup selectedItemGroup = new ItemGroup();
+        [ObservableProperty] private Item selectedItem = new Item();
+        [ObservableProperty] private bool isGridView;
+        // queryviemodel:pagnination queryviewmodel
         // IItemGroupRepository
-        public ItemGroupsQueryViewModel QueryViewModel { get; set; }
+        // public ItemGroupsQueryViewModel QueryViewModel { get; set; }
         private readonly IItemGroupRepository _itemGroupRepository;
-
+        private readonly IItemRepository _itemRepository;
+        private readonly IVariantRepository _variantRepositoty;
         public ItemGroupsPageViewModel()
         {
-            data = ItemGroupsMockData.CreatePhoneMockData();
-            //IItemGroupRepository = DIContainer.GetKeyedSingleton<IItemGroupRepository>()
-            //QueryViewModel = new(loadData);
-            QueryViewModel = new(LoadData);
             _itemGroupRepository = DIContainer.GetKeyedSingleton<IItemGroupRepository>();
-
+            _itemRepository = DIContainer.GetKeyedSingleton<IItemRepository>();
+            _variantRepositoty = DIContainer.GetKeyedSingleton<IVariantRepository>();
+            _ = LoadDataAsync();
+            //Data = ItemGroupsMockData.CreatePhoneMockData();
         }
-        
-        private async Task<PaginationResult<ItemGroup>> LoadData(ItemGroupQueryParameter query)
+        public async Task LoadDataAsync()
         {
-            //IItemGroupRepository = await callapi
-            //return IItemGroupRepository;
-            var result = await _itemGroupRepository.GetItemGroupsAsync(query);
-            return result;
-        }
+            //Debug.WriteLine(groupsResponse);
+            var groupsResponse = await _itemGroupRepository.GetItemGroupsAsync(new ItemGroupQueryParameter());
+            var groups = groupsResponse.Data;
 
-    }
+            var items = await _itemRepository.GetAll();
 
-    public partial class ItemGroupsQueryViewModel : PaginationQueryViewModel<ItemGroup, ItemGroupQueryParameter>
-    {
-        public ItemGroupsQueryViewModel(Func<ItemGroupQueryParameter, Task<PaginationResult<ItemGroup>>> fetchDataFunc) : base(fetchDataFunc)
-        {
+            var variantsResponse = await _variantRepositoty.GetAllVariants(new VariantPaginationQuery());
+            var variants = variantsResponse.Data;
+
+            Data.Clear();
+
+            foreach (var group in groups)
+            {
+                var groupItems = items.Where(item => item.ItemGroupId == group.Id).ToList();
+
+                foreach (var item in groupItems)
+                {
+                    Debug.WriteLine(item.Id);
+                    item.Variants = variants.Where(variant => variant.Item.Id == item.Id).ToList();
+                }
+
+                group.Items = groupItems;
+                Data.Add(group);
+            }
+            // Debug
         }
+        //private async Task<PaginationResult<ItemGroup>> LoadData(ItemGroupQueryParameter query)
+        //{
+        //    //IItemGroupRepository = await callapi
+        //    //return IItemGroupRepository;
+        //    var result = await _itemGroupRepository.GetItemGroupsAsync(query);
+        //    return result;
+        //}
     }
 }

@@ -10,6 +10,6 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contract
 {
     public partial class ItemGroupQueryParameter : PaginationQuery
     {
-        [ObservableProperty] private string itemGroupName;
+        [ObservableProperty] private string itemGroupName = string.Empty;
     }
 }

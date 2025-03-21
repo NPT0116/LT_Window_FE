@@ -7,6 +7,7 @@ using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Resp
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -36,8 +37,7 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService
             string url = $"{ApiUrl}?{string.Join("&", queryParams)}";
 
             var response = await _httpClient.GetFromJsonAsync<GetAllItemGroupResponse>(url);
-
-            return response; 
+            return response;
         }
     }
 }

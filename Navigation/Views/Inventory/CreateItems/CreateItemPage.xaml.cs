@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.ManufacturerRepository;
 using PhoneSelling.ViewModel.Pages.Items;
+using System.Linq;
 
 namespace Navigation.Views.Inventory.CreateItems
 {
@@ -297,6 +298,17 @@ namespace Navigation.Views.Inventory.CreateItems
             else
             {
                 Debug.WriteLine("Failed to create new manufacturer.");
+            }
+        }
+        // Seach box
+        private void manufacturerSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                if (this.DataContext is CreateItemPageViewModel viewModel)
+                {
+                    viewModel.FilterManufacturers(sender.Text);
+                }
             }
         }
     }

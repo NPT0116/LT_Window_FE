@@ -57,6 +57,7 @@ namespace PhoneSelling.Data.Repositories.ItemRepository
                 DateTime.TryParse(dto.releaseDate, out DateTime releaseDate);
                 return new Item
                 {
+                    Id = Guid.TryParse(dto.itemID, out Guid id) ? id : Guid.Empty, 
                     ItemGroupId = itemGroupId,
                     ManufacturerId = manufacturerId,
                     ItemName = dto.itemName,
