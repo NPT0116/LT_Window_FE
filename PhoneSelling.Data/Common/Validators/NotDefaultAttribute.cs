@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Common.Validators
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public class NotDefaultAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)

@@ -86,7 +86,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         {
             var newDetail = new InvoiceDetail
             {
-                InvoiceId = Invoice.InvoiceID,
+                InvoiceID = Invoice.InvoiceID,
                 Quantity = 1,
                 Price = 100, // Example default value
             };
@@ -111,9 +111,12 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         public async Task CreateInvoice()
         {
             var hasErrors = Invoice.Validate();
-            if (hasErrors) Debug.WriteLine("Has errors");
-            else Debug.WriteLine("create invoice");
-                //await _invoiceRepository.CreateInvoiceAsync(Invoice);
+            foreach(var detail in Invoice.InvoiceDetails)
+            {
+                var validationResult = detail.Validate();
+                if(validationResult) hasErrors = true;
+            }
+            if(!hasErrors) await _invoiceRepository.CreateInvoiceAsync(Invoice);
         }
     }
 }
