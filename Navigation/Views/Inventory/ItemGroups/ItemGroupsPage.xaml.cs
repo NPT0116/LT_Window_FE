@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
 using PhoneSelling.Data.Models;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using PhoneSelling.ViewModel.Pages.Inventory.Variants;
 
 namespace Navigation.Views.Inventory.ItemGroups
 {
@@ -28,10 +29,6 @@ namespace Navigation.Views.Inventory.ItemGroups
                     MainPivot.SelectedIndex = 1;
                     viewModel.SelectedItemGroup = group;
                     viewModel.SelectedItem = group.Items.FirstOrDefault();
-                    foreach(Variant item in viewModel.SelectedItem.Variants)
-                    {
-                        //Debug.WriteLine(item.Storage);
-                    }
                 }
             }
         }
@@ -39,8 +36,11 @@ namespace Navigation.Views.Inventory.ItemGroups
         {
             if (sender is ListView lv && lv.SelectedItem is Item item)
             {
-                MainPivot.SelectedIndex = 2;
-                ViewModel.SelectedItem = item;
+                if (this.DataContext is ItemGroupsPageViewModel viewModel)
+                {
+                    MainPivot.SelectedIndex = 2;
+                    viewModel.SelectedItem = item;
+                }
             }
         }
         private void VariantList_SelectionChanged(object sender, SelectionChangedEventArgs e)

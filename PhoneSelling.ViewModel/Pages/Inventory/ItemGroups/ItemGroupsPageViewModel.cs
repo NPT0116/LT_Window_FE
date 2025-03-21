@@ -66,7 +66,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.ItemGroups
                 Data.Add(group);
             }
             // Debug
-
         }
         //private async Task<PaginationResult<ItemGroup>> LoadData(ItemGroupQueryParameter query)
         //{
