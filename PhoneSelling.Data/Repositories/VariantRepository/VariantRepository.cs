@@ -36,6 +36,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
                         StockQuantity = dto.stockQuantity,
                         Item = new Item()
                         {
+                            Id = Guid.TryParse(dto.itemDto.itemID, out Guid id) ? id: Guid.Empty,
                             ItemName = dto.itemDto.itemName,
                             Description = dto.itemDto.description,
                             Picture = dto.itemDto.picture,

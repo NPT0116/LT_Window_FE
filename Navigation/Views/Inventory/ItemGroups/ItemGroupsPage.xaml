@@ -106,14 +106,14 @@
         <Pivot Grid.Row="0" x:Name="MainPivot">
             <!--Pivot 1-->
             <PivotItem Header="All Groups">
-                <ListView ItemsSource="{x:Bind ViewModel.data}" 
+                <ListView ItemsSource="{Binding Data, Mode=OneWay}" 
                           SelectionChanged="GroupList_SelectionChanged"
                           ItemTemplate="{StaticResource ListItemGroupTemplate}">
                 </ListView>
             </PivotItem>
             <!--Pivot 2-->
             <PivotItem Header="Group Details">
-                <ListView ItemsSource="{x:Bind ViewModel.SelectedItemGroup.Items, Mode=OneWay}"
+                <ListView ItemsSource="{Binding SelectedItemGroup.Items, Mode=OneWay}"
                           SelectionChanged="ItemList_SelectionChanged"
                           ItemTemplate="{StaticResource ListItemTemplate}">
                 </ListView>
@@ -122,10 +122,10 @@
             <PivotItem Header="items Detail">
                 <StackPanel>
                     <ToggleSwitch Header="Grid Mode"
-                                  IsOn="{x:Bind ViewModel.IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  IsOn="{Binding IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <!--Grid-View-->
-                    <GridView Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
-                          ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
+                    <GridView Visibility="{Binding IsGridView, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                          ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
                           SelectionChanged="VariantList_SelectionChanged"
                           ItemTemplate="{StaticResource GridVariantTemplate}" 
                           MaxHeight="900">
@@ -136,7 +136,7 @@
                     </GridView.ItemsPanel>
                 </GridView>
                 <!--List-View-->
-                    <StackPanel Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                    <StackPanel Visibility="{Binding IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
                     <Grid Background="LightGray" Padding="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -153,7 +153,7 @@
                         <TextBlock Text="Stock" Style="{StaticResource TableHeaderStyle}" Grid.Column="4"/>
                         <TextBlock Text="Color" Style="{StaticResource TableHeaderStyle}" Grid.Column="5"/>
                     </Grid>
-                    <ListView ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
+                    <ListView ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
                             SelectionChanged="VariantList_SelectionChanged"
                             ItemTemplate="{StaticResource ListVariantTemplate}">
                     </ListView>

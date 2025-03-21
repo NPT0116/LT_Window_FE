@@ -11,5 +11,6 @@ namespace PhoneSelling.Data.Repositories.ItemGroupRepository.ApiService.Contract
 {
     public class GetAllItemGroupResponse : PaginationApiResponse<ItemGroupDto>
     {
+
     }
 }

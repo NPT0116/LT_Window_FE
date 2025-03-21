@@ -33,7 +33,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         // Handle selected
         [ObservableProperty] private ItemGroup selectedItemGroup;
         [ObservableProperty] private Manufacturer selectedManufacturer;
-
         // Manually add Storage and Color
         // Storage
         public ObservableCollection<string> StorageList { get; } = new ObservableCollection<string>();

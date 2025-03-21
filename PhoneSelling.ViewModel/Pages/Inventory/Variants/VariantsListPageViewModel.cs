@@ -18,7 +18,9 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Variants
     public class VariantsListPageViewModel : BasePageViewModel
     {
         public VariantQueryViewModel QueryViewModel { get; set; }
+        public ItemViewModel ItemViewModel { get; set; }
         private readonly IVariantRepository _variantRepository;
+        private readonly IItemRepository _itemRepository;
         private bool _isGridView;
         public bool IsGridView
         {
@@ -34,8 +36,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Variants
             }
         }
 
-        public ItemViewModel ItemViewModel { get; set; }
-        private readonly IItemRepository _itemRepository;
+
         public VariantsListPageViewModel() : base()
         {
             Debug.WriteLine("This is Variants List Page !");
