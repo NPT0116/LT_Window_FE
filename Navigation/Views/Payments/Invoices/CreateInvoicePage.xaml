@@ -130,10 +130,10 @@
                  VerticalAlignment="Center"
                  Padding="8" Width="250"/>
                 <Button Width="30" Height="30"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent">
-                    <FontIcon Glyph="&#xE713;" Foreground="Blue"/>
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                            <FontIcon Glyph="&#xE713;" Foreground="Blue"/>
                     <!-- Gear Icon -->
                 </Button>
             </Grid>
