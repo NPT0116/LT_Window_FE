@@ -11,192 +11,228 @@
     <Page.Resources>
         <converter:DateTimeNullableToDateTimeOffsetConverter x:Key="DateTimeNullableToDateTimeOffsetConverter"/>
         <converter:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter" />
+        <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+
+        <!-- Standard Styles for consistency -->
+        <Style x:Key="SectionHeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style x:Key="InputComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+
     </Page.Resources>
-    <ScrollView>
-    <Grid Padding="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
-        </Grid.RowDefinitions>
-        <StackPanel Spacing="10">
-            <!-- Item Information -->
-            <TextBlock Text="ITEM INFORMATION" FontWeight="Bold" FontSize="30" HorizontalAlignment="Center"/>
-            <TextBox Header="ITEM NAME" PlaceholderText="Enter item name" Text="{Binding ItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Header="DESCRIPTION" PlaceholderText="Enter description" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <!--<TextBox Header="PICTURE" PlaceholderText="Enter picture url" Text="{Binding Picture, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-            <StackPanel Orientation="Vertical" Spacing="5">
-                <TextBlock Text="PICTURE"/>
-                <Button Content="Select Image" Click="SelectImage_Click"/>
-                <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"
-                    Margin="0,10,0,0"/>
-            </StackPanel>
-            <DatePicker Header="REALEASE DATE" Date="{Binding ReleaseDate, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <!-- Picking Item Group -->
-            <StackPanel Orientation="Horizontal" Spacing="5">
-                <ComboBox Header="CHOOSE ITEM GROUP"
-                          Width="200"
-                          ItemsSource="{Binding ItemGroups, Mode=OneWay}"
-                          SelectedItem="{Binding SelectedItemGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="model:ItemGroup">
-                            <TextBlock Text="{x:Bind ItemGroupName}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button Margin="0,28,0,0" Content="Add new" Click="AddNewGroup_Click"/>
-            </StackPanel>
-            <!-- Picking Manufacturer -->
-            <StackPanel>
-
-                <StackPanel Orientation="Horizontal" Spacing="5">
-                        <!--<AutoSuggestBox x:Name="manufacturerSearchBox"
-                                TextChanged="manufacturerSearchBox_TextChanged"
-                                PlaceholderText="Search manufacturer..." />-->
-                        <ComboBox ItemsSource="{Binding Manufacturers, Mode=OneWay}"
-                                  Width="200"
-                                  Header="CHOOSE MANUFACTURER"
-                                  SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="model:Manufacturer">
-                                <TextBlock Text="{x:Bind ManufacturerName}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button Margin="0,28,0,0" Content="Add new" Click="AddNewManufacturer_Click" />
-                </StackPanel>
-            </StackPanel>
-
-            <!-- Variant Information -->
-            <TextBlock Text="VARIANT INFORMATION" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" />
-            <Grid RowSpacing="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <!-- Quick Create -->
-                <!-- Storage -->
-                <Grid Grid.Row="0" ColumnSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="10*" />
-                    </Grid.ColumnDefinitions>
-                        <Grid HorizontalAlignment="Stretch" ColumnSpacing="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="{Binding NewStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Grid.Column="0" PlaceholderText="Enter Storage (128, 64,...)" Height="30" 
-                                     HorizontalAlignment="Stretch"/>
-                            <Button  Grid.Column="1" Content="Add" Command="{Binding AddNewStorageCommand}"/>
-                        </Grid>
-                    <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
-                        <ItemsControl ItemsSource="{Binding StorageList}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
-                                                <TextBlock Text="{x:Bind}" />
-                                                <Button Command="{Binding DataContext.DeleteSelectedStorageCommand, ElementName=PageRoot}" 
-                                                        CommandParameter="{Binding}" 
-                                                        Width="20" Height="20" Padding="0" Margin="0" 
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                        Content="x"/>
-                                            </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Border>
-                </Grid>
-                <!-- Color -->
-                <Grid Grid.Row="1" ColumnSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="10*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="Add New Color" HorizontalAlignment="Stretch" Click="AddNewColor_Click" />
-
-                        <!--<StackPanel Orientation="Horizontal" Spacing="5">
-                        --><!--<TextBox Text="{Binding NewColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                Grid.Column="0" PlaceholderText="Enter Color" Height="30" Width="100"/>-->
-                        <!--<Button Grid.Column="1" Content="Add" Command="{Binding AddNewColorCommand}"/>--><!--
-                        </StackPanel>-->
-                    
-                    <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
-                        <ItemsControl ItemsSource="{Binding ColorList}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
-                                            <TextBlock Text="{x:Bind}" />
-                                            <Button Command="{Binding DataContext.DeleteSelectedColorCommand, ElementName=PageRoot}" 
-                                                    CommandParameter="{Binding}" 
-                                                    Width="20" Height="20" Padding="0" Margin="0" 
-                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                    Content="x"/>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Border>
-                </Grid>
-                <!--Manually-->
-                <!--<Button Grid.Row="2" Content="New Variant" Command="{Binding CreateVariantCommand}"/>-->
-                <!-- Display And Manually Create Variants -->
-                <ItemsControl Grid.Row="3" ItemsSource="{Binding Variants, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="model:Variant">
-                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,5">
-                                <StackPanel Spacing="10" Orientation="Horizontal">
-                                    <TextBlock Text="Variant Details:" FontWeight="Bold"/>
-                                    <StackPanel Orientation="Horizontal" Spacing="10">
-                                        <StackPanel>
-                                            <TextBlock Text="Color:"/>
-                                            <TextBox IsReadOnly="True" Text="{x:Bind Color.Name, Mode=TwoWay}" Width="80"/>
-                                        </StackPanel>
-                                        <StackPanel>
-                                            <TextBlock Text="Storage (GB):"/>
-                                            <TextBox Text="{x:Bind Storage, Mode=TwoWay}" Width="80"/>
-                                        </StackPanel>
-                                        <StackPanel>
-                                            <TextBlock Text="Cost Price:"/>
-                                            <TextBox Text="{x:Bind CostPrice, Mode=TwoWay}" Width="80"/>
-                                        </StackPanel>
-                                        <StackPanel>
-                                            <TextBlock Text="Selling Price:"/>
-                                            <TextBox Text="{x:Bind SellingPrice, Mode=TwoWay}" Width="80"/>
-                                        </StackPanel>
-                                        <StackPanel>
-                                            <TextBlock Text="Stock Quantity:"/>
-                                            <TextBox Text="{x:Bind StockQuantity, Mode=TwoWay}" Width="80"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!-- Remove Button -->
-                                    <Button Command="{Binding DataContext.RemoveVariantCommand, ElementName=PageRoot }"
-                                            CommandParameter="{Binding}"
-                                            Content="x"  Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Red" Foreground="White"/>
-                                </StackPanel>
+    <ScrollViewer>
+        <Grid Padding="20" Background="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Spacing="20">
+                <!-- Item Information Section -->
+                <Border Background="White" CornerRadius="8" Padding="20" BorderBrush="LightGray" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="ITEM INFORMATION" Style="{StaticResource SectionHeaderTextBlockStyle}" />
+                        <TextBox Header="ITEM NAME" 
+                                 PlaceholderText="Enter item name" 
+                                 Text="{Binding ItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputTextBoxStyle}" />
+                        <TextBlock Text="{Binding ItemNameError, Mode=OneWay}" 
+                                   Visibility="{Binding ItemNameError, Converter={StaticResource StringToVisibilityConverter}}"
+                                   Foreground="Red" 
+                                   TextWrapping="Wrap"/>
+                        <TextBox Header="DESCRIPTION" 
+                                 PlaceholderText="Enter description" 
+                                 Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputTextBoxStyle}"/>
+                        <StackPanel Orientation="Vertical" Spacing="10">
+                            <TextBlock Text="PICTURE" />
+                            <Button Content="Select Image" Click="SelectImage_Click" HorizontalAlignment="Left"/>
+                            <Border BorderBrush="Gray" BorderThickness="1">
+                                <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"
+                                   Height="150" Stretch="Uniform" Margin="0,10,0,0"/>
                             </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-        </StackPanel>
-            <Button Grid.Row="1" Content="Create" Command="{Binding SaveItemCommand}" HorizontalAlignment="Center"/>
-    </Grid>
-    </ScrollView>
+                        </StackPanel>
+                        <DatePicker Header="RELEASE DATE" 
+                                    Date="{Binding ReleaseDate, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Margin="0,10,0,0"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ComboBox Header="CHOOSE ITEM GROUP"
+                                      Width="200"
+                                      ItemsSource="{Binding ItemGroups, Mode=OneWay}"
+                                      SelectedItem="{Binding SelectedItemGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource InputComboBoxStyle}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="model:ItemGroup">
+                                                <TextBlock Text="{x:Bind ItemGroupName}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Content="Add new" Click="AddNewGroup_Click" VerticalAlignment="Bottom"/>
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding ItemGroupError, Mode=OneWay}"
+                                           Foreground="Red"
+                                           Visibility="{Binding ItemGroupError, Converter={StaticResource StringToVisibilityConverter}}"/>
+                            </StackPanel>
+
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                            <ComboBox ItemsSource="{Binding Manufacturers, Mode=OneWay}"
+                                      Width="200"
+                                      Header="CHOOSE MANUFACTURER"
+                                      SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource InputComboBoxStyle}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Manufacturer">
+                                        <TextBlock Text="{x:Bind ManufacturerName}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Content="Add new" Click="AddNewManufacturer_Click" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Variant Information Section -->
+                <Border Background="White" CornerRadius="8" Padding="20" BorderBrush="LightGray" BorderThickness="1" >
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="VARIANT INFORMATION" Style="{StaticResource SectionHeaderTextBlockStyle}" />
+                        <TextBlock Text="{Binding VariantError, Mode=OneWay}" 
+                                   Visibility="{Binding VariantError, Converter={StaticResource StringToVisibilityConverter}}"
+                                   HorizontalAlignment="Center"
+                                   Foreground="Red"/>
+                        <!-- Quick Create for Storage -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="10*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid HorizontalAlignment="Stretch" ColumnSpacing="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding NewStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                         Grid.Column="0" 
+                                         PlaceholderText="Enter Storage (128GB, 64GB,...)"                                       
+                                         HorizontalAlignment="Stretch"
+                                         Style="{StaticResource InputTextBoxStyle}"/>
+                                <Button Grid.Column="1" Content="Add" Command="{Binding AddNewStorageCommand}" />
+                            </Grid>
+                            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
+                                <ItemsControl ItemsSource="{Binding StorageList}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
+                                                    <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
+                                                    <Button Command="{Binding DataContext.DeleteSelectedStorageCommand, ElementName=PageRoot}" 
+                                                            CommandParameter="{Binding}" 
+                                                            Width="20" Height="20" Padding="0" Margin="0" 
+                                                            Content="x" Background="Transparent" Foreground="DarkRed"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Border>
+                        </Grid>
+
+                        <!-- Color Section -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="10*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="Add New Color" HorizontalAlignment="Stretch" Click="AddNewColor_Click" Padding="5"/>
+                            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
+                                <ItemsControl ItemsSource="{Binding ColorList}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
+                                                    <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
+                                                    <Button Command="{Binding DataContext.DeleteSelectedColorCommand, ElementName=PageRoot}" 
+                                                            CommandParameter="{Binding}" 
+                                                            Width="20" Height="20" Padding="0" Margin="0" 
+                                                            Content="x" Background="Transparent" Foreground="DarkRed"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Border>
+                        </Grid>
+
+                        <!-- Display and Manually Create Variants -->
+                        <ItemsControl ItemsSource="{Binding Variants, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="model:Variant">
+                                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,5">
+                                        <StackPanel Spacing="10" Orientation="Horizontal">
+                                            <TextBlock Text="Variant Details:" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                                <StackPanel>
+                                                    <TextBlock Text="Color:"/>
+                                                    <TextBox IsReadOnly="True" Text="{x:Bind Color.Name, Mode=TwoWay}" Width="80"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Storage (GB):"/>
+                                                    <TextBox Text="{x:Bind Storage, Mode=TwoWay}" Width="80"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Cost Price:"/>
+                                                    <TextBox Text="{x:Bind CostPrice, Mode=TwoWay}" Width="80"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Selling Price:"/>
+                                                    <TextBox Text="{x:Bind SellingPrice, Mode=TwoWay}" Width="80"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Stock Quantity:"/>
+                                                    <TextBox Text="{x:Bind StockQuantity, Mode=TwoWay}" Width="80"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!-- Remove Button -->
+                                            <Button Command="{Binding DataContext.RemoveVariantCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="x" Margin="0,5,0,0" 
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                    Background="Red" Foreground="White" Width="30" Height="30" 
+                                                    CornerRadius="15"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <!-- Create Button at the bottom -->
+            <Button Grid.Row="1" Content="Create" Command="{Binding SaveItemCommand}" HorizontalAlignment="Center" Margin="0,20,0,0" Padding="10,5"/>
+        </Grid>
+    </ScrollViewer>
 </Page>

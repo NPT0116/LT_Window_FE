@@ -39,7 +39,7 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewColor_Click(object sender, RoutedEventArgs e)
         {
             // Create a panel that will act as our mini form.
-            var panel = new StackPanel { Spacing = 10 };
+            var panel = new StackPanel { Spacing = 20 };
 
             // TextBlock and TextBox for the color name.
             panel.Children.Add(new TextBlock { Text = "Color Name:" });
@@ -47,7 +47,7 @@ namespace Navigation.Views.Inventory.CreateItems
             panel.Children.Add(nameTextBox);
 
             // Button to select image.
-            var selectImageButton = new Button { Content = "Select Image", Width = 150 };
+            var selectImageButton = new Button { Content = "Select Image", Width = 300 };
             panel.Children.Add(selectImageButton);
 
             // Image preview.
@@ -63,6 +63,18 @@ namespace Navigation.Views.Inventory.CreateItems
                 Visibility = Visibility.Collapsed
             };
             panel.Children.Add(progressRing);
+
+            // Create and show the dialog.
+            var dialog = new ContentDialog
+            {
+                Title = "Add New Color",
+                Content = panel,
+                PrimaryButtonText = "Save",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot,
+                // Disable the save button until the image is loaded.
+                IsPrimaryButtonEnabled = false
+            };
 
             // Local variable to hold the uploaded image URL.
             string imageUrl = null;
@@ -113,17 +125,10 @@ namespace Navigation.Views.Inventory.CreateItems
                     progressRing.IsActive = false;
                     progressRing.Visibility = Visibility.Collapsed;
                     selectImageButton.IsEnabled = true;
-                }
-            };
 
-            // Create and show the dialog.
-            var dialog = new ContentDialog
-            {
-                Title = "Add New Color",
-                Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
+                    // Now that the image is loaded, enable the Save button.
+                    dialog.IsPrimaryButtonEnabled = true;
+                }
             };
 
             var result = await dialog.ShowAsync();
@@ -137,18 +142,37 @@ namespace Navigation.Views.Inventory.CreateItems
                 return;
             }
 
-            // Create a new TempColor instance using the provided name and uploaded image URL.
-            var tempColor = new TempColor
-            {
-                TempId = (this.DataContext as CreateItemPageViewModel)?.ColorList.Count + 1 ?? 1,
-                Name = colorName,
-                UrlImage = imageUrl ?? string.Empty,
-                ColorId = Guid.NewGuid()
-            };
-
-            // Add the new TempColor to the ViewModel's ColorList.
+            // Get the view model from the DataContext.
             if (this.DataContext is CreateItemPageViewModel viewModel)
             {
+                // Check for duplicate color names (case-insensitive).
+                bool duplicateExists = viewModel.ColorList.Any(c =>
+                    string.Equals(c, colorName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    // Show an error dialog if duplicate found.
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Color",
+                        Content = $"A variant with the color name '{colorName}' already exists.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+
+                // Create a new TempColor instance using the provided name and uploaded image URL.
+                var tempColor = new TempColor
+                {
+                    TempId = viewModel.ColorList.Count + 1,
+                    Name = colorName,
+                    UrlImage = imageUrl ?? string.Empty,
+                    ColorId = Guid.NewGuid()
+                };
+
+                // Add the new TempColor to the ViewModel's ColorList.
                 viewModel.ColorList.Add(tempColor.Name);
                 viewModel.ColorObjectList.Add(tempColor);
                 viewModel.UpdateVariants();
@@ -221,24 +245,41 @@ namespace Navigation.Views.Inventory.CreateItems
             if (string.IsNullOrEmpty(groupName))
                 return;
 
+            // Check for duplicate in the current Viemodel item group
+            if (this.DataContext is CreateItemPageViewModel viewModel)
+            {
+                bool duplicateExists = viewModel.ItemGroups.Any(ig => string.Equals(ig.ItemGroupName, groupName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Item Group",
+                        Content = $"An item group with the name '{groupName}' already exists.",
+                        CloseButtonText="Close",
+                        XamlRoot = this.XamlRoot,
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+            }
             var request = new CreateItemGroupRequest
             {
                 itemGroupName = groupName
             };
-
             // Retrieve the repository from DI.
             var itemGroupRepository = DIContainer.GetKeyedSingleton<IItemGroupRepository>();
             var newGroup = await itemGroupRepository.CreateItemGroupAsync(request);
 
             if (newGroup != null)
             {
-                if (this.DataContext is CreateItemPageViewModel viewModel)
+                if (this.DataContext is CreateItemPageViewModel viewModel1)
                 {
                     Debug.WriteLine("New Group Added: " + newGroup.ItemGroupName);
-                    viewModel.ItemGroups.Add(newGroup);
+                    viewModel1.ItemGroups.Add(newGroup);
                     // Optionally, set the new group as selected.
-                    viewModel.ItemGroups = new List<ItemGroup>(viewModel.ItemGroups);
-                    viewModel.SelectedItemGroup = newGroup;
+                    viewModel1.ItemGroups = new List<ItemGroup>(viewModel1.ItemGroups);
+                    viewModel1.SelectedItemGroup = newGroup;
                 }
             }
             else
@@ -272,6 +313,27 @@ namespace Navigation.Views.Inventory.CreateItems
             var manufacturerName = manufacturerNameTextBox.Text?.Trim();
             if (string.IsNullOrEmpty(manufacturerName))
                 return;
+
+            // Check for duplicate in the current view model's manufacturers.
+            if (this.DataContext is CreateItemPageViewModel viewModel)
+            {
+                bool duplicateExists = viewModel.Manufacturers.Any(m =>
+                    string.Equals(m.ManufacturerName, manufacturerName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Manufacturer",
+                        Content = $"A manufacturer with the name '{manufacturerName}' already exists.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+            }
+
             var manufacturerDescription = manufacturerDescriptionTextBox.Text?.Trim();
 
             var request = new CreateManufacturerRequest
@@ -286,13 +348,13 @@ namespace Navigation.Views.Inventory.CreateItems
 
             if (newManufacturer != null)
             {
-                if (this.DataContext is CreateItemPageViewModel viewModel)
+                if (this.DataContext is CreateItemPageViewModel viewModel1)
                 {
                     Debug.WriteLine("New Manufacturer Added: " + newManufacturer.ManufacturerName);
-                    viewModel.Manufacturers.Add(newManufacturer);
-                    // Optionally, set it as selected.
-                    viewModel.Manufacturers = new List<Manufacturer>(viewModel.Manufacturers);
-                    viewModel.SelectedManufacturer = newManufacturer;
+                    viewModel1.Manufacturers.Add(newManufacturer);
+                    // Optionally refresh the list.
+                    viewModel1.Manufacturers = new List<Manufacturer>(viewModel1.Manufacturers);
+                    viewModel1.SelectedManufacturer = newManufacturer;
                 }
             }
             else
