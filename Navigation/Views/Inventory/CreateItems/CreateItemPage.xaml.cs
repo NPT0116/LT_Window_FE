@@ -245,24 +245,41 @@ namespace Navigation.Views.Inventory.CreateItems
             if (string.IsNullOrEmpty(groupName))
                 return;
 
+            // Check for duplicate in the current Viemodel item group
+            if (this.DataContext is CreateItemPageViewModel viewModel)
+            {
+                bool duplicateExists = viewModel.ItemGroups.Any(ig => string.Equals(ig.ItemGroupName, groupName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Item Group",
+                        Content = $"An item group with the name '{groupName}' already exists.",
+                        CloseButtonText="Close",
+                        XamlRoot = this.XamlRoot,
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+            }
             var request = new CreateItemGroupRequest
             {
                 itemGroupName = groupName
             };
-
             // Retrieve the repository from DI.
             var itemGroupRepository = DIContainer.GetKeyedSingleton<IItemGroupRepository>();
             var newGroup = await itemGroupRepository.CreateItemGroupAsync(request);
 
             if (newGroup != null)
             {
-                if (this.DataContext is CreateItemPageViewModel viewModel)
+                if (this.DataContext is CreateItemPageViewModel viewModel1)
                 {
                     Debug.WriteLine("New Group Added: " + newGroup.ItemGroupName);
-                    viewModel.ItemGroups.Add(newGroup);
+                    viewModel1.ItemGroups.Add(newGroup);
                     // Optionally, set the new group as selected.
-                    viewModel.ItemGroups = new List<ItemGroup>(viewModel.ItemGroups);
-                    viewModel.SelectedItemGroup = newGroup;
+                    viewModel1.ItemGroups = new List<ItemGroup>(viewModel1.ItemGroups);
+                    viewModel1.SelectedItemGroup = newGroup;
                 }
             }
             else
