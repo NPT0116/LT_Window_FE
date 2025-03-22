@@ -296,6 +296,27 @@ namespace Navigation.Views.Inventory.CreateItems
             var manufacturerName = manufacturerNameTextBox.Text?.Trim();
             if (string.IsNullOrEmpty(manufacturerName))
                 return;
+
+            // Check for duplicate in the current view model's manufacturers.
+            if (this.DataContext is CreateItemPageViewModel viewModel)
+            {
+                bool duplicateExists = viewModel.Manufacturers.Any(m =>
+                    string.Equals(m.ManufacturerName, manufacturerName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Manufacturer",
+                        Content = $"A manufacturer with the name '{manufacturerName}' already exists.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+            }
+
             var manufacturerDescription = manufacturerDescriptionTextBox.Text?.Trim();
 
             var request = new CreateManufacturerRequest
@@ -310,13 +331,13 @@ namespace Navigation.Views.Inventory.CreateItems
 
             if (newManufacturer != null)
             {
-                if (this.DataContext is CreateItemPageViewModel viewModel)
+                if (this.DataContext is CreateItemPageViewModel viewModel1)
                 {
                     Debug.WriteLine("New Manufacturer Added: " + newManufacturer.ManufacturerName);
-                    viewModel.Manufacturers.Add(newManufacturer);
-                    // Optionally, set it as selected.
-                    viewModel.Manufacturers = new List<Manufacturer>(viewModel.Manufacturers);
-                    viewModel.SelectedManufacturer = newManufacturer;
+                    viewModel1.Manufacturers.Add(newManufacturer);
+                    // Optionally refresh the list.
+                    viewModel1.Manufacturers = new List<Manufacturer>(viewModel1.Manufacturers);
+                    viewModel1.SelectedManufacturer = newManufacturer;
                 }
             }
             else

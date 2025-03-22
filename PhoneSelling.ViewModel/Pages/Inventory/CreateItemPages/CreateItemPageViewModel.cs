@@ -58,14 +58,21 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         }
 
         [ObservableProperty]
-        private Guid itemGroupId;
+        private Guid? itemGroupId;
 
         [ObservableProperty]
         private Guid manufacturerId;
 
         // Selected fields
         [ObservableProperty]
+        [Required(ErrorMessage ="Item Group is required.")]
         private ItemGroup selectedItemGroup;
+        partial void OnSelectedItemGroupChanged(ItemGroup oldValue, ItemGroup newValue)
+        {
+            ValidateProperty(newValue, nameof(SelectedItemGroup));
+            OnPropertyChanged(nameof(ItemGroupError));
+        }
+        public string ItemGroupError => GetErrors(nameof(SelectedItemGroup))?.Cast<object>()?.FirstOrDefault()?.ToString() ?? String.Empty;
 
         [ObservableProperty]
         private Manufacturer selectedManufacturer;
@@ -195,7 +202,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                     .Select(e => e.ToString())
                     .ToList();
                 ErrorMessage = string.Join(Environment.NewLine, errors);
-                Debug.Write("Validation Errors: ");
+                Debug.WriteLine("Validation Errors: ");
                 Debug.WriteLine(ErrorMessage);
                 return false;
             }
@@ -206,6 +213,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         {
             OnPropertyChanged(nameof(ItemNameError));
             OnPropertyChanged(nameof(VariantError));
+            OnPropertyChanged(nameof(ItemGroupError));
         }
 
 
