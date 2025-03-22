@@ -54,6 +54,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         public void AddVariant()
         {
             Items.Add(new CreateInboundTransactionDto { });
+            ItemsError = String.Empty;
         }
 
         [RelayCommand]
@@ -61,6 +62,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         {
             bool hasErrors = false;
             ValidateProperty(Items, nameof(Items));
+            OnPropertyChanged(nameof(itemsError));
             var emptyItemErrorString = GetErrors(nameof(Items))?.FirstOrDefault()?.ToString() ?? "";
             ItemsError = emptyItemErrorString;
             hasErrors = true;

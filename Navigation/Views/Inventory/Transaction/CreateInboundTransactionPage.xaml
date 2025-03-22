@@ -14,136 +14,183 @@
 
     <Page.Resources>
         <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </Page.Resources>
 
-    <StackPanel Padding="10" Spacing="10">
-        <!-- Header -->
-        <TextBlock Text="NHẬP HÀNG" 
+    <StackPanel Padding="10" Spacing="20">
+        <Grid>
+            <!-- Header -->
+            <TextBlock Text="NHẬP HÀNG" 
                    FontSize="40" 
                    HorizontalAlignment="Center" 
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+            <Path Stroke="Gray"
+                  StrokeThickness="2"
+                  StrokeDashArray="4,2"
+                  Data="M 0,0 L 1,0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
+                  Stretch="Fill"/>
+
+        </Grid>
+
+
+        <Grid ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- Create Transaction Button -->
+            <Border BorderThickness="2" BorderBrush="Gray" CornerRadius="8">
+                <Button Grid.Column="0"
+                        FontWeight="SemiBold"
+                        Content="Nhập sản phẩm"
+                        Command="{x:Bind ViewModel.CreateTransactionCommand}"
+                        FontSize="16"
+                        Height="50"
+                        HorizontalAlignment="Stretch"/>
+            </Border>
+
+            <!-- Add Item Button -->
+            <Button Grid.Column="1"
+                Background="DimGray"
+                Foreground="White"
+                Content="+"
+                FontWeight="Bold"
+                Command="{x:Bind ViewModel.AddVariantCommand}"
+                Height="50"
+                FontSize="25"
+                HorizontalAlignment="Stretch"/>
+        </Grid>
+
 
         <!-- Items List -->
-        <ListView x:Name="ItemTable"
-                  ItemsSource="{x:Bind ViewModel.Items, Mode=TwoWay}"
-                  CanReorderItems="True"
-                  AllowDrop="True"
-                  SelectionMode="None"
-                  BorderBrush="LightGray"
-                  BorderThickness="1"
-                  Padding="10">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:CreateInboundTransactionDto">
-                    <Border BorderBrush="Gray" 
-                            BorderThickness="0,0,0,1" 
-                            Padding="5">
-                        <Grid Padding="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Padding="10">
+            <StackPanel Orientation="Vertical" Spacing="10">
+                <ListView x:Name="ItemTable"
+                          ItemsSource="{x:Bind ViewModel.Items, Mode=TwoWay}"
+                          CanReorderItems="True"
+                          AllowDrop="True"
+                          SelectionMode="None"
+                          BorderBrush="LightGray"
+                          BorderThickness="1"
+                          Padding="10">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CreateInboundTransactionDto">
+                            <Border BorderBrush="Gray" 
+                                    BorderThickness="0,0,0,1" 
+                                    Padding="5">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="7*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <!-- Drag Handle -->
-                            <Button Content="≡"
-                                    FontSize="16"
-                                    Grid.Column="0"
-                                    Background="Transparent"
-                                    Foreground="Gray"
-                                    Width="30"
-                                    AllowDrop="True"/>
+                                    <!-- Drag Handle -->
+                                    
+                                    <TextBlock Text="≡"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Grid.Column="0"
+                                               Foreground="Gray"
+                                               Width="30"
+                                               AllowDrop="True"/>
 
-                            <!-- Item Search -->
-                            <AutoSuggestBox x:Name="ItemSearchBox"
-                                            TextChanged="ItemSearch_TextChanged"
-                                            SuggestionChosen="ItemSearch_SuggestionChosen"
-                                            PlaceholderText="Search item..."
-                                            Width="250"
-                                            Grid.Column="1"
-                                            Margin="5">
-                                <AutoSuggestBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Spacing="10">
-                                            <Image Source="{Binding Color.UrlImage}" 
-                                                   Width="30" 
-                                                   Height="30" 
-                                                   Stretch="UniformToFill"/>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock Text="{Binding Item.ItemName}" 
-                                                           FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding Color.Name}" 
-                                                           Foreground="Gray" 
-                                                           FontSize="12"/>
+                                    <StackPanel Grid.Column="1" Spacing="5"  Orientation="Vertical" >
+                                        
+                                        <!-- Item Search -->
+                                        <TextBlock Text="Choose Item:" FontWeight="Bold"/>
+                                        <AutoSuggestBox x:Name="ItemSearchBox"
+                                                        TextChanged="ItemSearch_TextChanged"
+                                                        SuggestionChosen="ItemSearch_SuggestionChosen"
+                                                        PlaceholderText="Search item..."
+                                                        Height="50"
+                                                        Margin="10,0">
+                                            <AutoSuggestBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <Image Source="{Binding Color.UrlImage}" 
+                                                           Width="30" 
+                                                           Height="30" 
+                                                           Stretch="UniformToFill"/>
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock Text="{Binding Item.ItemName}" 
+                                                                   FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding Color.Name}" 
+                                                                   Foreground="Gray" 
+                                                                   FontSize="12"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </AutoSuggestBox.ItemTemplate>
+                                        </AutoSuggestBox>
+                                        <!-- Variant Error Message -->
+                                        <TextBlock 
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Text="{x:Bind VariantIdError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Foreground="Red"
+                                                   Visibility="{x:Bind VariantIdError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
+                                    </StackPanel>
+
+                                    <!-- Quantity & Price Grid -->
+                                    <StackPanel Grid.Column="2" Spacing="5" Orientation="Vertical"  CornerRadius="8" Padding="5">
+                                        <Grid>
+                                            <Path Stroke="Gray" Data="M 0,0 L 0,1" StrokeThickness="2"
+                                                  Stretch="Fill"
+                                                  StrokeDashArray="4,4"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Stretch"
+                                                  />
+                                            <StackPanel Margin="20,0">
+                                                <TextBlock Text="Quantity:" FontWeight="Bold" />
+
+                                                <NumberBox x:Name="QuantityBox"
+                                                           Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           SpinButtonPlacementMode="Inline"
+                                                           Minimum="0"
+                                                           SmallChange="1"
+                                                           LargeChange="10"
+                                                           HorizontalAlignment="Stretch"
+                                                           Width="150"
+                                                           Margin="5"/>
+                                                <TextBlock Text="{x:Bind QuantityError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="Red"
+                                                           Visibility="{x:Bind QuantityError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
                                             </StackPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </AutoSuggestBox.ItemTemplate>
-                            </AutoSuggestBox>
+                                        
+                                        </Grid>
+                                    </StackPanel>
 
-                            <!-- Variant Error Message -->
-                            <TextBlock Grid.Column="1" Margin="5,40,0,0"
-                                       Text="{x:Bind VariantIdError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       Foreground="Red"
-                                       Visibility="{x:Bind VariantIdError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
+                                    <!-- Delete Button -->
+                                    <Button Content="X"
+                                            FontWeight="Bold"
+                                            Background="Red"
+                                            Foreground="White"
+                                            Click="Button_Click"
+                                            FontSize="16"
+                                            Grid.Column="3"
+                                            HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                            <!-- Quantity & Price Grid -->
-                            <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <!-- Quantity NumberBox with Error -->
-                                <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" Margin="5">
-                                    <NumberBox x:Name="QuantityBox"
-                                               Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                               SpinButtonPlacementMode="Inline"
-                                               Minimum="0"
-                                               SmallChange="1"
-                                               LargeChange="10"
-                                               Width="100"
-                                               HorizontalAlignment="Stretch"
-                                               Margin="5"/>
-                                    <TextBlock Text="{x:Bind QuantityError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                               Foreground="Red"
-                                               FontSize="12"
-                                               Visibility="{x:Bind QuantityError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
-                                </StackPanel>
-                            </Grid>
+                <!-- Items Error Message -->
+                <TextBlock Text="{x:Bind ViewModel.ItemsError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           HorizontalAlignment="Center"
+                           Visibility="{x:Bind ViewModel.ItemsError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
+            </StackPanel>
+        </Border>
 
-                            <!-- Delete Button -->
-                            <Button Content="✖"
-                                    Background="Transparent"
-                                    Foreground="Red"
-                                    Click="Button_Click"
-                                    FontSize="16"
-                                    Grid.Column="4"
-                                    HorizontalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <!-- Items Error Message -->
-        <TextBlock Text="{x:Bind ViewModel.ItemsError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                   Foreground="Red"
-                   Visibility="{x:Bind ViewModel.ItemsError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
-
-        <!-- Add Item Button -->
-        <Button Content="Thêm hàng hóa"
-                Background="Transparent"
-                Command="{x:Bind ViewModel.AddVariantCommand}"
-                FontSize="16"
-                HorizontalAlignment="Center"/>
-
-        <!-- Create Transaction Button -->
-        <Button Content="Nhập hàng"
-                Background="Transparent"
-                Command="{x:Bind ViewModel.CreateTransactionCommand}"
-                FontSize="16"
-                HorizontalAlignment="Center"/>
     </StackPanel>
 </Page>
