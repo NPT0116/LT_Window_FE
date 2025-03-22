@@ -28,7 +28,7 @@
 
             <NavigationView.MenuItems >
                 <!--Dashboard-->
-                <NavigationViewItem Icon="Play" Content="Dashboard Page" Tag="DashboardPage">
+                <NavigationViewItem Icon="Document" Content="Dashboard" Tag="DashboardPage">
                     <Interactivity:Interaction.Behaviors>
                         <Core:EventTriggerBehavior EventName="Tapped">
                             <Core:InvokeCommandAction Command="{Binding GoToDashboardPageCommand}" />
@@ -37,18 +37,26 @@
                 </NavigationViewItem>
                 
                 <!--Inventory-->
-                <NavigationViewItem  Icon="Play" Content="Inventory" Tag="Inventory">
+                <NavigationViewItem  Icon="Library" Content="Inventory" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
                         <!--CreateItemPage-->
-                        <NavigationViewItem Icon="Play" Content="Create Item Page">
+                        <NavigationViewItem Icon="Add" Content="Create Item">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToCreateItemPageCommand}"/>
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
+                        <!--CreateInboundTransaction-->
+                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
                         <!--ItemGroupPage-->
-                        <NavigationViewItem Icon="Play" Content="Item Groups Page">
+                        <NavigationViewItem Icon="List" Content="Item Groups">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToItemGroupsPageCommand}" />
@@ -56,7 +64,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!--VariantsListPage-->
-                        <NavigationViewItem Icon="Play" Content="Variants List Page" Tag="VariantsDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="List" Content="Variants List" Tag="VariantsDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
@@ -64,30 +72,30 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
 
-                        <NavigationViewItem Icon="Play" Content="Phone Page" Tag="Phone Page" IsExpanded="True">
+                        <!--<NavigationViewItem Icon="Play" Content="Phone Page" Tag="Phone Page" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToPhoneCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+                        </NavigationViewItem>-->
 
-                        <NavigationViewItem Icon="Play" Content="Phone Page" Tag="Variants Page" IsExpanded="True">
+                        <!--<NavigationViewItem Icon="Play" Content="Phone Page" Tag="Variants Page" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToVariantCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+                        </NavigationViewItem>-->
 
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
 
                 <!--Invoice-->
-                <NavigationViewItem  Icon="Page" Content="Invoice" Tag="Inventory">
+                <NavigationViewItem  Icon="Library" Content="Invoice" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
 
-                        <NavigationViewItem Icon="Edit" Content="Create invoice" Tag="InvoiceDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="Add" Content="Create invoice" Tag="InvoiceDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToCreateInvoiceCommand}" />
@@ -103,13 +111,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
 
-                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+
 
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>

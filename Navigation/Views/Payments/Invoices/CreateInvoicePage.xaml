@@ -18,7 +18,8 @@
         <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </Page.Resources>
 
-    <StackPanel>
+    <StackPanel Padding="10">
+        <TextBlock Text="INVOICE" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
         <ContentDialog x:Name="CreateCustomerDialog"
                Title="Create New Customer"
                PrimaryButtonText="Save"
@@ -44,7 +45,7 @@
                            Foreground="Red"
                            Visibility="{x:Bind ViewModel.Customer.PhoneError, 
                                         Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/> 
+                                        Mode=OneWay}"/>
                 <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email"/>
                 <TextBlock Text="{
                     x:Bind ViewModel.Customer.EmailError, 
@@ -65,7 +66,7 @@
             <TextBlock Text="Tên (hoặc SDT) khách hàng:*" 
                    Foreground="Red"
                    Margin="0,0,0,4"/>
-            
+
             <!-- AutoSuggestBox with Search Button -->
             <Grid>
                 <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
@@ -276,7 +277,7 @@ TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
                                 </NumberBox>
                             </Grid>
 
-                            
+
 
                             <!-- Delete Button -->
                             <Button Content="✖"
@@ -308,10 +309,4 @@ TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
         <Button Content="Update total amount" Click="{x:Bind ViewModel.RecalculateTotal}"/>
         <Button Content="Create invoice" Command="{x:Bind ViewModel.CreateInvoiceCommand}"/>
     </StackPanel>
-
-
-
-
-
-
 </Page>

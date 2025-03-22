@@ -50,6 +50,7 @@ namespace PhoneSelling.ViewModel.Pages
 
             // Invoice
             GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
+            GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.GetType() != typeof(InvoiceListViewModel));
             GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
 
         }
@@ -66,6 +67,11 @@ namespace PhoneSelling.ViewModel.Pages
                 GoToPhoneCommand.NotifyCanExecuteChanged();
                 GoToVariantCommand.NotifyCanExecuteChanged();
                 GoToCreateItemPageCommand.NotifyCanExecuteChanged();
+
+                // Invoice
+                GoToInvoiceListCommand.NotifyCanExecuteChanged();
+                GoToCreateInvoiceCommand.NotifyCanExecuteChanged();
+                GoToCreateInboundTransactionCommand.NotifyCanExecuteChanged();
             }
         }
 
