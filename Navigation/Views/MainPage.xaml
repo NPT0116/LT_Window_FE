@@ -47,8 +47,16 @@
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
+                        <!--CreateInboundTransaction-->
+                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="Tapped">
+                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
+                                </Core:EventTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
                         <!--ItemGroupPage-->
-                        <NavigationViewItem Icon="Folder" Content="Item Groups">
+                        <NavigationViewItem Icon="List" Content="Item Groups">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToItemGroupsPageCommand}" />
@@ -56,7 +64,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!--VariantsListPage-->
-                        <NavigationViewItem Icon="Folder" Content="Variants List" Tag="VariantsDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="List" Content="Variants List" Tag="VariantsDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
@@ -84,10 +92,10 @@
                 </NavigationViewItem>
 
                 <!--Invoice-->
-                <NavigationViewItem  Icon="Page" Content="Invoice" Tag="Inventory">
+                <NavigationViewItem  Icon="Library" Content="Invoice" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
 
-                        <NavigationViewItem Icon="Edit" Content="Create invoice" Tag="InvoiceDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="Add" Content="Create invoice" Tag="InvoiceDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToCreateInvoiceCommand}" />
@@ -103,13 +111,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
 
-                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+
 
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
