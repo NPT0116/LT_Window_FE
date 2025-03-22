@@ -75,11 +75,4 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.ItemGroups
         //    return result;
         //}
     }
-
-    public partial class ItemGroupsQueryViewModel : PaginationQueryViewModel<ItemGroup, ItemGroupQueryParameter>
-    {
-        public ItemGroupsQueryViewModel(Func<ItemGroupQueryParameter, Task<PaginationResult<ItemGroup>>> fetchDataFunc) : base(fetchDataFunc)
-        {
-        }
-    }
 }
