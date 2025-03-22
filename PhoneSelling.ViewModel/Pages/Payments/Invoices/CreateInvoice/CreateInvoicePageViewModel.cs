@@ -53,15 +53,11 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         public async Task<Customer?> SearchCustomerByPhone(string phoneNumber)
         {
             Debug.WriteLine("SearchCustomersByPhone called with: " + phoneNumber);
-
             var response = await _customerRepository.GetCustomerByPhoneAsync(phoneNumber);
-            Debug.WriteLine("Response received from API call.");
 
+            Debug.WriteLine("Response received from API call.");
             return response;
         }
-
-        
-
 
         public async Task CreateCustomer()
         {

@@ -158,6 +158,7 @@
                             ItemTemplate="{StaticResource ListVariantTemplate}">
                     </ListView>
                 </StackPanel>
+                        
                 </StackPanel>
             </PivotItem>
         </Pivot>
