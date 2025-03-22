@@ -16,7 +16,7 @@
         <!-- Standard Styles for consistency -->
         <Style x:Key="SectionHeaderTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="0,10,0,10"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
@@ -55,7 +55,7 @@
                                  Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource InputTextBoxStyle}"/>
                         <StackPanel Orientation="Vertical" Spacing="10">
-                            <TextBlock Text="PICTURE" FontWeight="SemiBold"/>
+                            <TextBlock Text="PICTURE" />
                             <Button Content="Select Image" Click="SelectImage_Click" HorizontalAlignment="Left"/>
                             <Border BorderBrush="Gray" BorderThickness="1">
                                 <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"

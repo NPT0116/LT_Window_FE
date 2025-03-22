@@ -39,7 +39,7 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewColor_Click(object sender, RoutedEventArgs e)
         {
             // Create a panel that will act as our mini form.
-            var panel = new StackPanel { Spacing = 10 };
+            var panel = new StackPanel { Spacing = 20 };
 
             // TextBlock and TextBox for the color name.
             panel.Children.Add(new TextBlock { Text = "Color Name:" });
@@ -47,7 +47,7 @@ namespace Navigation.Views.Inventory.CreateItems
             panel.Children.Add(nameTextBox);
 
             // Button to select image.
-            var selectImageButton = new Button { Content = "Select Image", Width = 150 };
+            var selectImageButton = new Button { Content = "Select Image", Width = 300 };
             panel.Children.Add(selectImageButton);
 
             // Image preview.
@@ -63,6 +63,18 @@ namespace Navigation.Views.Inventory.CreateItems
                 Visibility = Visibility.Collapsed
             };
             panel.Children.Add(progressRing);
+
+            // Create and show the dialog.
+            var dialog = new ContentDialog
+            {
+                Title = "Add New Color",
+                Content = panel,
+                PrimaryButtonText = "Save",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot,
+                // Disable the save button until the image is loaded.
+                IsPrimaryButtonEnabled = false
+            };
 
             // Local variable to hold the uploaded image URL.
             string imageUrl = null;
@@ -113,17 +125,10 @@ namespace Navigation.Views.Inventory.CreateItems
                     progressRing.IsActive = false;
                     progressRing.Visibility = Visibility.Collapsed;
                     selectImageButton.IsEnabled = true;
-                }
-            };
 
-            // Create and show the dialog.
-            var dialog = new ContentDialog
-            {
-                Title = "Add New Color",
-                Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
+                    // Now that the image is loaded, enable the Save button.
+                    dialog.IsPrimaryButtonEnabled = true;
+                }
             };
 
             var result = await dialog.ShowAsync();
@@ -137,18 +142,37 @@ namespace Navigation.Views.Inventory.CreateItems
                 return;
             }
 
-            // Create a new TempColor instance using the provided name and uploaded image URL.
-            var tempColor = new TempColor
-            {
-                TempId = (this.DataContext as CreateItemPageViewModel)?.ColorList.Count + 1 ?? 1,
-                Name = colorName,
-                UrlImage = imageUrl ?? string.Empty,
-                ColorId = Guid.NewGuid()
-            };
-
-            // Add the new TempColor to the ViewModel's ColorList.
+            // Get the view model from the DataContext.
             if (this.DataContext is CreateItemPageViewModel viewModel)
             {
+                // Check for duplicate color names (case-insensitive).
+                bool duplicateExists = viewModel.ColorList.Any(c =>
+                    string.Equals(c, colorName, StringComparison.OrdinalIgnoreCase));
+
+                if (duplicateExists)
+                {
+                    // Show an error dialog if duplicate found.
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Duplicate Color",
+                        Content = $"A variant with the color name '{colorName}' already exists.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+
+                // Create a new TempColor instance using the provided name and uploaded image URL.
+                var tempColor = new TempColor
+                {
+                    TempId = viewModel.ColorList.Count + 1,
+                    Name = colorName,
+                    UrlImage = imageUrl ?? string.Empty,
+                    ColorId = Guid.NewGuid()
+                };
+
+                // Add the new TempColor to the ViewModel's ColorList.
                 viewModel.ColorList.Add(tempColor.Name);
                 viewModel.ColorObjectList.Add(tempColor);
                 viewModel.UpdateVariants();
