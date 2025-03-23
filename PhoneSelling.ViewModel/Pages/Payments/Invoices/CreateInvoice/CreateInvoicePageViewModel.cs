@@ -15,12 +15,14 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 {
     public partial class CreateInvoicePageViewModel : BasePageViewModel
     {
+        public int dummy = 1000000000;
         private readonly ICustomerRepository _customerRepository;
         private readonly IVariantRepository _variantRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         [ObservableProperty] private Customer customer = new();
         [ObservableProperty] private Invoice invoice;
         [ObservableProperty] private TrulyObservableCollection<Variant> searchItems;
+
         //[ObservableProperty] private Variant variant = new();
         //public string VariantDisplayName => Variant != null ? $"{Variant.Item.ItemName} {Variant.Storage} {Variant.Color.Name}" : "";
 
@@ -33,15 +35,26 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             _customerRepository = DIContainer.GetKeyedSingleton<ICustomerRepository>();
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
             _invoiceRepository = DIContainer.GetKeyedSingleton<IInvoiceRepository>();
-            Invoice = new()
+            Invoice = new();
+            AddInvoiceDetail();
+            Invoice.InvoiceDetails.CollectionChanged += InvoiceDetails_CollectionChanged;
+        }
+        private void InvoiceDetails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                InvoiceDetails = new TrulyObservableCollection<InvoiceDetail>()
+                foreach(var newItem in e.NewItems)
                 {
-                    new InvoiceDetail() {}
+                    Debug.WriteLine("Item added: " + newItem);
                 }
-            };
-            Debug.WriteLine(Invoice.Date);
-           
+            } else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach(var oldItem in e.OldItems) 
+                {
+                    Debug.WriteLine("Item removed: " + oldItem);
+                }
+            }
+            Invoice.ValidateInvoiceDetails();
         }
 
         public async Task<Customer?> SearchCustomersByEmail(string email)
@@ -84,12 +97,20 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             {
                 InvoiceID = Invoice.InvoiceID,
                 Quantity = 1,
-                Price = 100, // Example default value
+                Price = 0,
+                Variant = new Variant()
             };
-
-            Invoice.InvoiceDetails.Add(newDetail); // Ensure we update the existing collection
+            RecalculateTotal();
+            newDetail.RecalculateCallback = RecalculateTotal;
+            Invoice.InvoiceDetails.Add(newDetail);
         }
-
+        [RelayCommand]
+        public void RemoveInvoiceDetail(InvoiceDetail detail)
+        {
+            Invoice.InvoiceDetails.Remove(detail); // Ensure we update the existing collection
+            RecalculateTotal();
+        }
+        [RelayCommand]
         public void RecalculateTotal()
         {
             float total = 0;           

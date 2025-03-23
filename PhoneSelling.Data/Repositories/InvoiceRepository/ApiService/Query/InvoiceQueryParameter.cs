@@ -20,8 +20,6 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query
     {
         [ObservableProperty] private DateTime? fromDate = null;
         [ObservableProperty] private DateTime? toDate = null;
-
-        
     }
 
 }

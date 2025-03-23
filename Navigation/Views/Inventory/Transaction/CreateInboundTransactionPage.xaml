@@ -80,7 +80,7 @@
                         <DataTemplate x:DataType="model:CreateInboundTransactionDto">
                             <Border BorderBrush="Gray" 
                                     BorderThickness="0,0,0,1" 
-                                    Padding="5">
+                                    Padding="10">
                                 <Grid ColumnSpacing="10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>

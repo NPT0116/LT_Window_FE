@@ -23,9 +23,9 @@ namespace PhoneSelling.Data.Models
         private DateTime date;
         
         [ObservableProperty]
-        [MinCollectionCount(1, ErrorMessage = "Danh sách hóa chi tiết không được để trống")]
+        [MinCollectionCount(1, ErrorMessage = "Danh sách hóa đơn chi tiết không được để trống")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
-        private TrulyObservableCollection<InvoiceDetail> _invoiceDetails = new();
+        private TrulyObservableCollection<InvoiceDetail> invoiceDetails = new();
         // Foreign Key
         
         [ObservableProperty]
@@ -79,5 +79,16 @@ namespace PhoneSelling.Data.Models
 
             return HasErrors;
         }
+        public void ValidateInvoiceDetails()
+        {
+            if (InvoiceDetails == null || InvoiceDetails.Count < 1)
+            {
+                InvoiceDetailsError = "Danh sách hóa đơn chi tiết không được để trống";
+            } else
+            {
+                InvoiceDetailsError = String.Empty;
+            }
+        }
+
     }
 }

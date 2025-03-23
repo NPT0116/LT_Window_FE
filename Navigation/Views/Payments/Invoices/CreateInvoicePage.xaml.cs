@@ -46,7 +46,10 @@ namespace Navigation.Views.Payments.Invoices
             // Attach Flyout to the Button
             FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
         }
-
+        private async void CreateCustomer_Click(object sender, RoutedEventArgs args)
+        {
+            await CreateCustomerDialog.ShowAsync();
+        }
         private async void CustomerSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
@@ -70,7 +73,7 @@ namespace Navigation.Views.Payments.Invoices
                     customer = await ViewModel.SearchCustomersByEmail(text);
                 }
                 var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
-                customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
+                //customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
 
                 sender.ItemsSource = customerSuggestions;
             }
@@ -124,7 +127,25 @@ namespace Navigation.Views.Payments.Invoices
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Ignore null values
                 }));
-                await ViewModel.CreateCustomer();
+                try
+                {
+                    await ViewModel.CreateCustomer();
+                } catch(Exception ex)
+                {
+                    ViewModel.Customer.Name = String.Empty;
+                    ViewModel.Customer.Phone = String.Empty;
+                    ViewModel.Customer.Email = String.Empty;
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "LỖI TẠO KHÁCH HÀNG",
+                        Content = ex.Message,
+                        CloseButtonText = "Đóng",
+                        XamlRoot = this.XamlRoot,
+                        RequestedTheme = ElementTheme.Light
+                    };
+                    await errorDialog.ShowAsync();
+                }
+
             }
         }
         private void DatePickerButton_Click(object sender, RoutedEventArgs e)
@@ -137,7 +158,7 @@ namespace Navigation.Views.Payments.Invoices
             if (args.AddedDates.Count > 0)
             {
                 DateTime selectedDate = args.AddedDates[0].DateTime;
-                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy"); // Format like your image
+                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy");
                 ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
             }
         }
@@ -157,7 +178,7 @@ namespace Navigation.Views.Payments.Invoices
         private void ItemSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             var row = (InvoiceDetail)sender.DataContext;
-
+            Debug.WriteLine("What");
             if (args.SelectedItem is Variant variant)
             {
                 sender.Text = $"{variant.Item.ItemName} {variant.Storage} {variant.Color.Name}";
@@ -166,8 +187,6 @@ namespace Navigation.Views.Payments.Invoices
                 row.Variant = variant;
                 row.VariantId = variant.VariantID;
                 row.Price = variant.SellingPrice; // Ensure Price is taken from the selected Variant
-
-                
             }
         }
 
@@ -177,5 +196,9 @@ namespace Navigation.Views.Payments.Invoices
 
         private void ItemTable_Drop(object sender, DragEventArgs e) { }
 
+        private void StackPanel_ContextCanceled(UIElement sender, RoutedEventArgs args)
+        {
+
+        }
     }
 }

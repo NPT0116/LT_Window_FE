@@ -13,93 +13,186 @@
 
     <Page.Resources>
         <converter:DateTimeToDateTimeOffsetConverter x:Key="time" />
+        <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
     </Page.Resources>
+    <ScrollView>
 
-    <Grid Padding="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Filters -->
-            <RowDefinition Height="10"/>
-            <!-- Spacer -->
-            <RowDefinition Height="*"/>
-            <!-- Table -->
-        </Grid.RowDefinitions>
+        <Grid Padding="20,10,20,40" >
+            <Grid RowSpacing="20" Padding="20" Background="White" CornerRadius="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <!-- FILTER SECTION -->
-        <StackPanel Grid.Row="0" Padding="10" Spacing="10" Background="LightGray" CornerRadius="5">
-
-            <!-- Customer Name & Phone -->
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBox PlaceholderText="Enter Customer Name"
-                     Text="{x:Bind ViewModel.InvoiceQuery.Query.CustomerName, Mode=TwoWay}" 
-                     Width="200"/>
-
-                <TextBox PlaceholderText="Enter Customer Phone"
-                     Text="{x:Bind ViewModel.InvoiceQuery.Query.CustomerPhone, Mode=TwoWay}" 
-                     Width="200"/>
-            </StackPanel>
-
-            <!-- Date Range Filters -->
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <CalendarView x:Name="CalendarFromDate"
-              SelectedDatesChanged="CalendarFromDate_SelectedDatesChanged"
-              SelectionMode="Single"
-              />
-
-                <CalendarView x:Name="CalendarToDate"
-              SelectedDatesChanged="CalendarToDate_SelectedDatesChanged"
-              SelectionMode="Single"
-              />
-
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="Previous" Command="{x:Bind ViewModel.InvoiceQuery.PreviousPageCommand}" />
-                <Button Content="Next" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
-            </StackPanel>
-
-            <!-- Apply Filters Button -->
-            <Button Content="Apply Filters"
-                Command="{x:Bind ViewModel.InvoiceQuery.LoadDataCommand}" 
-                HorizontalAlignment="Left" />
-        </StackPanel>
-
-        <!-- TABLE (INVOICES LIST) -->
-        <ListView ItemsSource="{x:Bind ViewModel.InvoiceQuery.Items, Mode=TwoWay}"
-              SelectionMode="None"
-              Grid.Row="2"
-              Margin="0,10,0,0"
-              BorderBrush="Gray" BorderThickness="1">
-
-            <!-- TABLE HEADER -->
-            <ListView.Header>
-                <Grid Padding="10" Background="DarkGray">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="3*" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Total Amount" FontWeight="Bold" Grid.Column="0" Foreground="White"/>
-                    <TextBlock Text="Date" FontWeight="Bold" Grid.Column="1" Foreground="White"/>
-                </Grid>
-            </ListView.Header>
-
-            <!-- TABLE ROWS -->
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:Invoice">
-                    <Grid Padding="10" BorderBrush="LightGray" BorderThickness="0,0,0,1">
+                <TextBlock Grid.Row="0" Text="XEM HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center"/>
+                <!-- FILTER SECTION -->
+                <StackPanel  Grid.Row="1">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Bind TotalAmount, Mode=OneWay}" Grid.Column="0"/>
-                        <TextBlock Text="{x:Bind Date, Mode=OneWay}" Grid.Column="1"/>
+                        <TextBlock Text="BỘ LỌC:" FontWeight="Bold" FontSize="25" VerticalAlignment="Center"/>
+                        <Button 
+                                    Grid.Column="1"
+                                    Click="ResetDefault_button"
+                                    VerticalAlignment="Top"
+                                    FontWeight="Bold" FontSize="15"
+                                    CornerRadius="8"
+                                    Margin="10">
+                            <FontIcon Glyph="&#xE72C;" Foreground="Black"/>
+                        </Button>
                     </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="1" CornerRadius="3" BorderBrush="DarkSlateGray">
+                        <StackPanel Grid.Column="0" Background="White" Spacing="10" Padding="40,20" Margin="0,0,10,0" CornerRadius="10">
+                            <!-- Customer Name & Phone -->
+                            <Grid ColumnSpacing="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" PlaceholderText="Nhập tên người dùng"
+                                        HorizontalAlignment="Stretch"
+                                        Text="{x:Bind ViewModel.InvoiceQuery.Query.CustomerName, Mode=TwoWay}">
+                                    <TextBox.Header>
+                                        <TextBlock Text="Nhập tên người dùng:" FontWeight="Bold"/>
+                                    </TextBox.Header>
+                                </TextBox>
 
-    </Grid>
+                                <TextBox Grid.Column="1" PlaceholderText="Nhập số điện thoại"
+                                        HorizontalAlignment="Stretch"
+                                        Text="{x:Bind ViewModel.InvoiceQuery.Query.CustomerPhone, Mode=TwoWay}">
+                                    <TextBox.Header>
+                                        <TextBlock Text="Nhập số điện thoại:" FontWeight="Bold"/>
+                                    </TextBox.Header>
+                                </TextBox>
+                            </Grid>
 
+                            <!-- Date Range Filters -->
+                            <Grid ColumnSpacing="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <CalendarDatePicker Grid.Column="0"
+                                                PlaceholderText="Chọn ngày bắt đầu"
+                                                x:Name="CalendarFromDate"
+                                                HorizontalAlignment="Stretch"
+                                                DateChanged="CalendarFromDate_DateChanged">
+                                    <CalendarDatePicker.Header>
+                                        <TextBlock FontWeight="Bold" Foreground="Black">
+                                            Ngày bắt đầu:
+                                        </TextBlock>
+                                    </CalendarDatePicker.Header>
+                                </CalendarDatePicker>
+                                <CalendarDatePicker Grid.Column="1"
+                                                PlaceholderText="Chọn ngày kết thúc"
+                                                x:Name="CalendarToDate" 
+                                                HorizontalAlignment="Stretch"
+                                                DateChanged="CalendarToDate_DateChanged">
+                                    <CalendarDatePicker.Header>
+                                        <TextBlock FontWeight="Bold" Foreground="Black">
+                                            Ngày kết thúc:
+                                        </TextBlock>
+                                    </CalendarDatePicker.Header>
+                                </CalendarDatePicker>
+                            </Grid>
+                        </StackPanel>
+                        </Border>
+
+                        <!-- Apply Filters Button -->
+                        <Grid Grid.Column="1">
+
+
+                            <Button 
+                                    Grid.Row="1"
+                                    CornerRadius="8"
+                                    Margin="10"
+                                    Content="TÌM KIẾM"
+                                    FontWeight="Bold"
+                                    FontSize="20"
+                                    Padding="20"
+                                    Background="DarkSlateGray"
+                                    Foreground="White"
+                                    Command="{x:Bind ViewModel.InvoiceQuery.LoadDataCommand}" 
+                                    HorizontalAlignment="Stretch" 
+                                    />
+                        </Grid>
+                    </Grid>
+
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="2" Spacing="10">
+                    <Grid>
+                        <!-- A subtle separator line -->
+                        <Path Stretch="Fill" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" Data="M 0,0 L 1,0" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+                        <StackPanel Spacing="20" Margin="0,20,0,0">
+                            <TextBlock Text="DANH SÁCH HÓA ĐƠN:" FontWeight="Bold" FontSize="30"/>
+                            <!-- Invoice List -->
+                            <ListView ItemsSource="{x:Bind ViewModel.InvoiceQuery.Items, Mode=TwoWay}"
+                                        SelectionMode="None"
+                                        Grid.Row="3"
+                                        CornerRadius="5"
+                                        BorderBrush="LightGray" BorderThickness="1"
+                                        Background="White">
+                                <!-- TABLE HEADER -->
+                                <ListView.Header>
+                                    <Grid Padding="10" Background="DarkSlateGray" CornerRadius="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="TỔNG TIỀN (VNĐ)" FontWeight="Bold" Grid.Column="0" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ListView.Header>
+
+                                <!-- TABLE ROWS -->
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Invoice">
+                                        <Grid Padding="10" Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Total amount formatted (you might add a converter for currency) -->
+                                            <TextBlock  
+                                                        Grid.Column="0" 
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="SemiBold">
+                                                <Run Text="{x:Bind TotalAmount, Mode=OneWay, Converter={StaticResource VndCurrencyConverter}}"/>
+                                            </TextBlock>
+                                            <!-- Date formatted nicely -->
+                                            <TextBlock Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource VietnamDateConverter}}" 
+                                                        Grid.Column="1" 
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="SemiBold" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                        <Button Width="80" Content="Lùi" Command="{x:Bind ViewModel.InvoiceQuery.PreviousPageCommand}" />
+                        <Button Width="80" Content="Tiếp" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+    </ScrollView>
 </Page>

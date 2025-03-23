@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
+    x:Name="PageRoot"
     x:Class="Navigation.Views.Payments.Invoices.CreateInvoicePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,297 +17,380 @@
         <conv:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <conv:VndCurrencyConverter x:Key="VndCurrencyConverter" />
     </Page.Resources>
+    <ScrollView>
 
-    <StackPanel Padding="10">
-        <TextBlock Text="INVOICE" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
-        <ContentDialog x:Name="CreateCustomerDialog"
-               Title="Create New Customer"
-               PrimaryButtonText="Save"
-                Closing="CustomerDialog_Closing"
-               SecondaryButtonText="Cancel"
-               >
-            <StackPanel Spacing="10">
-                <TextBox Text="{x:Bind ViewModel.Customer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Tên khách hàng"/>
-                <TextBlock Text="{
-                    x:Bind ViewModel.Customer.NameError, 
-                    Mode=TwoWay, 
-                    UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Visibility="{x:Bind ViewModel.Customer.NameError, 
-                                        Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/>
+    <Grid Padding="20,10,20,40" >
+         <StackPanel Padding="20" CornerRadius="8" Background="White" VerticalAlignment="Stretch">
+            <TextBlock Text="TẠO HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+             <!--Create Customer Dialog--> 
+            <ContentDialog x:Name="CreateCustomerDialog"
+                           PrimaryButtonText="Lưu"
+                           Closing="CustomerDialog_Closing"
+                           CloseButtonText="Hủy"
+                           Padding="40">
+                <StackPanel Spacing="15">
+                        <TextBlock Text="PHIẾU NHẬP THÔNG TIN KHÁCH HÀNG" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
 
-                <TextBox Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Số điện thoại"/>
-                <TextBlock Text="{
+                        <TextBox Text="{x:Bind ViewModel.Customer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Tên khách hàng">
+                        <TextBox.Header>
+                            <TextBlock  FontWeight="Bold">
+                                <Run Text="1. Tên khách hàng:"/>
+                                <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
+                        </TextBox.Header>    
+                    </TextBox>
+                    <TextBlock Text="{
+                        x:Bind ViewModel.Customer.NameError, 
+                        Mode=TwoWay, 
+                        UpdateSourceTrigger=PropertyChanged}" 
+                               Foreground="Red"
+                               Visibility="{x:Bind ViewModel.Customer.NameError, 
+                                            Converter={StaticResource NullToVisibilityConverter},
+                                            Mode=OneWay}"/>
+
+                    <TextBox Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Số điện thoại">
+                        <TextBox.Header>
+                            <TextBlock  FontWeight="Bold">
+                            <Run Text="2. Số điện thoại:"/>
+                            <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                    <TextBlock Text="{
                     x:Bind ViewModel.Customer.PhoneError, 
                     Mode=TwoWay, 
                     UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Visibility="{x:Bind ViewModel.Customer.PhoneError, 
-                                        Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/>
-                <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email"/>
-                <TextBlock Text="{
-                    x:Bind ViewModel.Customer.EmailError, 
-                    Mode=TwoWay, 
-                    UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Visibility="{x:Bind ViewModel.Customer.EmailError, 
-                                        Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/>
-
-                <TextBox Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" PlaceholderText="Địa chỉ"/>
-            </StackPanel>
-        </ContentDialog>
-
-        <!-- Search Section -->
-        <StackPanel>
-            <!-- Label -->
-            <TextBlock Text="Tên (hoặc SDT) khách hàng:*" 
-                   Foreground="Red"
-                   Margin="0,0,0,4"/>
-
-            <!-- AutoSuggestBox with Search Button -->
-            <Grid>
-                <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
-                            TextChanged="CustomerSearch_TextChanged"
-                            SuggestionChosen="CustomerSearch_SuggestionChosen"
-                            QueryIcon="Find">
-                    <AutoSuggestBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <!-- Customer Name -->
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-
-                                <!-- Phone Number -->
-                                <TextBlock Text="{Binding Phone}" Foreground="Gray" FontSize="12"/>
-
-                                <!-- Email -->
-                                <TextBlock Text="{Binding Email}" Foreground="Gray" FontSize="12"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </AutoSuggestBox.ItemTemplate>
-                </AutoSuggestBox>
-            </Grid>
-        </StackPanel>
-
-        <!-- Display Selected Customer Section -->
-        <StackPanel Margin="10">
-            <TextBlock Text="Chosen customer:" FontWeight="Bold"/>
-            <TextBlock Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}"/>
-            <TextBlock Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}"/>
-            <TextBlock Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}"/>
-            <TextBlock Text="{
-    x:Bind ViewModel.Invoice.CustomerIDError, 
-    Mode=TwoWay, 
-    UpdateSourceTrigger=PropertyChanged}" 
-           Foreground="Red"
-           Visibility="{x:Bind ViewModel.Invoice.CustomerIDError, 
-                        Converter={StaticResource NullToVisibilityConverter},
-                        Mode=OneWay}"/>
-        </StackPanel>
-
-        <Grid Padding="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <!-- Invoice# Label -->
-            <TextBlock Text="Invoice#*" Foreground="Red" 
-               VerticalAlignment="Center" Margin="0,5,10,5" 
-               Grid.Row="0" Grid.Column="0"/>
-
-            <!-- Invoice# Input with Settings Button -->
-            <Grid Grid.Row="0" Grid.Column="1">
-                <TextBox x:Name="InvoiceNumberTextBox" 
-                 Text="Inv-0000" 
-                 VerticalAlignment="Center"
-                 Padding="8" Width="250"/>
-                <Button Width="30" Height="30"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent">
-                    <FontIcon Glyph="&#xE713;" Foreground="Blue"/>
-                    <!-- Gear Icon -->
-                </Button>
-            </Grid>
-
-            <!-- Order Number Label -->
-            <TextBlock Text="Order Number" 
-               VerticalAlignment="Center" Margin="0,5,10,5" 
-               Grid.Row="1" Grid.Column="0"/>
-
-            <!-- Order Number Input -->
-            <TextBox x:Name="OrderNumberTextBox"
-             PlaceholderText="Enter order number"
-             VerticalAlignment="Center"
-             Padding="8" Width="250"
-             Grid.Row="1" Grid.Column="1"/>
-
-            <!-- Invoice Date Label -->
-            <Grid Grid.Row="2">
-                <!-- Invoice Date Label -->
-                <TextBlock Text="Invoice Date*" 
-               Foreground="Red" 
-               Margin="0,0,0,4"/>
-
-                <!-- Date Input Field with Calendar Flyout -->
-                <Button x:Name="DatePickerButton"
-                    HorizontalAlignment="Left"
-                    Width="250"
-                    Padding="8"
-                    Click="DatePickerButton_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock x:Name="SelectedDateText"
-                       Text="Select Date"
-                       VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <TextBlock Text="{
-                    x:Bind ViewModel.Invoice.DateError, 
-                    Mode=TwoWay, 
-                    UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Visibility="{x:Bind ViewModel.Invoice.DateError, 
-                                        Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/>
-            </Grid>
-
-
-
-        </Grid>
-
-        <ListView x:Name="ItemTable"
-          ItemsSource="{x:Bind ViewModel.Invoice.InvoiceDetails, Mode=TwoWay}"
-          CanReorderItems="True"
-          AllowDrop="True"
-          SelectionMode="None"
-          DragItemsStarting="ItemTable_DragItemsStarting"
-          DragOver="ItemTable_DragOver"
-          Drop="ItemTable_Drop"
-          BorderBrush="LightGray"
-          BorderThickness="1"
-          Padding="10">
-
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:InvoiceDetail">
-                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
-                        <Grid ColumnDefinitions="Auto, 2*, Auto, Auto, Auto, Auto" Padding="5">
-
-                            <!-- Drag Handle -->
-                            <Button Content="≡"
-                            FontSize="16"
-                            Grid.Column="0"
-                            Background="Transparent"
-                            Foreground="Gray"
-                            Width="30"
-                            AllowDrop="True"/>
-
-                            <!-- Item Search -->
-                            <AutoSuggestBox
-                        TextChanged="ItemSearch_TextChanged"
-                        SuggestionChosen="ItemSearch_SuggestionChosen"
-                        PlaceholderText="Search item..."
-                        Width="250"
-                        Grid.Column="1"
-                        Margin="5">
-
-                                <AutoSuggestBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Spacing="10">
-                                            <Image Source="{Binding Color.UrlImage}" Width="30" Height="30" Stretch="UniformToFill"/>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock Text="{Binding Item.ItemName}" FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding Color.Name}" Foreground="Gray" FontSize="12"/>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </AutoSuggestBox.ItemTemplate>
-                            </AutoSuggestBox>
-
-                            <!-- Quantity & Price Grid -->
-                            <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <!-- Quantity NumberBox -->
-                                <NumberBox x:Name="QuantityBox"
-                                   Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   
-                                   SpinButtonPlacementMode="Inline"
-                                   Minimum="0"
-                                   SmallChange="1"
-                                   LargeChange="10"
-                                   Width="100"
-                                   HorizontalAlignment="Stretch"
-                                   Margin="5">
-                                    <interactivity:Interaction.Behaviors>
-                                        <interactivity:EventTriggerBehavior EventName="ValueChanged">
-                                            <interactivity:CallMethodAction MethodName="RecalculateTotal"
-                                    TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
-                                        </interactivity:EventTriggerBehavior>
-                                    </interactivity:Interaction.Behaviors>
-                                </NumberBox>
-
-                                <!-- Price NumberBox -->
-                                <NumberBox x:Name="PriceBox"
-                                   Value="{Binding Price, Mode=TwoWay}"
-                                   IsEnabled="false"
-                                   Minimum="0"
-                                   SpinButtonPlacementMode="Inline"
-                                   SmallChange="10"
-                                   LargeChange="100"
-                                   Width="100"
-                                   HorizontalAlignment="Stretch"
-                                   Grid.Column="1"
-                                   Margin="5">
-                                    <interactivity:Interaction.Behaviors>
-                                        <interactivity:EventTriggerBehavior EventName="ValueChanged">
-                                            <interactivity:CallMethodAction MethodName="RecalculateTotal"
-TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
-                                        </interactivity:EventTriggerBehavior>
-                                    </interactivity:Interaction.Behaviors>
-                                </NumberBox>
-                            </Grid>
-
-
-
-                            <!-- Delete Button -->
-                            <Button Content="✖"
-                            Background="Transparent"
                             Foreground="Red"
-                            FontSize="16"
-                            Width="30"
-                            Grid.Column="4"
-                            HorizontalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <TextBlock Text="{
-            x:Bind ViewModel.Invoice.InvoiceDetailsError, 
-            Mode=TwoWay, 
-            UpdateSourceTrigger=PropertyChanged}" 
-                   Foreground="Red"
-                   Visibility="{x:Bind ViewModel.Invoice.InvoiceDetailsError, 
-                                Converter={StaticResource NullToVisibilityConverter},
-                                Mode=OneWay}"/>
+                            Visibility="{x:Bind ViewModel.Customer.PhoneError, 
+                                        Converter={StaticResource NullToVisibilityConverter},
+                                        Mode=OneWay}"/>
+                    <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email">
+                        <TextBox.Header>
+                            <TextBlock  FontWeight="Bold">
+                        <Run Text="3. Email:"/>
+                        <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                    <TextBlock Text="{
+                        x:Bind ViewModel.Customer.EmailError, 
+                        Mode=TwoWay, 
+                        UpdateSourceTrigger=PropertyChanged}" 
+                               Foreground="Red"
+                               Visibility="{x:Bind ViewModel.Customer.EmailError, 
+                                            Converter={StaticResource NullToVisibilityConverter},
+                                            Mode=OneWay}"/>
 
-        <Button Content="Add new invoice detail"  Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
-        <TextBlock Text="Total Amount:" 
-            Foreground="Black" 
-            Margin="0,0,0,4"/>
-        <TextBlock Text="{x:Bind ViewModel.Invoice.TotalAmount, Mode=TwoWay}"/>
-        <Button Content="Update total amount" Click="{x:Bind ViewModel.RecalculateTotal}"/>
-        <Button Content="Create invoice" Command="{x:Bind ViewModel.CreateInvoiceCommand}"/>
-    </StackPanel>
+                    <TextBox Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" PlaceholderText="Địa chỉ">
+                        <TextBox.Header>
+                            <TextBlock  FontWeight="Bold">
+                                <Run Text="4. Địa chỉ:"/>
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                    </StackPanel>
+            </ContentDialog>
+
+             <!--Search Bar and Create Button--> 
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                 <!--Search Section--> 
+                <StackPanel Grid.Column="0">
+                    <Grid>
+                        <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
+                                        TextChanged="CustomerSearch_TextChanged"
+                                        SuggestionChosen="CustomerSearch_SuggestionChosen"
+                                        QueryIcon="Find">
+                            <AutoSuggestBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Padding="5">
+                                         <!--Customer Name--> 
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+
+                                         <!--Phone Number--> 
+                                        <TextBlock Text="{Binding Phone}" Foreground="Gray" FontSize="12"/>
+
+                                         <!--Email--> 
+                                        <TextBlock Text="{Binding Email}" Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </AutoSuggestBox.ItemTemplate>
+                        </AutoSuggestBox>
+                    </Grid>
+                </StackPanel>
+                <!--Create Customer Button-->
+                <Button Grid.Column="1" Content="Tạo khách hàng" Click="CreateCustomer_Click" HorizontalAlignment="Stretch" />
+            </Grid>
+
+             <!--Display Selected Customer Section--> 
+            <StackPanel Margin="10" HorizontalAlignment="Stretch" Spacing="10">
+                <TextBlock  FontSize="18" FontWeight="Bold">
+                    <Run Text="A. THÔNG TIN KHÁCH HÀNG" />
+                    <Run Text="*" Foreground="Red" />
+                </TextBlock>
+                <Grid Margin="20,0" HorizontalAlignment="Stretch" ColumnSpacing="50" RowSpacing="10" Padding="20,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="1. Tên khách hàng:" FontWeight="SemiBold" FontSize="15" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="2. Số điện thoại:" FontWeight="SemiBold" FontSize="15" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}" FontSize="15"  FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="3. Email:" FontWeight="SemiBold" FontSize="15" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}" FontSize="15"  FontWeight="SemiBold"/>
+                </Grid>
+                <TextBlock Text="{x:Bind ViewModel.Invoice.CustomerIDError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Invoice.CustomerIDError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
+            </StackPanel>
+        
+             <!--Invoive Detail--> 
+            <Grid Padding="10" RowSpacing="10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Invoice# Input with Settings Button--> 
+                <TextBlock Text="B. MÃ HÓA ĐƠN" 
+                           FontWeight="Bold"
+                           FontSize="18"
+                           VerticalAlignment="Center" Margin="0,5,10,5" 
+                           Grid.Row="0" Grid.Column="0"/>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <TextBox x:Name="InvoiceNumberTextBox" 
+                             Text="Inv-0000" 
+                             VerticalAlignment="Center"
+                             Padding="8"/>
+                    <Button 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                            <FontIcon Glyph="&#xE713;" Foreground="Black"/>
+                    </Button>
+                </Grid>
+
+                 <!--Order Number Label-->
+                <TextBlock Text="C. MÃ ĐẶT HÀNG" 
+                           FontWeight="Bold"
+                           FontSize="18"
+                           VerticalAlignment="Center" Margin="0,5,10,5" 
+                           Grid.Row="1" Grid.Column="0"/>
+                <TextBox x:Name="OrderNumberTextBox"
+                         PlaceholderText="Nhập mã đặt hàng"
+                         VerticalAlignment="Center"
+                         Padding="8" 
+                         Grid.Row="1" Grid.Column="1"/>
+
+                <!--Date Input Field with Calendar Flyout-->
+                <TextBlock
+                           FontWeight="Bold"
+                           FontSize="18"
+                           VerticalAlignment="Center" Margin="0,5,10,5" 
+                           Grid.Row="2" Grid.Column="0">
+                    <Run Text="D. NGÀY TẠO HÓA ĐƠN" />
+                    <Run Text="*" Foreground="Red" />
+                </TextBlock>
+                    <StackPanel Grid.Row="2" Grid.Column="1" >
+                    <Button x:Name="DatePickerButton"
+                            Padding="8"
+                            HorizontalAlignment="Stretch"
+                            Click="DatePickerButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="SelectedDateText"
+                                       Text="Chọn ngày"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="{x:Bind ViewModel.Invoice.DateError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                               Foreground="Red"
+                               Visibility="{x:Bind ViewModel.Invoice.DateError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid>
+                <!--<Path Stretch="Fill" Data="M 0,0 L 1,0" Stroke="LightGray" StrokeDashArray="4,2" StrokeThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>-->
+                <TextBlock FontWeight="Bold"
+                    FontSize="18"
+                    VerticalAlignment="Center" Margin="10,10,0,10"
+                    >
+                    <Run Text="E. DANH SÁCH SẢN PHẨM" />
+                    <Run Text="*" Foreground="Red" />
+                </TextBlock>
+            </Grid>
+
+            <Button CornerRadius="10,10,0,0" HorizontalAlignment="Left" 
+                    Background="Gray" Foreground="White" Margin="0,0,00,0" 
+                    Content="Thêm sản phẩm" Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
+
+            <ListView x:Name="ItemTable"
+                      ItemsSource="{x:Bind ViewModel.Invoice.InvoiceDetails, Mode=TwoWay}"
+                      CanReorderItems="True" AllowDrop="True"
+                      SelectionMode="None"
+                      DragItemsStarting="ItemTable_DragItemsStarting" DragOver="ItemTable_DragOver" Drop="ItemTable_Drop"
+                      BorderBrush="LightGray" BorderThickness="1"
+                      Padding="10">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:InvoiceDetail">
+                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
+                            <Grid Padding="5" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Drag Handle-->
+                                <TextBlock Text="≡" VerticalAlignment="Center" />
+
+
+                                <!--Item Search-->
+                                <StackPanel Grid.Column="1" Spacing="10">
+                                    <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
+                                    <AutoSuggestBox
+                                                    HorizontalAlignment="Stretch"
+                                                    TextChanged="ItemSearch_TextChanged"
+                                                    SuggestionChosen="ItemSearch_SuggestionChosen"
+                                                    PlaceholderText="Tìm kiếm sản phẩm ...">
+                                        <AutoSuggestBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <Image Source="{Binding Color.UrlImage}" Width="30" Height="30" Stretch="UniformToFill"/>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Item.ItemName}" FontWeight="Bold"/>
+                                                        <TextBlock Text="{Binding Color.Name}" Foreground="Gray" FontSize="12"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </AutoSuggestBox.ItemTemplate>
+                                    </AutoSuggestBox>
+                                </StackPanel>
+
+                                <!--Quantity & Price Grid-->
+                                <Grid Grid.Column="2" HorizontalAlignment="Stretch"  ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10*"/>
+                                        <ColumnDefinition Width="9*"/>
+                                        <ColumnDefinition Width="9*"/>
+
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--Quantity NumberBox-->
+                                    <StackPanel HorizontalAlignment="Stretch" Spacing="10">
+                                        <TextBlock Text="Số lượng:" FontWeight="Bold"/>
+                                            <NumberBox x:Name="QuantityBox"
+                                               Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               SpinButtonPlacementMode="Inline"
+                                               Minimum="1"
+                                               SmallChange="1"
+                                               LargeChange="10"
+                                               HorizontalAlignment="Stretch"
+                                               >
+                                            </NumberBox>
+
+                                    </StackPanel>
+
+                                    <!--Price NumberBox-->
+                                    <StackPanel Grid.Column="1"  HorizontalAlignment="Stretch" Spacing="10">
+                                        <TextBlock Text="Đơn giá:" FontWeight="Bold" />
+                                        <TextBox x:Name="PriceBox"
+                                                 IsReadOnly="True"
+                                                 Text="{Binding Price}"
+                                                 HorizontalAlignment="Stretch">
+                                            <interactivity:Interaction.Behaviors>
+                                                <interactivity:EventTriggerBehavior EventName="ValueChanged">
+                                                    <interactivity:CallMethodAction MethodName="RecalculateTotal"
+                                                                    TargetObject="{Binding ViewModel, ElementName=PageRoot}"/>
+                                                    </interactivity:EventTriggerBehavior>
+                                            </interactivity:Interaction.Behaviors>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <!-- Total -->
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
+                                        <TextBlock Text="Thành tiền:" FontWeight="Bold" />
+                                        <TextBox Text="{Binding Total}" IsReadOnly="True"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!--Delete Button-->
+                                <Button Content="x"
+                                        Grid.Column="4"
+                                        Background="Red"
+                                        Foreground="White"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Center"/>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        
+            <TextBlock Text="{
+                x:Bind ViewModel.Invoice.InvoiceDetailsError, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" 
+                       Foreground="Red"
+                       Visibility="{x:Bind ViewModel.Invoice.InvoiceDetailsError, 
+                                    Converter={StaticResource NullToVisibilityConverter},
+                                    Mode=OneWay}"/>
+
+
+             <!--Create Invoice Button and total amount display-->
+            <StackPanel Margin="0,20,0,0">
+                <Path Data="M 0,0 L 1,0" Stretch="Fill" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" HorizontalAlignment="Stretch"/>
+                <Grid Margin="0,30,0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+            
+                    <Button HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Content="TẠO HÓA ĐƠN" FontWeight="SemiBold" Padding="15" Margin="0,0,20,0" 
+                            Background="DarkBlue" Foreground="White" Command="{x:Bind ViewModel.CreateInvoiceCommand}"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" >
+                        <Grid>
+                            <Path Stretch="Fill" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" Data="M 0,0 L 0,1" Width="2"/>
+                            <StackPanel Spacing="10">
+                                <TextBlock HorizontalAlignment="Center" Text="TỔNG HÓA ĐƠN"  FontSize="15" FontWeight="Bold"/>
+                                <TextBlock FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Run Text="{x:Bind ViewModel.Invoice.TotalAmount, Mode=OneWay, Converter={StaticResource VndCurrencyConverter}}" />
+                                    <Run Text="VNĐ" TextDecorations="Underline" FontSize="20" FontWeight="SemiBold"/>
+                                </TextBlock>
+                                <!--<TextBlock HorizontalAlignment="Center" Text="VNĐ" TextDecorations="Underline"  FontSize="20" FontWeight="SemiBold" />-->
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+    </ScrollView>
 </Page>
