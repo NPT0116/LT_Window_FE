@@ -52,6 +52,22 @@ namespace Navigation.Views.Payments.Invoices
                 Debug.WriteLine($"To Date selected: {ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate}");
             }
         }
+        private void CalendarFromDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if (args.NewDate.HasValue)
+            {
+                var selectedDate = args.NewDate.Value.DateTime;
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
+            }
+        }
+        private void CalendarToDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if (args.NewDate.HasValue)
+            {
+                var selectedDate = args.NewDate.Value.DateTime;
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
+            }
+        }
 
     }
 }
