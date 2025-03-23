@@ -69,14 +69,31 @@
             </StackPanel>
 
             <!-- Apply Filters Button -->
-            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray" CornerRadius="8">
-                <Button 
-                    CornerRadius="8"
-                    Margin="10"
-                    Content="Apply Filters"
-                    Command="{x:Bind ViewModel.InvoiceQuery.LoadDataCommand}" 
-                    HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch"/>
+            <Border Grid.Column="1" BorderThickness="0" BorderBrush="Gray" CornerRadius="8">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Content="ĐẶT LẠI MẶC ĐỊNH"          
+                            Click="ResetDefault_button"
+                        Grid.Row="0"
+                        FontWeight="Bold" FontSize="15"
+                        CornerRadius="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Margin="10"/>
+                    <Button 
+                        CornerRadius="8"
+                        Grid.Row="1"
+                        Margin="10"
+                        Content="TÌM KIẾM"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Command="{x:Bind ViewModel.InvoiceQuery.LoadDataCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+                </Grid>
             </Border>
 
         </Grid>
@@ -86,10 +103,10 @@
                 <Path Stretch="Fill" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" Data="M 0,0 L 1,0"  Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
                 <!-- TABLE (INVOICES LIST) -->
                 <ListView ItemsSource="{x:Bind ViewModel.InvoiceQuery.Items, Mode=TwoWay}"
-              SelectionMode="None"
-              Grid.Row="3"
-              Margin="0,10,0,0"
-              BorderBrush="Gray" BorderThickness="1">
+                          SelectionMode="None"
+                          Grid.Row="3"
+                          Margin="0,10,0,0"
+                          BorderBrush="Gray" BorderThickness="1">
 
                         <!-- TABLE HEADER -->
                         <ListView.Header>
@@ -99,8 +116,8 @@
                                     <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Total Amount" FontWeight="Bold" Grid.Column="0" Foreground="White"/>
-                                <TextBlock Text="Date" FontWeight="Bold" Grid.Column="1" Foreground="White"/>
+                                <TextBlock Text="TỔNG TIỀN" FontWeight="Bold" Grid.Column="0" Foreground="White"/>
+                                <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="1" Foreground="White"/>
                             </Grid>
                         </ListView.Header>
 

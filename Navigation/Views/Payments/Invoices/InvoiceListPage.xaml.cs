@@ -32,26 +32,6 @@ namespace Navigation.Views.Payments.Invoices
             ViewModel = new();
             this.DataContext = ViewModel;
         }
-
-        private void CalendarFromDate_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        {
-            if (args.AddedDates.Count > 0)
-            {
-                var selectedDate = args.AddedDates[0].DateTime;
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
-                Debug.WriteLine($"From Date selected: {ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate}");
-            }
-        }
-
-        private void CalendarToDate_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        {
-            if (args.AddedDates.Count > 0)
-            {
-                var selectedDate = args.AddedDates[0].DateTime;
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
-                Debug.WriteLine($"To Date selected: {ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate}");
-            }
-        }
         private void CalendarFromDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             if (args.NewDate.HasValue)
@@ -67,6 +47,16 @@ namespace Navigation.Views.Payments.Invoices
                 var selectedDate = args.NewDate.Value.DateTime;
                 ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
             }
+        }
+        private void ResetDefault_button(object sender, RoutedEventArgs e)
+        {
+            CalendarFromDate.Date = null;
+            CalendarToDate.Date = null;
+            ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = null;
+            ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = null;
+            ViewModel.InvoiceQuery.Query.CustomerName = String.Empty;
+            ViewModel.InvoiceQuery.Query.CustomerPhone = String.Empty;
+            ViewModel.InvoiceQuery.LoadDataCommand.Execute(null);
         }
 
     }
