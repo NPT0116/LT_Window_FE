@@ -159,7 +159,7 @@
             </Grid>
 
              <!--Order Number Label-->
-            <TextBlock Text="C.MÃ ĐẶT HÀNG" 
+            <TextBlock Text="C. MÃ ĐẶT HÀNG" 
                        FontWeight="Bold"
                        FontSize="18"
                        VerticalAlignment="Center" Margin="0,5,10,5" 
@@ -195,7 +195,18 @@
                            Visibility="{x:Bind ViewModel.Invoice.DateError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
             </StackPanel>
         </Grid>
-        
+
+        <Grid>
+            <Path Stretch="Fill" Data="M 0,0 L 1,0" Stroke="LightGray" StrokeDashArray="4,2" StrokeThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+            <TextBlock FontWeight="Bold"
+                FontSize="18"
+                VerticalAlignment="Center" Margin="10,20,0,10"
+                >
+                <Run Text="E. DANH SÁCH SẢN PHẨM" />
+                <Run Text="*" Foreground="Red" />
+            </TextBlock>
+        </Grid>
+
         <Button Background="Gray" Foreground="White" Content="Thêm sản phẩm"  Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
 
         <ListView x:Name="ItemTable"
@@ -211,13 +222,13 @@
                         <Grid Padding="5" ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="8*"/>
                                 <ColumnDefinition Width="10*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
 
                             <!--Drag Handle-->
-                                <TextBlock Text="≡" VerticalAlignment="Center" />
+                            <TextBlock Text="≡" VerticalAlignment="Center" />
 
 
                             <!--Item Search-->
@@ -245,8 +256,10 @@
                             <!--Quantity & Price Grid-->
                             <Grid Grid.Column="2" HorizontalAlignment="Stretch"  ColumnSpacing="10">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="9*"/>
+
                                 </Grid.ColumnDefinitions>
 
                                 <!--Quantity NumberBox-->
@@ -279,8 +292,12 @@
                                         </interactivity:Interaction.Behaviors>
                                     </TextBox>
                                 </StackPanel>
-
-                            </Grid>
+                                <!-- Total -->
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
+                                        <TextBlock Text="Thành tiền:" FontWeight="Bold" />
+                                        <TextBox Text="10000000" IsReadOnly="True"/>
+                                    </StackPanel>
+                                </Grid>
 
                             <!--Delete Button-->
                             <Button Content="x"

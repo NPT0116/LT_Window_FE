@@ -160,7 +160,7 @@ namespace Navigation.Views.Payments.Invoices
         private void ItemSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             var row = (InvoiceDetail)sender.DataContext;
-
+            Debug.WriteLine("What");
             if (args.SelectedItem is Variant variant)
             {
                 sender.Text = $"{variant.Item.ItemName} {variant.Storage} {variant.Color.Name}";
@@ -178,5 +178,9 @@ namespace Navigation.Views.Payments.Invoices
 
         private void ItemTable_Drop(object sender, DragEventArgs e) { }
 
+        private void StackPanel_ContextCanceled(UIElement sender, RoutedEventArgs args)
+        {
+
+        }
     }
 }

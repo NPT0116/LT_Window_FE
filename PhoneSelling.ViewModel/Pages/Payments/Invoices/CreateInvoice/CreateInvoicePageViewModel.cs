@@ -35,16 +35,26 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             _customerRepository = DIContainer.GetKeyedSingleton<ICustomerRepository>();
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
             _invoiceRepository = DIContainer.GetKeyedSingleton<IInvoiceRepository>();
-            Invoice = new()
+            Invoice = new();
+            AddInvoiceDetail();
+            Invoice.InvoiceDetails.CollectionChanged += InvoiceDetails_CollectionChanged;
+        }
+        private void InvoiceDetails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                InvoiceDetails = new TrulyObservableCollection<InvoiceDetail>()
+                foreach(var newItem in e.NewItems)
                 {
-                    new InvoiceDetail() {
-                    }
+                    Debug.WriteLine("Item added: " + newItem);
                 }
-            };
-            Debug.WriteLine(Invoice.Date);
-           
+            } else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach(var oldItem in e.OldItems) 
+                {
+                    Debug.WriteLine("Item removed: " + oldItem);
+                }
+            }
+            Invoice.Validate();
         }
 
         public async Task<Customer?> SearchCustomersByEmail(string email)
