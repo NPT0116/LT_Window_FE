@@ -25,13 +25,21 @@
         <TextBlock Text="TẠO HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,20"/>
          <!--Create Customer Dialog--> 
         <ContentDialog x:Name="CreateCustomerDialog"
-               Title="NHẬP THÔNG TIN KHÁCH HÀNG"
-               PrimaryButtonText="Lưu"
-               Closing="CustomerDialog_Closing"
-               CloseButtonText="Hủy"
-               >
-            <StackPanel Spacing="10">
-                <TextBox Text="{x:Bind ViewModel.Customer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Tên khách hàng"/>
+                       PrimaryButtonText="Lưu"
+                       Closing="CustomerDialog_Closing"
+                       CloseButtonText="Hủy"
+                       Padding="40">
+            <StackPanel Spacing="15">
+                    <TextBlock Text="PHIẾU NHẬP THÔNG TIN KHÁCH HÀNG" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
+
+                    <TextBox Text="{x:Bind ViewModel.Customer.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Tên khách hàng">
+                    <TextBox.Header>
+                        <TextBlock  FontWeight="Bold">
+                            <Run Text="1. Tên khách hàng:"/>
+                            <Run Text="*" Foreground="Red"/>
+                        </TextBlock>
+                    </TextBox.Header>    
+                </TextBox>
                 <TextBlock Text="{
                     x:Bind ViewModel.Customer.NameError, 
                     Mode=TwoWay, 
@@ -41,16 +49,30 @@
                                         Converter={StaticResource NullToVisibilityConverter},
                                         Mode=OneWay}"/>
 
-                <TextBox Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Số điện thoại"/>
+                <TextBox Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Số điện thoại">
+                    <TextBox.Header>
+                        <TextBlock  FontWeight="Bold">
+                        <Run Text="2. Số điện thoại:"/>
+                        <Run Text="*" Foreground="Red"/>
+                        </TextBlock>
+                    </TextBox.Header>
+                </TextBox>
                 <TextBlock Text="{
-                    x:Bind ViewModel.Customer.PhoneError, 
-                    Mode=TwoWay, 
-                    UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Visibility="{x:Bind ViewModel.Customer.PhoneError, 
-                                        Converter={StaticResource NullToVisibilityConverter},
-                                        Mode=OneWay}"/>
-                <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email"/>
+                x:Bind ViewModel.Customer.PhoneError, 
+                Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}" 
+                        Foreground="Red"
+                        Visibility="{x:Bind ViewModel.Customer.PhoneError, 
+                                    Converter={StaticResource NullToVisibilityConverter},
+                                    Mode=OneWay}"/>
+                <TextBox x:Name="NewCustomerEmail" Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Email">
+                    <TextBox.Header>
+                        <TextBlock  FontWeight="Bold">
+                    <Run Text="3. Email:"/>
+                    <Run Text="*" Foreground="Red"/>
+                        </TextBlock>
+                    </TextBox.Header>
+                </TextBox>
                 <TextBlock Text="{
                     x:Bind ViewModel.Customer.EmailError, 
                     Mode=TwoWay, 
@@ -60,8 +82,14 @@
                                         Converter={StaticResource NullToVisibilityConverter},
                                         Mode=OneWay}"/>
 
-                <TextBox Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" PlaceholderText="Địa chỉ"/>
-            </StackPanel>
+                <TextBox Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" PlaceholderText="Địa chỉ">
+                    <TextBox.Header>
+                        <TextBlock  FontWeight="Bold">
+                            <Run Text="4. Địa chỉ:"/>
+                        </TextBlock>
+                    </TextBox.Header>
+                </TextBox>
+                </StackPanel>
         </ContentDialog>
 
          <!--Search Bar and Create Button--> 
@@ -74,12 +102,12 @@
             <StackPanel Grid.Column="0">
                 <Grid>
                     <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
-                            TextChanged="CustomerSearch_TextChanged"
-                            SuggestionChosen="CustomerSearch_SuggestionChosen"
-                            QueryIcon="Find">
+                                    TextChanged="CustomerSearch_TextChanged"
+                                    SuggestionChosen="CustomerSearch_SuggestionChosen"
+                                    QueryIcon="Find">
                         <AutoSuggestBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Vertical" Padding="5">
                                      <!--Customer Name--> 
                                     <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
 
@@ -114,12 +142,12 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="1. Tên khách hàng:" FontWeight="SemiBold" FontSize="15"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" TextDecorations="Underline"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="1. Tên khách hàng:" FontWeight="SemiBold" FontSize="15" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="2. Số điện thoại:" FontWeight="SemiBold" FontSize="15" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}" FontSize="15" TextDecorations="Underline" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}" FontSize="15"  FontWeight="SemiBold"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="3. Email:" FontWeight="SemiBold" FontSize="15" />
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}" FontSize="15" TextDecorations="Underline" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}" FontSize="15"  FontWeight="SemiBold"/>
             </Grid>
             <TextBlock Text="{x:Bind ViewModel.Invoice.CustomerIDError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                        Foreground="Red"

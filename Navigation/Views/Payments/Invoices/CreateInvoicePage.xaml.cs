@@ -73,7 +73,7 @@ namespace Navigation.Views.Payments.Invoices
                     customer = await ViewModel.SearchCustomersByEmail(text);
                 }
                 var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
-                customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
+                //customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
 
                 sender.ItemsSource = customerSuggestions;
             }
