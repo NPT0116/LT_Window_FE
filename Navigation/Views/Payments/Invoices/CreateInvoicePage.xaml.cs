@@ -46,7 +46,10 @@ namespace Navigation.Views.Payments.Invoices
             // Attach Flyout to the Button
             FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
         }
-
+        private async void CreateCustomer_Click(object sender, RoutedEventArgs args)
+        {
+            await CreateCustomerDialog.ShowAsync();
+        }
         private async void CustomerSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;

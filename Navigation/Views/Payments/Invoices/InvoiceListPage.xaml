@@ -80,7 +80,7 @@
             </Border>
 
         </Grid>
-
+        
         <StackPanel Grid.Row="2" Spacing="10">
             <Grid>
                 <Path Stretch="Fill" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" Data="M 0,0 L 1,0"  Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>

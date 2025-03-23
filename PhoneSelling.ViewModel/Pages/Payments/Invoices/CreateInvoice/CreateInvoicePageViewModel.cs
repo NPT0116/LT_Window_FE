@@ -15,6 +15,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 {
     public partial class CreateInvoicePageViewModel : BasePageViewModel
     {
+        public int dummy = 1000000000;
         private readonly ICustomerRepository _customerRepository;
         private readonly IVariantRepository _variantRepository;
         private readonly IInvoiceRepository _invoiceRepository;
@@ -83,13 +84,19 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             var newDetail = new InvoiceDetail
             {
                 InvoiceID = Invoice.InvoiceID,
-                Quantity = 1,
-                Price = 100, // Example default value
+                Quantity = 0,
+                Price = 0,
             };
 
             Invoice.InvoiceDetails.Add(newDetail); // Ensure we update the existing collection
         }
-
+        [RelayCommand]
+        public void RemoveInvoiceDetail(InvoiceDetail detail)
+        {
+            Invoice.Validate();
+            Invoice.InvoiceDetails.Remove(detail); // Ensure we update the existing collection
+        }
+        [RelayCommand]
         public void RecalculateTotal()
         {
             float total = 0;           
