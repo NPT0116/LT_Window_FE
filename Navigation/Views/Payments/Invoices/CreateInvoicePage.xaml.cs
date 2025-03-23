@@ -127,7 +127,25 @@ namespace Navigation.Views.Payments.Invoices
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Ignore null values
                 }));
-                await ViewModel.CreateCustomer();
+                try
+                {
+                    await ViewModel.CreateCustomer();
+                } catch(Exception ex)
+                {
+                    ViewModel.Customer.Name = String.Empty;
+                    ViewModel.Customer.Phone = String.Empty;
+                    ViewModel.Customer.Email = String.Empty;
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "LỖI TẠO KHÁCH HÀNG",
+                        Content = ex.Message,
+                        CloseButtonText = "Đóng",
+                        XamlRoot = this.XamlRoot,
+                        RequestedTheme = ElementTheme.Light
+                    };
+                    await errorDialog.ShowAsync();
+                }
+
             }
         }
         private void DatePickerButton_Click(object sender, RoutedEventArgs e)
