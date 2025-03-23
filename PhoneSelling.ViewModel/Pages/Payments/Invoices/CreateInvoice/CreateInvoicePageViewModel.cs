@@ -22,6 +22,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         [ObservableProperty] private Customer customer = new();
         [ObservableProperty] private Invoice invoice;
         [ObservableProperty] private TrulyObservableCollection<Variant> searchItems;
+
         //[ObservableProperty] private Variant variant = new();
         //public string VariantDisplayName => Variant != null ? $"{Variant.Item.ItemName} {Variant.Storage} {Variant.Color.Name}" : "";
 
@@ -38,7 +39,8 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             {
                 InvoiceDetails = new TrulyObservableCollection<InvoiceDetail>()
                 {
-                    new InvoiceDetail() {}
+                    new InvoiceDetail() {
+                    }
                 }
             };
             Debug.WriteLine(Invoice.Date);
@@ -84,17 +86,19 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             var newDetail = new InvoiceDetail
             {
                 InvoiceID = Invoice.InvoiceID,
-                Quantity = 0,
+                Quantity = 1,
                 Price = 0,
+                Variant = new Variant()
             };
-
-            Invoice.InvoiceDetails.Add(newDetail); // Ensure we update the existing collection
+            RecalculateTotal();
+            newDetail.RecalculateCallback = RecalculateTotal;
+            Invoice.InvoiceDetails.Add(newDetail);
         }
         [RelayCommand]
         public void RemoveInvoiceDetail(InvoiceDetail detail)
         {
-            Invoice.Validate();
             Invoice.InvoiceDetails.Remove(detail); // Ensure we update the existing collection
+            RecalculateTotal();
         }
         [RelayCommand]
         public void RecalculateTotal()

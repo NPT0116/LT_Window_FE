@@ -165,7 +165,7 @@
                        VerticalAlignment="Center" Margin="0,5,10,5" 
                        Grid.Row="1" Grid.Column="0"/>
             <TextBox x:Name="OrderNumberTextBox"
-                     PlaceholderText="Enter order number"
+                     PlaceholderText="Nhập mã đặt hàng"
                      VerticalAlignment="Center"
                      Padding="8" 
                      Grid.Row="1" Grid.Column="1"/>
@@ -186,7 +186,7 @@
                         Click="DatePickerButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="SelectedDateText"
-                                   Text="Select Date"
+                                   Text="Chọn ngày"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
@@ -227,7 +227,7 @@
                                                 HorizontalAlignment="Stretch"
                                                 TextChanged="ItemSearch_TextChanged"
                                                 SuggestionChosen="ItemSearch_SuggestionChosen"
-                                                PlaceholderText="Search item...">
+                                                PlaceholderText="Tìm kiếm sản phẩm ...">
                                     <AutoSuggestBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Spacing="10">
@@ -252,21 +252,15 @@
                                 <!--Quantity NumberBox-->
                                 <StackPanel HorizontalAlignment="Stretch" Spacing="10">
                                     <TextBlock Text="Số lượng:" FontWeight="Bold"/>
-                                    <NumberBox x:Name="QuantityBox"
+                                        <NumberBox x:Name="QuantityBox"
                                            Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                            SpinButtonPlacementMode="Inline"
-                                           Minimum="0"
+                                           Minimum="1"
                                            SmallChange="1"
                                            LargeChange="10"
                                            HorizontalAlignment="Stretch"
                                            >
-                                        <interactivity:Interaction.Behaviors>
-                                            <interactivity:EventTriggerBehavior EventName="ValueChanged">
-                                                <interactivity:CallMethodAction MethodName="RecalculateTotal"
-                                                                TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
-                                            </interactivity:EventTriggerBehavior>
-                                        </interactivity:Interaction.Behaviors>
-                                    </NumberBox>
+                                        </NumberBox>
 
                                 </StackPanel>
 
@@ -280,8 +274,8 @@
                                         <interactivity:Interaction.Behaviors>
                                             <interactivity:EventTriggerBehavior EventName="ValueChanged">
                                                 <interactivity:CallMethodAction MethodName="RecalculateTotal"
-                                                                TargetObject="{Binding DataContext, ElementName=ItemTable}"/>
-                                            </interactivity:EventTriggerBehavior>
+                                                                TargetObject="{Binding ViewModel, ElementName=PageRoot}"/>
+                                                </interactivity:EventTriggerBehavior>
                                         </interactivity:Interaction.Behaviors>
                                     </TextBox>
                                 </StackPanel>

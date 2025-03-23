@@ -140,7 +140,7 @@ namespace Navigation.Views.Payments.Invoices
             if (args.AddedDates.Count > 0)
             {
                 DateTime selectedDate = args.AddedDates[0].DateTime;
-                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy"); // Format like your image
+                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy");
                 ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
             }
         }
@@ -169,8 +169,6 @@ namespace Navigation.Views.Payments.Invoices
                 row.Variant = variant;
                 row.VariantId = variant.VariantID;
                 row.Price = variant.SellingPrice; // Ensure Price is taken from the selected Variant
-
-                
             }
         }
 
