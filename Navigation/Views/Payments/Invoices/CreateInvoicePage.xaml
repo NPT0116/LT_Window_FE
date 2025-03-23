@@ -21,7 +21,7 @@
     </Page.Resources>
     <ScrollView>
 
-    <StackPanel Padding="10">
+    <StackPanel Padding="40,0,40,40">
         <TextBlock Text="TẠO HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,20"/>
          <!--Create Customer Dialog--> 
         <ContentDialog x:Name="CreateCustomerDialog"
@@ -115,11 +115,11 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="1. Tên khách hàng:" FontWeight="SemiBold" FontSize="15"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}" FontSize="15" Foreground="Red" FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Name, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" TextDecorations="Underline"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="2. Số điện thoại:" FontWeight="SemiBold" FontSize="15" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}" FontSize="15" Foreground="Red" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Phone, Mode=OneWay}" FontSize="15" TextDecorations="Underline" FontWeight="SemiBold"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="3. Email:" FontWeight="SemiBold" FontSize="15" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}" FontSize="15" Foreground="Red" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.Customer.Email, Mode=OneWay}" FontSize="15" TextDecorations="Underline" FontWeight="SemiBold"/>
             </Grid>
             <TextBlock Text="{x:Bind ViewModel.Invoice.CustomerIDError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                        Foreground="Red"
@@ -127,7 +127,7 @@
         </StackPanel>
         
          <!--Invoive Detail--> 
-        <Grid Padding="10" RowSpacing="10">
+        <Grid Padding="10" RowSpacing="10" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
@@ -207,7 +207,10 @@
             </TextBlock>
         </Grid>
 
-        <Button Background="Gray" Foreground="White" Content="Thêm sản phẩm"  Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
+        <Button CornerRadius="10,10,0,0" HorizontalAlignment="Left" 
+                Background="Gray" Foreground="White" Margin="0,0,00,0" 
+                Content="Thêm sản phẩm" Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
+
 
         <ListView x:Name="ItemTable"
                   ItemsSource="{x:Bind ViewModel.Invoice.InvoiceDetails, Mode=TwoWay}"
@@ -293,11 +296,11 @@
                                     </TextBox>
                                 </StackPanel>
                                 <!-- Total -->
-                                    <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
-                                        <TextBlock Text="Thành tiền:" FontWeight="Bold" />
-                                        <TextBox Text="10000000" IsReadOnly="True"/>
-                                    </StackPanel>
-                                </Grid>
+                                <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
+                                    <TextBlock Text="Thành tiền:" FontWeight="Bold" />
+                                    <TextBox Text="{Binding Total}" IsReadOnly="True"/>
+                                </StackPanel>
+                            </Grid>
 
                             <!--Delete Button-->
                             <Button Content="x"
@@ -356,7 +359,7 @@
             </StackPanel>
         </Grid>
         
-        <Button Content="Update Total" Command="{x:Bind ViewModel.RecalculateTotalCommand}" />
+        <!--<Button Content="Update Total" Command="{x:Bind ViewModel.RecalculateTotalCommand}" />-->
 
     </StackPanel>
     </ScrollView>

@@ -79,5 +79,16 @@ namespace PhoneSelling.Data.Models
 
             return HasErrors;
         }
+        public void ValidateInvoiceDetails()
+        {
+            if (InvoiceDetails == null || InvoiceDetails.Count < 1)
+            {
+                InvoiceDetailsError = "Danh sách hóa đơn chi tiết không được để trống";
+            } else
+            {
+                InvoiceDetailsError = String.Empty;
+            }
+        }
+
     }
 }

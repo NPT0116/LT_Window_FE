@@ -54,7 +54,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
                     Debug.WriteLine("Item removed: " + oldItem);
                 }
             }
-            Invoice.Validate();
+            Invoice.ValidateInvoiceDetails();
         }
 
         public async Task<Customer?> SearchCustomersByEmail(string email)

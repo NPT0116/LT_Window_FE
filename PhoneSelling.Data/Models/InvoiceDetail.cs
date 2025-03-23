@@ -18,6 +18,8 @@ namespace PhoneSelling.Data.Models
 
         [ObservableProperty] private Variant variant = new();
 
+        public float Total => quantity * price;
+
         // Foreign Keys
         [ObservableProperty] private Guid invoiceID;
         [ObservableProperty]
@@ -33,11 +35,13 @@ namespace PhoneSelling.Data.Models
         {
             ValidateProperty(newValue, nameof(Price));
             RecalculateCallback?.Invoke();
+            OnPropertyChanged(nameof(Total));
         }
         partial void OnVariantChanged(Variant newValue)
         {
             ValidateProperty(newValue, nameof(Variant));
             RecalculateCallback?.Invoke();
+            OnPropertyChanged(nameof(Total));
         }
 
         partial void OnQuantityChanged(int newValue)
@@ -45,6 +49,7 @@ namespace PhoneSelling.Data.Models
             ValidateProperty(newValue, nameof(Quantity));
             QuantityError = GetFirstError(nameof(Quantity));
             RecalculateCallback?.Invoke();
+            OnPropertyChanged(nameof(Total));
         }
 
         partial void OnInvoiceIDChanged(Guid newId)
