@@ -5,6 +5,8 @@ using PhoneSelling.Data.Repositories.InvoiceRepository;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
+
+using PhoneSelling.ViewModel.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +22,6 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList
         private readonly IInvoiceRepository _invoiceRepository;
         public InvoiceListViewModel() : base()
         {
-            
             _invoiceRepository = DIContainer.GetKeyedSingleton<IInvoiceRepository>();
             InvoiceQuery = new(LoadDataAsync);
             InvoiceQuery.LoadDataCommand.Execute(null);

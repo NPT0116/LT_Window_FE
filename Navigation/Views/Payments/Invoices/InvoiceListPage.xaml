@@ -15,6 +15,7 @@
         <converter:DateTimeToDateTimeOffsetConverter x:Key="time" />
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
         <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
+        <converter:CustomerIdToNameConverter x:Key="CustomerIdToNameConverter" />
     </Page.Resources>
     <ScrollView>
 
@@ -149,11 +150,15 @@
                                 <ListView.Header>
                                     <Grid Padding="10" Background="DarkSlateGray" CornerRadius="5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="TỔNG TIỀN (VNĐ)" FontWeight="Bold" Grid.Column="0" Foreground="White" VerticalAlignment="Center"/>
-                                        <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="0" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="KHÁCH HÀNG" FontWeight="Bold" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="TỔNG TIỀN (VNĐ)" FontWeight="Bold" Grid.Column="2" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="XEM CHI TIẾT" FontWeight="Bold" Grid.Column="3" Foreground="White" VerticalAlignment="Center"/>
                                     </Grid>
                                 </ListView.Header>
 
@@ -162,26 +167,36 @@
                                     <DataTemplate x:DataType="model:Invoice">
                                         <Grid Padding="10" Background="Transparent">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="3*"/>
                                             </Grid.ColumnDefinitions>
+
+                                            <!-- Date formatted nicely -->
+                                            <TextBlock Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource VietnamDateConverter}}" 
+                                                        Grid.Column="0" 
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="SemiBold" />
+
+                                            <!-- Date formatted nicely -->
+                                            <TextBlock Text="{x:Bind CustomerID, Mode=OneWay, Converter={StaticResource CustomerIdToNameConverter}}" 
+                                                       Grid.Column="1" 
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold" />
                                             <!-- Total amount formatted (you might add a converter for currency) -->
                                             <TextBlock  
-                                                        Grid.Column="0" 
+                                                        Grid.Column="2" 
                                                         VerticalAlignment="Center"
                                                         FontWeight="SemiBold">
                                                 <Run Text="{x:Bind TotalAmount, Mode=OneWay, Converter={StaticResource VndCurrencyConverter}}"/>
                                             </TextBlock>
-                                            <!-- Date formatted nicely -->
-                                            <TextBlock Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource VietnamDateConverter}}" 
-                                                        Grid.Column="1" 
-                                                        VerticalAlignment="Center"
-                                                        FontWeight="SemiBold" />
+                                            <!-- View Invoice Detail -->
+                                            <Button Grid.Column="3"  Content="Xem chi tiết" Click="GoToInvoiceDetailPage"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-
                         </StackPanel>
                     </Grid>
 

@@ -134,6 +134,9 @@
     <Page Update="Controls\Variant\VariantSearch.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Views\Payments\Invoices\InvoiceDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="Views\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

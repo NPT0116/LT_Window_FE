@@ -6,7 +6,6 @@ namespace PhoneSelling.ViewModel.Base
 {
     public class RootPageViewModel : ObservableObject
     {
-
         public RootPageViewModel()
         {
             ChildPageNavigation = new PageNavigation(new LoginPageViewModel());
