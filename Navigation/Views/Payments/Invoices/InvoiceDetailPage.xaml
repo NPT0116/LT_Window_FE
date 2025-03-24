@@ -8,7 +8,8 @@
 	mc:Ignorable="d"
     xmlns:conv="using:Navigation.Converters">
 	<StackPanel>
-		<Button Content="Go Back" />
-		<TextBlock Text="This is InvoiceDetail Page" />
+		<ContentDialog x:Name="InvoiceDetail">
+			<TextBlock Text="This is total detail" />
+		</ContentDialog>
 	</StackPanel>
 </Page>

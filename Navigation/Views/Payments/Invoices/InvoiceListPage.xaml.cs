@@ -25,6 +25,9 @@ using Microsoft.UI.Text;
 using PhoneSelling.Data.Repositories.InvoiceRepository;
 using PhoneSelling.Data.Repositories.CustomerRepository;
 using PhoneSelling.DependencyInjection;
+using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.VariantRepository;
+using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,28 +40,120 @@ namespace Navigation.Views.Payments.Invoices
     public sealed partial class InvoiceListPage : Page
     {
         public InvoiceListViewModel ViewModel { get; set; }
-        //private readonly ICustomerRepository _customerRepository;
+        private IVariantRepository _variantRepository { get; set; }
 
         public InvoiceListPage()
         {
             this.InitializeComponent();
             ViewModel = new InvoiceListViewModel();
             this.DataContext = ViewModel;
-            //_customerRepository = DIContainer.GetKeyedSingleton<ICustomerRepository>();
+            _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
 
         }
 
-        private async void GoToInvoiceDetailPage(object sender, RoutedEventArgs args)
 
+        private async void GoToInvoiceDetailPage(object sender, RoutedEventArgs args)
         {
+            Debug.WriteLine("Pop up form ne");
+            var button = sender as Button;
+            var invoiceInfor = (Invoice)button.DataContext;
+            var customerName = App.CustomerDictionary.TryGetValue(invoiceInfor.CustomerID, out var value) ? value: "";
+
+            var content = new StackPanel
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = invoiceInfor.InvoiceID.ToString(),
+                        FontSize=25,
+                        TextWrapping = TextWrapping.Wrap
+                    },
+                    new TextBlock
+                    {
+                        Text = invoiceInfor.Date.ToString(),
+                        FontSize=25,
+                        TextWrapping = TextWrapping.Wrap
+                    },
+                    new StackPanel
+                    {
+                        Children =
+                        {
+                            new TextBlock
+                            {
+                                Text="Tên khách hàng:",
+                                FontWeight= FontWeights.Bold,
+                            },
+                            new TextBlock
+                            {
+                                Text=customerName,
+                                FontSize=20,
+                            }
+                        },
+                    },
+                    new TextBlock
+                    {
+                        Text=invoiceInfor.TotalAmount.ToString(),
+                    }
+
+                },
+            };
+            foreach (var detail in invoiceInfor.InvoiceDetails)
+            {
+                var grid = new Grid
+                {
+                    Margin = new Thickness(0, 5, 0, 5)
+                };
+
+                // Define three columns equally spaced.
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                // Variant Name
+
+                Variant variantName = await _variantRepository.GetVariantById(detail.VariantId);
+                Debug.WriteLine(variantName.Storage);
+
+                var variantText = new TextBlock
+                {
+                    Text = $"Variant: {detail.Quantity}",
+                    FontSize = 18,
+                    Margin = new Thickness(0, 0, 10, 0)
+                };
+                Grid.SetColumn(variantText, 0);
+
+                // Quantity Column
+                var quantityText = new TextBlock
+                {
+                    Text = $"Quantity: {detail.Quantity}",
+                    FontSize = 18,
+                    Margin = new Thickness(0, 0, 10, 0)
+                };
+                Grid.SetColumn(quantityText, 1);
+
+                // Price Column
+                var priceText = new TextBlock
+                {
+                    Text = $"Price: {detail.Price}",
+                    FontSize = 18
+                };
+                Grid.SetColumn(priceText, 2);
+
+                // Add the TextBlocks to the grid.
+                grid.Children.Add(variantText);
+                grid.Children.Add(quantityText);
+                grid.Children.Add(priceText);
+
+                // Add the grid to your main content container.
+                content.Children.Add(grid);
+            }
+
+
             //var customer = await _customerRepository.GetCustomerByIdAsync(sampleCustomerId);
             ContentDialog invoiceDetailDialog = new ContentDialog
             {
-                Content = new TextBlock
-                {
-                    Text = "Invoice ID: 12345\nCustomer: John Doe\nTotal: $100.00",
-                    TextWrapping = TextWrapping.Wrap
-                },
+                Content = content,
                 CloseButtonText = "ĐÓNG",
                 FullSizeDesired = true,
                 BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent),
@@ -66,13 +161,19 @@ namespace Navigation.Views.Payments.Invoices
                 RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot,
             };
-            invoiceDetailDialog.Title = new TextBlock
+            invoiceDetailDialog.Title = new StackPanel
             {
-                Text = "CHI TIẾT HÓA ĐƠN",
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 25,
-                FontWeight = FontWeights.Bold
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "CHI TIẾT HÓA ĐƠN",
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        FontSize = 25,
+                        FontWeight = FontWeights.Bold
+                    }
+                },
+                HorizontalAlignment = HorizontalAlignment.Stretch,
             };
 
             await invoiceDetailDialog.ShowAsync();

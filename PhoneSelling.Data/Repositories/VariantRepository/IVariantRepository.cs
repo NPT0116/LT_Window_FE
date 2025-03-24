@@ -12,5 +12,7 @@ namespace PhoneSelling.Data.Repositories.VariantRepository
     public  interface IVariantRepository
     {
         Task<PaginationResult<Variant>> GetAllVariants(VariantPaginationQuery query);
+        Task<Variant> GetVariantById(Guid variantId);
+
     }
 }
