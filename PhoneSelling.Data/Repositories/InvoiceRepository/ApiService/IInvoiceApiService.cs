@@ -17,6 +17,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
         Task<GetInvoiceByIdResponse> GetInvoiceByIdAsync(Guid invoiceId);
         Task<GetInvoicesByCustomerIdResponse> GetInvoicesByCustomerIdAsync(Guid customerId);
         Task<byte[]> GetInvoicePdfPrintAsync(Guid invoiceId);
+        Task<byte[]> GetInvoicePdfPrintAsync(Guid invoiceId);
 
     }
 }

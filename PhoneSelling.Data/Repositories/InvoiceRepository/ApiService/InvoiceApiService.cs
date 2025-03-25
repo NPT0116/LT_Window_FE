@@ -123,5 +123,17 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
                 throw new Exception("Error while fetching invoice PDF print", ex);
             }
         }
+        public async Task<byte[]> GetInvoicePdfPrintElectronicAsync(Guid invoiceId)
+        {
+            try
+            {
+                string url = $"{ApiUrl}/{invoiceId}/pdf-electronic";
+                return await _httpClient.GetByteArrayAsync(url);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error whilte fetching invoice PDF-elctronic print", ex);
+            }
+        }
     }
 }

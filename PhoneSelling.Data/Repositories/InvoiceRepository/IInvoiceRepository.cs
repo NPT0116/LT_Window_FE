@@ -19,6 +19,7 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
         Task<PaginationResult<Invoice>> GetAllInvoices(InvoiceQueryParameter invoiceQueryParameter);
         Task<IEnumerable<Invoice>> GetInvoicesByCustomer(Guid CustomerId);
         Task<byte[]> GetInvoicePdfPrintAsync(Guid invoiceId);
+        Task<byte[]> GetInvoicePdfPrintElectronicAsync(Guid invoiceId);
 
     }
 }

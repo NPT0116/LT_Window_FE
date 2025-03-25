@@ -318,7 +318,7 @@ namespace Navigation.Views.Payments.Invoices
             await invoiceDetailDialog.ShowAsync();
         }
 
-
+        
 
         private void CalendarFromDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {

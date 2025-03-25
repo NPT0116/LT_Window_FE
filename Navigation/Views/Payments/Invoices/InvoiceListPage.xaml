@@ -171,6 +171,7 @@
                                                 <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="3*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <!-- Date formatted nicely -->
@@ -193,6 +194,8 @@
                                             </TextBlock>
                                             <!-- View Invoice Detail -->
                                             <Button Grid.Column="3"  Content="Xem chi tiết" Click="GoToInvoiceDetailPage"/>
+                                            <!-- View Invoice Detail -->
+                                            <Button Grid.Column="4"  Content="In hóa đơn" Click="PrintInvoice"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>

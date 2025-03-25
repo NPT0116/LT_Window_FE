@@ -94,5 +94,9 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository
         {
             return await _invoiceApiService.GetInvoicePdfPrintAsync(invoiceId);
         }
+        public async Task<byte[]> GetInvoicePdfPrintElectronicAsync(Guid invoiceId)
+        {
+            return await _invoiceApiService.GetInvoicePdfPrintElectronicAsync(invoiceId);
+        }
     }
 }
