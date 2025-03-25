@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="using:PhoneSelling.Data.Models"
     xmlns:viewmodel="using:PhoneSelling.ViewModel.Pages.Inventory"
-    xmlns:conv="using:Navigation.Converters"
+    xmlns:converter="using:Navigation.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -19,9 +19,10 @@
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         </Style>
         <!-- Converters -->
-        <conv:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
-        <conv:VariantNameConverter x:Key="VariantNameConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
+        <converter:VariantNameConverter x:Key="VariantNameConverter"/>
+        <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
         <!-- Style for table headers -->
         <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="Bold"/>
@@ -31,113 +32,129 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <!-- Outer ScrollViewer to enable scrolling -->
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel >
-                <!-- Search Bar -->
-                <Grid x:Name="SearchPanel" Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <!-- TextBox for Name -->
-                    <Grid ColumnSpacing="20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0"
-                                 Header="Enter variant name:"
-                                 PlaceholderText="Name"
-                                 Text="{x:Bind ViewModel.QueryViewModel.Query.SearchKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0,0,0,10"/>
-                        <!-- Search Button -->
-                        <Button Margin="0,15,0,0" Grid.Column="1" Style="{StaticResource AccentButtonStyle}" Content="Search" Command="{x:Bind ViewModel.QueryViewModel.LoadDataCommand}" />
+    <Grid Padding="20">
 
-                        <!-- ToggleSwitch to select view mode; binding directly to ViewModel.IsGridView -->
-                        <ToggleSwitch Grid.Column="2" x:Name="ViewToggleSwitch" Header="Grid View"
+        <Grid  Padding="20" Background="White" CornerRadius="8" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="DANH SÁCH SẢN PHẨM" FontSize="40" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <!-- Search Bar -->
+            <Grid x:Name="SearchPanel"  Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!-- TextBox for Name -->
+                <Grid ColumnSpacing="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                                 PlaceholderText="Nhập tên sản phẩm"
+                                 Text="{x:Bind ViewModel.QueryViewModel.Query.SearchKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,10">
+                        <TextBox.Header>
+                            <TextBlock  Text="TÌM KIẾM SẢN PHẨM:"  FontWeight="Bold" FontSize="20"/>
+                        </TextBox.Header>
+                    </TextBox>
+                    <!-- Search Button -->
+                    <Button Margin="0,20,0,0" Background="DarkSlateGray" Grid.Column="1" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" Content="TÌM KIẾM" Command="{x:Bind ViewModel.QueryViewModel.LoadDataCommand}" />
+
+                    <!-- ToggleSwitch to select view mode; binding directly to ViewModel.IsGridView -->
+                    <ToggleSwitch Grid.Column="2" x:Name="ViewToggleSwitch" Header="Lưới"
                                       IsOn="{x:Bind ViewModel.IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    </Grid>
-                    <Grid Grid.Row="1" ColumnSpacing="20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="6*" />
-                        </Grid.ColumnDefinitions>
-                        <!-- ComboBox for Sorting -->
-                        <ComboBox Grid.Column="0" Width="200" Header="Sort By"
-                              ItemsSource="{x:Bind ViewModel.QueryViewModel.SortOptions, Mode=OneWay}"
-                              SelectedValue="{x:Bind ViewModel.QueryViewModel.Query.Sortby, Mode=TwoWay}"
-                              DisplayMemberPath="DisplayName"
-                              SelectedValuePath="ActualValue"
-                              Margin="0,0,0,10"/>
-                        <!-- RadioButtons for Sorting Direction -->
-                        <RadioButtons Grid.Column="1" Header="Sort direction:" 
-                                  SelectedIndex="{x:Bind ViewModel.QueryViewModel.Query.SortDirectionIndex, Mode=TwoWay}"
-                                  Margin="0,0,0,10">
-                            <RadioButton Content="Ascending" Tag="Ascending"/>
-                            <RadioButton Content="Descending" Tag="Descending"/>
-                        </RadioButtons>
-                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1" ColumnSpacing="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="9*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- ComboBox for Sorting -->
+                    <ComboBox Grid.Column="0" 
+                                      HorizontalAlignment="Stretch"
+                                      ItemsSource="{x:Bind ViewModel.QueryViewModel.SortOptions, Mode=OneWay}"
+                                      SelectedValue="{x:Bind ViewModel.QueryViewModel.Query.Sortby, Mode=TwoWay}"
+                                      DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="ActualValue"
+                                      Margin="0,0,0,10">
+                        <ComboBox.Header>
+                            <TextBlock  Text="BỘ LỌC:"  FontWeight="Bold" FontSize="20"/>
+                        </ComboBox.Header>
+                    </ComboBox>
 
-
+                    <!-- RadioButtons for Sorting Direction -->
+                    <RadioButtons Grid.Column="1" 
+                                          SelectedIndex="{x:Bind ViewModel.QueryViewModel.Query.SortDirectionIndex, Mode=TwoWay}"
+                                          Margin="0,0,0,10">
+                        <RadioButton Content="Tăng dần" Tag="Ascending"/>
+                        <RadioButton Content="Giảm dần" Tag="Descending"/>
+                    </RadioButtons>
                 </Grid>
 
+
+            </Grid>
+
+            <!-- Outer ScrollViewer to enable scrolling -->
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}}" Grid.Row="0" Background="DarkSlateGray" Padding="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="White" Text="TÊN SẢN PHẨM" Style="{StaticResource TableHeaderStyle}" Grid.Column="0"/>
+                    <TextBlock Foreground="White" Text="DUNG LƯỢNG" Style="{StaticResource TableHeaderStyle}" Grid.Column="1"/>
+                    <TextBlock Foreground="White" Text="MÀU" Style="{StaticResource TableHeaderStyle}" Grid.Column="2" />
+                    <TextBlock Foreground="White" Text="GIÁ NHẬP" Style="{StaticResource TableHeaderStyle}" Grid.Column="3" />
+                    <TextBlock Foreground="White" Text="GIÁ BÁN" Style="{StaticResource TableHeaderStyle}" Grid.Column="4"/>
+                    <TextBlock Foreground="White" Text="TỒN KHO" Style="{StaticResource TableHeaderStyle}" Grid.Column="5"/>
+                </Grid>
                 <!-- ListView Mode: Table-like layout for Variants -->
-                <StackPanel Grid.Row="1" Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}">
-                    <!-- Table header -->
-                    <Grid Background="LightGray" Padding="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Name" Style="{StaticResource TableHeaderStyle}" Grid.Column="0"/>
-                        <TextBlock Text="Storage" Style="{StaticResource TableHeaderStyle}" Grid.Column="1"/>
-                        <TextBlock Text="Cost Price" Style="{StaticResource TableHeaderStyle}" Grid.Column="2"/>
-                        <TextBlock Text="Selling Price" Style="{StaticResource TableHeaderStyle}" Grid.Column="3"/>
-                        <TextBlock Text="Stock" Style="{StaticResource TableHeaderStyle}" Grid.Column="4"/>
-                        <TextBlock Text="Color" Style="{StaticResource TableHeaderStyle}" Grid.Column="5"/>
-                    </Grid>
-                    <!-- ListView for variants -->
-                    <ListView ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" Margin="0">
-                        <ListView.ItemTemplate>
+                <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" Margin="0" Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}">
+                    <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Variant">
                                 <Grid Padding="5">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*"/>
                                         <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="{x:Bind Converter={StaticResource VariantNameConverter}}" Grid.Column="0" Margin="5" HorizontalAlignment="Left"/>
-                                    <TextBlock Text="{x:Bind Storage}" Grid.Column="1" Margin="5" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{x:Bind CostPrice}" Grid.Column="2" Margin="5" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{x:Bind SellingPrice}" Grid.Column="3" Margin="5" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{x:Bind StockQuantity}" Grid.Column="4" Margin="5" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{x:Bind Color.Name}" Grid.Column="5" Margin="5" HorizontalAlignment="Center"/>
-                                </Grid>
+                                    <TextBlock Text="{x:Bind Storage}" Grid.Column="1" Margin="5" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{x:Bind Color.Name}" Grid.Column="2" Margin="5" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{x:Bind CostPrice, Converter={StaticResource VndCurrencyConverter}}" Grid.Column="3" Margin="5" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{x:Bind SellingPrice, Converter={StaticResource VndCurrencyConverter}}" Grid.Column="4" Margin="5" HorizontalAlignment="Left"/>
+                                <TextBlock Text="{x:Bind StockQuantity}" Grid.Column="5" Margin="5" HorizontalAlignment="Left"/>
+                            </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
 
                 <!-- GridView Mode: Displays variants in a grid -->
                 <GridView Grid.Row="1"
-                          ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" 
-                          Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisConverter}, Mode=OneWay}"
-                          Margin="20"
-                          ItemContainerStyle="{StaticResource GridViewItemStyle}"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center">
+                        ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" 
+                        Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisConverter}, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource GridViewItemStyle}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="data:Variant">
                             <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" Height="450">
@@ -182,21 +199,21 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
-                
+
                 <!-- Navigation -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,0">
                     <!-- Previous Page Button -->
-                    <Button Width="80" Content="Previous" Command="{x:Bind ViewModel.QueryViewModel.PreviousPageCommand}" />
+                    <Button Width="80" Content="Lùi" Command="{x:Bind ViewModel.QueryViewModel.PreviousPageCommand}" />
 
                     <!-- Current Page Display -->
                     <TextBlock Text="{x:Bind ViewModel.QueryViewModel.Query.PageNumber}" FontSize="16" VerticalAlignment="Center"/>
 
                     <!-- Next Page Button -->
-                    <Button Width="80" Content="Next" Command="{x:Bind ViewModel.QueryViewModel.NextPageCommand}" />
+                    <Button Width="80" Content="Tiến" Command="{x:Bind ViewModel.QueryViewModel.NextPageCommand}" />
                 </StackPanel>
 
-            </StackPanel>
-            
-        </ScrollViewer>
+            </Grid>
+
+        </Grid>
     </Grid>
 </Page>

@@ -64,7 +64,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!--VariantsListPage-->
-                        <NavigationViewItem Icon="List" Content="Variants List" Tag="VariantsDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="List" Content="Sản phẩm" Tag="VariantsDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
