@@ -17,6 +17,7 @@ using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 using System.Diagnostics;
 using PhoneSelling.ViewModel.Pages;
 
+using Microsoft.Win32;
 
 using Navigation.Views;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
@@ -32,6 +33,7 @@ using Navigation.Converters;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Amazon.Runtime.Internal.Util;
+using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -46,12 +48,14 @@ namespace Navigation.Views.Payments.Invoices
         public InvoiceListViewModel ViewModel { get; set; }
 
         private IVariantRepository _variantRepository { get; set; }
+        private IInvoiceRepository _invoiceRepository { get; set; }
         public InvoiceListPage()
         {
             this.InitializeComponent();
             ViewModel = new InvoiceListViewModel();
             this.DataContext = ViewModel;
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
+            _invoiceRepository = DIContainer.GetKeyedSingleton<IInvoiceRepository>();
         }
 
 
@@ -318,7 +322,64 @@ namespace Navigation.Views.Payments.Invoices
             await invoiceDetailDialog.ShowAsync();
         }
 
-        
+        private async void ExportInvoice(object sender, RoutedEventArgs args)
+        {
+            var button = sender as Button;
+            var invoiceInfor = (Invoice)button.DataContext;
+            Debug.WriteLine("Processing Export Invoice");
+
+            try
+            {
+                // 1. Get the PDF content from
+                byte[] pdfContent = await _invoiceRepository.GetInvoicePdfPrintElectronicAsync(invoiceInfor.Id);
+
+                // 2. Create the FileSavePicker
+                var savePicker = new Windows.Storage.Pickers.FileSavePicker
+                {
+                    SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+                };
+                savePicker.FileTypeChoices.Add("PDF files", new List<string> { ".pdf" });
+                savePicker.SuggestedFileName = "Invoice";
+
+                // 3.Use the Window handle, not the Page handle
+                var window = App.MainWindow;
+                var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hWnd);
+
+                // 4. Let the user pick a location to save
+                Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+                if (file != null)
+                {
+                    await Windows.Storage.FileIO.WriteBytesAsync(file, pdfContent);
+
+                    // 5. Show success dialog
+                    var successDialog = new ContentDialog
+                    {
+                        Title = "THÀNH CÔNG",
+                        Content = $"PDF được lưu thành công tại {file.Path}",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = this.XamlRoot,
+                        RequestedTheme  = ElementTheme.Light
+                    };
+                    await successDialog.ShowAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show error dialog
+                var errorDialog = new ContentDialog
+                {
+                    Title = "LỖI",
+                    Content = "Lỗi khi lưu hóa đơn: " + ex.Message,
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.XamlRoot,
+                    RequestedTheme = ElementTheme.Light
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
+
+
 
         private void CalendarFromDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
