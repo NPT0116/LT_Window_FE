@@ -89,7 +89,7 @@ namespace Navigation.Views.Payments.Invoices
             invoiceInfoPanel.Children.Add(new TextBlock
             {
                 Text = invoiceInfor.InvoiceID.ToString(),
-                FontSize = 20,
+                FontSize = 22,
                 TextWrapping = TextWrapping.Wrap
             });
             invoiceInfoPanel.Children.Add(new TextBlock
@@ -292,10 +292,18 @@ namespace Navigation.Views.Payments.Invoices
             mainContain.Children.Add(totalPanel);
 
             // Create and show the ContentDialog.
+            var contentWrapper = new Border
+            {
+                Width = 500,
+                Padding=new Thickness(20),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Child = mainContain
+            };
             var invoiceDetailDialog = new ContentDialog
             {
-                Content = mainContain,
+                Content = contentWrapper,
                 CloseButtonText = "ĐÓNG",
+                
                 FullSizeDesired = true,
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(10),

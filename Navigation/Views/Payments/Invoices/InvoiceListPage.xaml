@@ -148,7 +148,7 @@
                                         Background="White">
                                 <!-- TABLE HEADER -->
                                 <ListView.Header>
-                                    <Grid Padding="10" Background="DarkSlateGray" CornerRadius="5">
+                                    <Grid Padding="10" Background="DarkSlateGray" CornerRadius="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="3*"/>
                                             <ColumnDefinition Width="3*"/>
