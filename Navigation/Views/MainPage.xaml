@@ -48,7 +48,7 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!--CreateInboundTransaction-->
-                        <NavigationViewItem Icon="Import" Content="Import" Tag="Create inbound transaction" IsExpanded="True">
+                        <NavigationViewItem Icon="Import" Content="Nhập hàng" Tag="Create inbound transaction" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
