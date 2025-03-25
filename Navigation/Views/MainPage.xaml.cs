@@ -31,7 +31,6 @@ namespace Navigation.Views
         public MainPage()
         {
             this.InitializeComponent();
-            //_viewModel = new Page1ViewModel(new PhonePageViewModel());
             this.DataContext = _viewModel;
         }
 

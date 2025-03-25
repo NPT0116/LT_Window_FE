@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PhoneSelling.Data.Models"
-    xmlns:converter="using:Navigation.Converters"
+    xmlns:converter="using:Navigation.Converters" xmlns:model1="using:PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -15,6 +15,7 @@
         <converter:DateTimeToDateTimeOffsetConverter x:Key="time" />
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
         <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
+        <converter:CustomerIdToNameConverter x:Key="CustomerIdToNameConverter" />
     </Page.Resources>
     <ScrollView>
 
@@ -147,13 +148,19 @@
                                         Background="White">
                                 <!-- TABLE HEADER -->
                                 <ListView.Header>
-                                    <Grid Padding="10" Background="DarkSlateGray" CornerRadius="5">
+                                    <Grid Padding="10" Background="DarkSlateGray" CornerRadius="2">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
                                             <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="TỔNG TIỀN (VNĐ)" FontWeight="Bold" Grid.Column="0" Foreground="White" VerticalAlignment="Center"/>
-                                        <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="NGÀY" FontWeight="Bold" Grid.Column="0" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="KHÁCH HÀNG" FontWeight="Bold" Grid.Column="1" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="TỔNG (VNĐ)" FontWeight="Bold" Grid.Column="2" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="CHI TIẾT" FontWeight="Bold" Grid.Column="3" Foreground="White" VerticalAlignment="Center"/>
+                                        <TextBlock Text="XUẤT PDF" FontWeight="Bold" Grid.Column="4" Foreground="White" VerticalAlignment="Center"/>
                                     </Grid>
                                 </ListView.Header>
 
@@ -162,26 +169,43 @@
                                     <DataTemplate x:DataType="model:Invoice">
                                         <Grid Padding="10" Background="Transparent">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
                                                 <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
                                             </Grid.ColumnDefinitions>
+
+                                            <!-- Date formatted -->
+                                            <TextBlock Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource VietnamDateConverter}}" 
+                                                        Grid.Column="0" 
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="SemiBold" />
+
+                                            <!-- Customer-->
+                                            <TextBlock Text="{x:Bind CustomerID, Mode=OneWay, Converter={StaticResource CustomerIdToNameConverter}}" 
+                                                       Grid.Column="1" 
+                                                       FontSize="16"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="SemiBold" />
                                             <!-- Total amount formatted (you might add a converter for currency) -->
                                             <TextBlock  
-                                                        Grid.Column="0" 
+                                                        Grid.Column="2" 
+                                                        FontSize="16"
                                                         VerticalAlignment="Center"
                                                         FontWeight="SemiBold">
                                                 <Run Text="{x:Bind TotalAmount, Mode=OneWay, Converter={StaticResource VndCurrencyConverter}}"/>
                                             </TextBlock>
-                                            <!-- Date formatted nicely -->
-                                            <TextBlock Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource VietnamDateConverter}}" 
-                                                        Grid.Column="1" 
-                                                        VerticalAlignment="Center"
-                                                        FontWeight="SemiBold" />
+                                            <!-- View Invoice Detail -->
+                                            <Button Grid.Column="3"  Content="Chi tiết" Click="GoToInvoiceDetailPage"/>
+                                            <!-- View Invoice Detail -->
+                                            <Button Grid.Column="4"  Click="ExportInvoice">
+                                                <FontIcon Glyph="&#xEDE1;" />
+                                            </Button>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-
                         </StackPanel>
                     </Grid>
 

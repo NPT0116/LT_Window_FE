@@ -1,5 +1,6 @@
 ﻿using PhoneSelling.Common;
 using PhoneSelling.Data.Common.Contracts.Requests;
+using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.Abstraction;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requests;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Responses;
@@ -16,7 +17,13 @@ namespace PhoneSelling.Data.Repositories.VariantRepository.ApiService
     public class VariantApiService : BaseApiService, IVariantApiService
     {
         protected override string Prefix => "Variant";
-
+        public async Task<GetVariantByIDResponse> GetVariantById(Guid variantId)
+        {
+            Debug.WriteLine($"ID ne{variantId.ToString()}");
+            string url = $"{ApiUrl}/{variantId.ToString()}";
+            var response = await _httpClient.GetFromJsonAsync<GetVariantByIDResponse>(url);
+            return response ?? new GetVariantByIDResponse();
+        }
         public async Task<GetAllVariantsResponse> GetAllVariants(VariantPaginationQuery query)
         {
             // Ensure query is not null

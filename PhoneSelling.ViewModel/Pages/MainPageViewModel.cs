@@ -7,10 +7,12 @@ using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
 using PhoneSelling.ViewModel.Pages.Inventory.Variants;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
+using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 using PhoneSelling.ViewModel.Pages.Variants;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -28,6 +30,9 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToPhoneCommand { get; }
         public RelayCommand GoToItemGroupsPageCommand { get; }
         public RelayCommand GoToCreateItemPageCommand { get; }
+
+        // Invoice
+        public RelayCommand GoToInvoiceDetailPageCommand { get; }
         public RelayCommand GoToCreateInvoiceCommand { get; }
         public RelayCommand GoToInvoiceListCommand { get; }
         public RelayCommand GoToCreateInboundTransactionCommand { get; }
@@ -47,8 +52,8 @@ namespace PhoneSelling.ViewModel.Pages
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
-
             // Invoice
+            GoToInvoiceDetailPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceDetailPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InvoiceDetailPageViewModel));
             GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
             GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.GetType() != typeof(InvoiceListViewModel));
             GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
@@ -59,6 +64,8 @@ namespace PhoneSelling.ViewModel.Pages
         {
             if (e.PropertyName == nameof(ChildPageNavigation.ViewModel))
             {
+                Debug.WriteLine("ViewModel Propery Changed !");
+                //
                 GoBackCommand.NotifyCanExecuteChanged();
                 GoToDashboardPageCommand.NotifyCanExecuteChanged();
                 // Inventory
@@ -69,12 +76,14 @@ namespace PhoneSelling.ViewModel.Pages
                 GoToCreateItemPageCommand.NotifyCanExecuteChanged();
 
                 // Invoice
+                GoToInvoiceDetailPageCommand.NotifyCanExecuteChanged();
                 GoToInvoiceListCommand.NotifyCanExecuteChanged();
                 GoToCreateInvoiceCommand.NotifyCanExecuteChanged();
                 GoToCreateInboundTransactionCommand.NotifyCanExecuteChanged();
             }
         }
 
-        public PageNavigation ChildPageNavigation { get; set; }
+        public static PageNavigation ChildPageNavigation { get; set; }
+
     }
 }

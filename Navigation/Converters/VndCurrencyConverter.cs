@@ -20,7 +20,10 @@ namespace Navigation.Converters
             if (double.TryParse(value.ToString(), out double number))
             {
                 //return number.ToString("C0", new CultureInfo("vi-VN"));
-                return string.Format(new CultureInfo("vi-VN"), "{0:N0}", number);
+                var ci = new CultureInfo("vi-VN");
+                ci.NumberFormat.NumberGroupSeparator = ",";
+                ci.NumberFormat.NumberDecimalDigits = 0;
+                return number.ToString("N0", ci);
             }
             return value;
         }

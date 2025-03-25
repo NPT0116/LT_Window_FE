@@ -118,7 +118,7 @@
             </NavigationView.MenuItems>
             
             <Frame x:Name="PageFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,40,0,0" 
-       Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource Vm2V}}"/>
+                   Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource Vm2V}}"/>
         </NavigationView>
 
     </Grid>

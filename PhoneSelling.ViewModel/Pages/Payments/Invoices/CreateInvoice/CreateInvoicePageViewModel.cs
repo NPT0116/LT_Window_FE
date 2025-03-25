@@ -8,6 +8,7 @@ using PhoneSelling.Data.Repositories.VariantRepository;
 using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requests;
 using PhoneSelling.DependencyInjection;
 using PhoneSelling.ViewModel.Base;
+using PhoneSelling.ViewModel.Navigation;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
