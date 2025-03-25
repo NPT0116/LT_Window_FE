@@ -28,6 +28,9 @@ using PhoneSelling.DependencyInjection;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.VariantRepository;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
+using Navigation.Converters;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,6 +43,7 @@ namespace Navigation.Views.Payments.Invoices
     public sealed partial class InvoiceListPage : Page
     {
         public InvoiceListViewModel ViewModel { get; set; }
+
         private IVariantRepository _variantRepository { get; set; }
 
         public InvoiceListPage()
@@ -54,50 +58,130 @@ namespace Navigation.Views.Payments.Invoices
 
         private async void GoToInvoiceDetailPage(object sender, RoutedEventArgs args)
         {
-            Debug.WriteLine("Pop up form ne");
+            var currencyConverter = new VndCurrencyConverter();
+
             var button = sender as Button;
             var invoiceInfor = (Invoice)button.DataContext;
-            var customerName = App.CustomerDictionary.TryGetValue(invoiceInfor.CustomerID, out var value) ? value: "";
+            var customerName = App.CustomerDictionary.TryGetValue(invoiceInfor.CustomerID, out var value) ? value : "";
 
+            var convertedTotal = currencyConverter.Convert(invoiceInfor.TotalAmount, typeof(string), null, "vi-VN") as string;
+
+            // Main containter
+            var mainContain = new Grid
+            {
+            };
+            // Define two rows: one for the content (stretch) and one for the total (Auto height)
+            mainContain.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            mainContain.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            mainContain.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            // A. Invoice ID, InvoiceDate, CustomerName
             var content = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                //Margin = new Thickness(20)
+            };
+
+            content.Children.Add(new TextBlock
+            {
+                Text = invoiceInfor.InvoiceID.ToString(),
+                FontSize = 25,
+                TextWrapping = TextWrapping.Wrap
+            });
+            content.Children.Add(new TextBlock
+            {
+                Text = invoiceInfor.Date.ToString(),
+                FontSize = 15,
+                TextWrapping = TextWrapping.Wrap,
+                HorizontalAlignment=HorizontalAlignment.Right,
+            });
+            content.Children.Add(new StackPanel
             {
                 Children =
                 {
                     new TextBlock
                     {
-                        Text = invoiceInfor.InvoiceID.ToString(),
-                        FontSize=25,
-                        TextWrapping = TextWrapping.Wrap
+                        Text = "Tên khách hàng:",
+                        FontWeight = FontWeights.Bold
                     },
                     new TextBlock
                     {
-                        Text = invoiceInfor.Date.ToString(),
-                        FontSize=25,
-                        TextWrapping = TextWrapping.Wrap
-                    },
-                    new StackPanel
-                    {
-                        Children =
-                        {
-                            new TextBlock
-                            {
-                                Text="Tên khách hàng:",
-                                FontWeight= FontWeights.Bold,
-                            },
-                            new TextBlock
-                            {
-                                Text=customerName,
-                                FontSize=20,
-                            }
-                        },
-                    },
-                    new TextBlock
-                    {
-                        Text=invoiceInfor.TotalAmount.ToString(),
+                        Text = customerName,
+                        FontSize = 20
                     }
-
-                },
+                }
+            });
+            content.Children.Add(new StackPanel
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "Danh sách mua hàng:",
+                        FontWeight = FontWeights.Bold
+                    },
+                }
+            });
+            Grid.SetRow(content, 0);
+            mainContain.Children.Add(content);
+            // B. Add invoice details (rows) for each detail entry.
+            var invoiceDetailContent = new StackPanel {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
             };
+            // 1. Make Header
+            var gridHeader = new Grid
+            {
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+            gridHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
+            gridHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            gridHeader.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            var productHeader = new TextBlock
+            {
+                Text = "Sản phẩm",
+                FontSize = 15,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+            Grid.SetColumn(productHeader, 0);
+
+            var quantityHeader = new TextBlock
+            {
+                Text = "Số lượng",
+                FontSize = 15,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+            Grid.SetColumn(quantityHeader, 1);
+
+            var sellingPriceHeader = new TextBlock
+            {
+                Text = "Giá bán",
+                FontSize = 15,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+            Grid.SetColumn(sellingPriceHeader, 2);
+
+            var totalHeader = new TextBlock
+            {
+                Text = "Thành tiền",
+                FontSize=15,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0,0,10,0)
+            };
+            Grid.SetColumn(totalHeader, 3);
+
+            gridHeader.Children.Add(productHeader);
+            gridHeader.Children.Add(quantityHeader);
+            gridHeader.Children.Add(sellingPriceHeader);
+            gridHeader.Children.Add(totalHeader);
+            invoiceDetailContent.Children.Add(gridHeader);
+
+            // 2. Add invoice detail)
             foreach (var detail in invoiceInfor.InvoiceDetails)
             {
                 var grid = new Grid
@@ -105,62 +189,113 @@ namespace Navigation.Views.Payments.Invoices
                     Margin = new Thickness(0, 5, 0, 5)
                 };
 
-                // Define three columns equally spaced.
+                // Define three equal columns.
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-                // Variant Name
-
-                Variant variantName = await _variantRepository.GetVariantById(detail.VariantId);
-                Debug.WriteLine(variantName.Storage);
+                // Retrieve variant details.
+                Variant variantDetail = await _variantRepository.GetVariantById(detail.VariantId);
+                var variantName = $"{variantDetail.Storage}";
 
                 var variantText = new TextBlock
                 {
-                    Text = $"Variant: {detail.Quantity}",
-                    FontSize = 18,
+                    Text = $"{variantName}",
+                    FontSize = 15,
                     Margin = new Thickness(0, 0, 10, 0)
                 };
                 Grid.SetColumn(variantText, 0);
 
-                // Quantity Column
                 var quantityText = new TextBlock
                 {
-                    Text = $"Quantity: {detail.Quantity}",
-                    FontSize = 18,
+                    Text = $"x{detail.Quantity}",
+                    FontSize = 15,
                     Margin = new Thickness(0, 0, 10, 0)
                 };
                 Grid.SetColumn(quantityText, 1);
 
-                // Price Column
                 var priceText = new TextBlock
                 {
-                    Text = $"Price: {detail.Price}",
-                    FontSize = 18
+                    Text = $"{detail.Price}",
+                    FontSize = 15
                 };
                 Grid.SetColumn(priceText, 2);
 
-                // Add the TextBlocks to the grid.
+
+
+                var totalText = new TextBlock
+                {
+                    Text = $"{detail.Total}",
+                    FontSize = 15
+                };
+                Grid.SetColumn(totalText, 3);
+
                 grid.Children.Add(variantText);
                 grid.Children.Add(quantityText);
                 grid.Children.Add(priceText);
+                grid.Children.Add(totalText);
 
-                // Add the grid to your main content container.
-                content.Children.Add(grid);
+
+                invoiceDetailContent.Children.Add(grid);
             }
+            var scrollViewer = new ScrollViewer
+            {
+                Content = invoiceDetailContent,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled
+            };
+            // Place the content StackPanel in the first row of the Grid.
+            Grid.SetRow(scrollViewer, 1);
+            mainContain.Children.Add(scrollViewer);
 
+            // Create the total panel.
+            var totalPanel = new StackPanel
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "TỔNG HÓA ĐƠN",
+                        FontSize = 20,
+                        FontWeight = FontWeights.Bold,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    },
+                    new TextBlock
+                    {
+                        Text = convertedTotal,
+                        FontSize = 20,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    },
+                    new TextBlock
+                    {
+                        Text = "VNĐ",
+                        FontSize = 15,
+                        TextDecorations = TextDecorations.Underline,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    }
+                },
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Padding = new Thickness(10)
+            };
 
-            //var customer = await _customerRepository.GetCustomerByIdAsync(sampleCustomerId);
+            // Place the total panel in the second row.
+            Grid.SetRow(totalPanel, 2);
+            mainContain.Children.Add(totalPanel);
+
+            // Create and show the ContentDialog.
             ContentDialog invoiceDetailDialog = new ContentDialog
             {
-                Content = content,
+                Content = mainContain,
                 CloseButtonText = "ĐÓNG",
                 FullSizeDesired = true,
-                BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent),
+                BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(10),
                 RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot,
             };
+
             invoiceDetailDialog.Title = new StackPanel
             {
                 Children =
@@ -168,12 +303,12 @@ namespace Navigation.Views.Payments.Invoices
                     new TextBlock
                     {
                         Text = "CHI TIẾT HÓA ĐƠN",
-                        HorizontalAlignment = HorizontalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
                         FontSize = 25,
                         FontWeight = FontWeights.Bold
                     }
                 },
-                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Center,
             };
 
             await invoiceDetailDialog.ShowAsync();
