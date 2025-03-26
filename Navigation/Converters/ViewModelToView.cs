@@ -22,6 +22,7 @@ using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
 using Navigation.Views.Payments.Invoices;
 
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
+using PhoneSelling.ViewModel.Pages.Inventory.Transaction.TransactionHistory;
 using Navigation.Views.Inventory.Transaction;
 
 using System;
@@ -32,6 +33,7 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using System.Diagnostics;
+using Amazon.Runtime.Internal.Transform;
 
 
 namespace Navigation.Converters
@@ -49,14 +51,15 @@ namespace Navigation.Converters
             {typeof(CreateItemPageViewModel), typeof(CreateItemPage)},
             {typeof(VariantsListPageViewModel), typeof(VariantsListPage)},
             {typeof(VariantListViewModel),typeof(VariantListPage)},
+            // Transaction
             {typeof(CreateInboundTransactionViewModel),typeof(CreateInboundTransactionPage)},
+            {typeof(TransactionHistoryPageViewModel), typeof(TransactionHistoryPage)},
 
             // Invoice
             {typeof(InvoiceDetailPageViewModel), typeof(InvoiceDetailPage) },
             {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
             {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},
         };
-
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             pairs.TryGetValue(value.GetType(), out var page);

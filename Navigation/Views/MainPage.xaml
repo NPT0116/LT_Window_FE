@@ -37,7 +37,7 @@
                 </NavigationViewItem>
                 
                 <!--Inventory-->
-                <NavigationViewItem  Icon="Library" Content="Inventory" Tag="Inventory">
+                <NavigationViewItem  Icon="Library" Content="Kho hàng" Tag="Inventory">
                     <NavigationViewItem.MenuItems>
                         <!--CreateItemPage-->
                         <NavigationViewItem Icon="Add" Content="Create Item">
@@ -47,14 +47,7 @@
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
-                        <!--CreateInboundTransaction-->
-                        <NavigationViewItem Icon="Import" Content="Nhập hàng" Tag="Create inbound transaction" IsExpanded="True">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:EventTriggerBehavior EventName="Tapped">
-                                    <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
-                                </Core:EventTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                        </NavigationViewItem>
+
                         <!--ItemGroupPage-->
                         <NavigationViewItem Icon="List" Content="Item Groups">
                             <Interactivity:Interaction.Behaviors>
@@ -64,12 +57,33 @@
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
                         <!--VariantsListPage-->
-                        <NavigationViewItem Icon="List" Content="Sản phẩm" Tag="VariantsDetailPage" IsExpanded="True">
+                        <NavigationViewItem Icon="CellPhone" Content="Sản phẩm" Tag="VariantsDetailPage" IsExpanded="True">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToVariantsListPageCommand}" />
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
+                        </NavigationViewItem>
+
+                        <NavigationViewItem Icon="Manage" Content="Quản lí tồn kho"> 
+                            <NavigationViewItem.MenuItems>
+                                <!-- CreateInboundTransaction -->
+                                <NavigationViewItem Icon="Import" Content="Nhập hàng" Tag="Create inbound transaction" IsExpanded="True">
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Core:EventTriggerBehavior EventName="Tapped">
+                                            <Core:InvokeCommandAction Command="{Binding GoToCreateInboundTransactionCommand}" />
+                                        </Core:EventTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+                                </NavigationViewItem>
+                                <!-- TransactionHistoryPage -->
+                                <NavigationViewItem Icon="Calendar" Content="Lịch sử nhập hàng" IsExpanded="True">
+                                    <Interactivity:Interaction.Behaviors>
+                                        <Core:EventTriggerBehavior EventName="Tapped">
+                                            <Core:InvokeCommandAction Command="{Binding GoToTransactionHistoryPageCommand}" />
+                                        </Core:EventTriggerBehavior>
+                                    </Interactivity:Interaction.Behaviors>
+                                </NavigationViewItem>
+                            </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
 
                         <!--<NavigationViewItem Icon="Play" Content="Phone Page" Tag="Phone Page" IsExpanded="True">
@@ -110,9 +124,6 @@
                                 </Core:EventTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
                         </NavigationViewItem>
-
-
-
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
