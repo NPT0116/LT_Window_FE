@@ -42,12 +42,12 @@ namespace Navigation.Views.Inventory.CreateItems
             var panel = new StackPanel { Spacing = 20 };
 
             // TextBlock and TextBox for the color name.
-            panel.Children.Add(new TextBlock { Text = "Color Name:" });
-            var nameTextBox = new TextBox { PlaceholderText = "Enter color name", Width = 300 };
+            panel.Children.Add(new TextBlock { Text = "Tên màu:" });
+            var nameTextBox = new TextBox { PlaceholderText = "Nhập tên màu", Width = 300 };
             panel.Children.Add(nameTextBox);
 
             // Button to select image.
-            var selectImageButton = new Button { Content = "Select Image", Width = 300 };
+            var selectImageButton = new Button { Content = "Chọn hình ảnh", Width = 300 };
             panel.Children.Add(selectImageButton);
 
             // Image preview.
@@ -67,13 +67,13 @@ namespace Navigation.Views.Inventory.CreateItems
             // Create and show the dialog.
             var dialog = new ContentDialog
             {
-                Title = "Add New Color",
+                Title = "THÊM MÀU SẮC",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Tạo",
+                CloseButtonText = "Hủy",
                 XamlRoot = this.XamlRoot,
-                // Disable the save button until the image is loaded.
-                IsPrimaryButtonEnabled = false
+                RequestedTheme = ElementTheme.Light,
+                IsPrimaryButtonEnabled = false,
             };
 
             // Local variable to hold the uploaded image URL.
@@ -190,17 +190,41 @@ namespace Navigation.Views.Inventory.CreateItems
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".png");
 
-            // For WinUI 3, set the window handle.
+            
             var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
             InitializeWithWindow.Initialize(picker, hwnd);
+            // PreviewImage
+            var previewImage = new Image { Width = 100, Height = 100, Visibility = Visibility.Collapsed};
+            // ProgressRing
+            var progressRing = new ProgressRing { Width = 100, Height = 100 , Visibility = Visibility.Collapsed};
+            PictureContainer.Children.Add(previewImage);
+            PictureContainer.Children.Add(progressRing);
+
 
             StorageFile selectedFile = await picker.PickSingleFileAsync();
             if (selectedFile != null)
             {
+                // Preview Image
+                using (var stream = await selectedFile.OpenAsync(FileAccessMode.Read))
+                {
+                    var bitmapImage = new BitmapImage();
+                    await bitmapImage.SetSourceAsync(stream);
+                    previewImage.Source = bitmapImage;
+                    previewImage.Visibility = Visibility.Visible;
+                }
+                // Ring
+                progressRing.Visibility = Visibility.Visible;
+                progressRing.IsActive = true;
+                
+                // Archieve URL
                 byte[] fileBytes = await ConvertStorageFileToByteArray(selectedFile);
                 var request = new MediaUploadRequest("", fileBytes, selectedFile.Name, Media.GetMimeType(selectedFile.Name));
                 var uploadedFile = await _uploadService.UploadFileAsync(request, System.Threading.CancellationToken.None);
                 Debug.WriteLine(uploadedFile.Url);
+
+                progressRing.Visibility = Visibility.Collapsed;
+                progressRing.IsActive = false;
+                previewImage.Visibility = Visibility.Collapsed;
 
                 // Ensure we update the same ViewModel instance bound to the UI.
                 if (this.DataContext is CreateItemPageViewModel viewModel)
