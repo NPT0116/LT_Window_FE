@@ -9,6 +9,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <!--Converter-->
+        <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
@@ -40,7 +41,7 @@
         <DataTemplate x:Key="ListVariantTemplate" x:DataType="model:Variant">
             <Grid Padding="5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -54,11 +55,11 @@
                     <Run Text=" - " />
                     <Run Text="{x:Bind Storage}" />
                 </TextBlock>
-                <TextBlock Text="{x:Bind Storage}" Grid.Column="1" Margin="5" HorizontalAlignment="Center"/>
-                <TextBlock Text="{x:Bind CostPrice}" Grid.Column="2" Margin="5" HorizontalAlignment="Center"/>
-                <TextBlock Text="{x:Bind SellingPrice}" Grid.Column="3" Margin="5" HorizontalAlignment="Center"/>
-                <TextBlock Text="{x:Bind StockQuantity}" Grid.Column="4" Margin="5" HorizontalAlignment="Center"/>
-                <TextBlock Text="{x:Bind Color.Name}" Grid.Column="5" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind Color.Name}" Grid.Column="1" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind Storage}" Grid.Column="2" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind CostPrice, Converter={StaticResource VndCurrencyConverter}}" Grid.Column="3" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind SellingPrice, Converter={StaticResource VndCurrencyConverter}}" Grid.Column="4" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock Text="{x:Bind StockQuantity, Converter={StaticResource VndCurrencyConverter}}" Grid.Column="5" Margin="5" HorizontalAlignment="Center"/>
             </Grid>
         </DataTemplate>
         <!--Grid Template-->
@@ -157,7 +158,7 @@
                                     Visibility="{Binding IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
                             <Grid Background="DarkSlateGray" Padding="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
