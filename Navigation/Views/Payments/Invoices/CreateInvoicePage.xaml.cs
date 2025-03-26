@@ -19,6 +19,8 @@ using System.Diagnostics;
 using Windows.Media.Audio;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json;
+using CommunityToolkit.Mvvm.Messaging;
+using Navigation.Helpers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,6 +47,11 @@ namespace Navigation.Views.Payments.Invoices
 
             // Attach Flyout to the Button
             FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
+            // Notify
+            WeakReferenceMessenger.Default.Register<Message>(this, (r, m) =>
+            {
+                DialogHelper.ShowDialogAsync(m.status ? "THÀNH CÔNG" : "LỖI",m.message,"ĐÓNG", this.XamlRoot);
+            });
         }
         private async void CreateCustomer_Click(object sender, RoutedEventArgs args)
         {
