@@ -128,7 +128,7 @@
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
                                             </ComboBox>
-                                            <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="SlateGray" Foreground="White" Click="AddNewGroup_Click" VerticalAlignment="Bottom">
+                                            <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="DarkSlateGray" Foreground="White" Click="AddNewGroup_Click" VerticalAlignment="Bottom">
                                                 <FontIcon Glyph="&#xED0E;"/>
                                             </Button>
                                         </Grid>
@@ -159,7 +159,7 @@
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="SlateGray" Foreground="White" Click="AddNewManufacturer_Click" VerticalAlignment="Bottom">
+                                        <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="DarkSlateGray" Foreground="White" Click="AddNewManufacturer_Click" VerticalAlignment="Bottom">
                                             <FontIcon Glyph="&#xED0E;" />
                                         </Button>
                                     </Grid>
@@ -183,7 +183,7 @@
                                         <Run Text="6. Hình ảnh sản phẩm:" />
                                         <Run Text="*" Foreground="Red"/>
                                     </TextBlock>
-                                    <Button CornerRadius="10,10,0,0" Margin="0,0,10,0" Grid.Column="1"  Background="SlateGray" Foreground="White" Click="SelectImage_Click" HorizontalAlignment="Left">
+                                    <Button CornerRadius="10,10,0,0" Margin="0,0,10,0" Grid.Column="1"  Background="DarkSlateGray" Foreground="White" Click="SelectImage_Click" HorizontalAlignment="Left">
                                         <FontIcon Glyph="&#xEE71;" />
                                     </Button>
 
@@ -250,7 +250,7 @@
                                                          PlaceholderText="Nhập dung lượng..."                                       
                                                          HorizontalAlignment="Stretch"
                                                          Style="{StaticResource InputTextBoxStyle}"/>
-                                                <Button Grid.Column="1" BorderBrush="SlateGray" Margin="0,0,0,1" CornerRadius="0,10,0,0" Background="SlateGray" Foreground="White" HorizontalAlignment="Stretch"  Command="{Binding AddNewStorageCommand}">
+                                                <Button Grid.Column="1" BorderBrush="DarkSlateGray" Margin="0,0,0,1" CornerRadius="0,10,0,0" Background="DarkSlateGray" Foreground="White" HorizontalAlignment="Stretch"  Command="{Binding AddNewStorageCommand}">
                                                     <FontIcon Glyph="&#xE710;"/>
                                                 </Button>
                                             </Grid>
@@ -308,7 +308,7 @@
                                                 <Run Text="8. Màu sắc:" />
                                                 <Run Text="*" Foreground="Red"/>
                                             </TextBlock>
-                                            <Button Grid.Row="0" Background="SlateGray" Foreground="White"   Click="AddNewColor_Click" HorizontalAlignment="Right" Margin="0,0,10,0" CornerRadius="10,10,0,0">
+                                            <Button Grid.Row="0" Background="DarkSlateGray" Foreground="White"   Click="AddNewColor_Click" HorizontalAlignment="Right" Margin="0,0,10,0" CornerRadius="10,10,0,0">
                                                 <FontIcon Glyph="&#xEE71;" />
                                             </Button>
                                         </Grid>
