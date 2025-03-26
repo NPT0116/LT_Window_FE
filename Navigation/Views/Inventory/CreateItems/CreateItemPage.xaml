@@ -1,4 +1,4 @@
-<Page
+﻿<Page
     x:Name="PageRoot"
     x:Class="Navigation.Views.Inventory.CreateItems.CreateItemPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -32,207 +32,419 @@
 
     </Page.Resources>
     <ScrollViewer>
-        <Grid Padding="20" Background="WhiteSmoke">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel Spacing="20">
-                <!-- Item Information Section -->
-                <Border Background="White" CornerRadius="8" Padding="20" BorderBrush="LightGray" BorderThickness="1">
-                    <StackPanel>
-                        <TextBlock Text="ITEM INFORMATION" Style="{StaticResource SectionHeaderTextBlockStyle}" />
-                        <TextBox Header="ITEM NAME" 
-                                 PlaceholderText="Enter item name" 
-                                 Text="{Binding ItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource InputTextBoxStyle}" />
-                        <TextBlock Text="{Binding ItemNameError, Mode=OneWay}" 
-                                   Visibility="{Binding ItemNameError, Converter={StaticResource StringToVisibilityConverter}}"
-                                   Foreground="Red" 
-                                   TextWrapping="Wrap"/>
-                        <TextBox Header="DESCRIPTION" 
-                                 PlaceholderText="Enter description" 
-                                 Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource InputTextBoxStyle}"/>
-                        <StackPanel Orientation="Vertical" Spacing="10">
-                            <TextBlock Text="PICTURE" />
-                            <Button Content="Select Image" Click="SelectImage_Click" HorizontalAlignment="Left"/>
-                            <Border BorderBrush="Gray" BorderThickness="1">
-                                <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"
-                                   Height="150" Stretch="Uniform" Margin="0,10,0,0"/>
-                            </Border>
-                        </StackPanel>
-                        <DatePicker Header="RELEASE DATE" 
-                                    Date="{Binding ReleaseDate, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    Margin="0,10,0,0"/>
-                        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <ComboBox Header="CHOOSE ITEM GROUP"
-                                      Width="200"
-                                      ItemsSource="{Binding ItemGroups, Mode=OneWay}"
-                                      SelectedItem="{Binding SelectedItemGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource InputComboBoxStyle}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate x:DataType="model:ItemGroup">
-                                                <TextBlock Text="{x:Bind ItemGroupName}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <Button Content="Add new" Click="AddNewGroup_Click" VerticalAlignment="Bottom"/>
+        <Grid Padding="20">
+            <Grid Padding="20" Background="White" CornerRadius="8" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!--Title-->
+                <TextBlock Grid.Row="0" Text="TẠO SẢN PHẨM" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" />
+                <Grid Grid.Row="1" RowSpacing="20" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Item Information Section -->
+                    <TextBlock Grid.Row="0" Text="A. THÔNG TIN CHUNG:" FontSize="20" FontWeight="Bold"/>
+                    <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="20" BorderBrush="DarkSlateGray" BorderThickness="1">
+                        <Grid ColumnSpacing="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!--Item name and description-->
+                            <Grid Grid.Column="0">
+                                <Path Data="M 0,0 L 0,1" Stretch="Fill" StrokeDashArray="4, 2" StrokeThickness="1" Stroke="Gray" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+                                <StackPanel Grid.Column="0" Spacing="5" Margin="0,0,20,0">
+                                    <!--Item Name-->
+                                    <TextBox
+                                             PlaceholderText="Nhập tên sản phẩm (VD: iPhone 16 Plus)" 
+                                             Text="{Binding ItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource InputTextBoxStyle}">
+                                        <TextBox.Header>
+                                            <TextBlock FontWeight="Bold" FontSize="15">
+                                                <Run Text="1. Tên sản phẩm:" />
+                                                <Run Text="*" Foreground="Red" />
+                                            </TextBlock>
+                                        </TextBox.Header>
+                                    </TextBox>
+                                    <TextBlock Text="{Binding ItemNameError, Mode=OneWay}" 
+                                               Visibility="{Binding ItemNameError, Converter={StaticResource StringToVisibilityConverter}}"
+                                               Foreground="Red" 
+                                               TextWrapping="Wrap"/>
+                                    <!--Item Description-->
+                                    <TextBox 
+                                             VerticalAlignment="Stretch"
+                                             PlaceholderText="Nhập mô tả sản phẩm" 
+                                             Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource InputTextBoxStyle}">
+                                        <TextBox.Header>
+                                            <TextBlock FontWeight="Bold" FontSize="15">
+                                                <Run Text="2. Mô tả sản phẩm:" />
+                                            </TextBlock>
+                                        </TextBox.Header>
+                                    </TextBox>
+                                    <!--Item Date-->
+                                    <DatePicker 
+                                                Date="{Binding ReleaseDate, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                Margin="0,10,0,0">
+                                        <DatePicker.Header>
+                                            <TextBlock FontWeight="Bold" FontSize="15">
+                                                <Run Text="3. Ngày công bố:" />
+                                                <!--<Run Text="*" Foreground="Red" />-->
+                                            </TextBlock>
+                                        </DatePicker.Header>
+                                    </DatePicker>
+                                    <!--ItemGroup-->
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0"  ColumnSpacing="10" HorizontalAlignment="Stretch">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ComboBox Grid.Column="0"
+                                                      HorizontalAlignment="Stretch"
+                                                          ItemsSource="{Binding ItemGroups, Mode=OneWay}"
+                                                          SelectedItem="{Binding SelectedItemGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Style="{StaticResource InputComboBoxStyle}">
+                                                <ComboBox.Header>
+                                                    <TextBlock FontWeight="Bold" FontSize="15">
+                                                            <Run Text="4. Nhóm sản phẩm:" />
+                                                            <Run Text="*" Foreground="Red" />
+                                                    </TextBlock>
+                                                </ComboBox.Header>
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:ItemGroup">
+                                                        <TextBlock Text="{x:Bind ItemGroupName}" />
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="DarkSlateGray" Foreground="White" Click="AddNewGroup_Click" VerticalAlignment="Bottom">
+                                                <FontIcon Glyph="&#xED0E;"/>
+                                            </Button>
+                                        </Grid>
+                                        <TextBlock  Grid.Row="1"
+                                                    Text="{Binding ItemGroupError, Mode=OneWay}"
+                                                    Foreground="Red"
+                                                    Visibility="{Binding ItemGroupError, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                    </Grid>
+                                    <!--Manufacturer-->
+                                    <Grid VerticalAlignment="Center" ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Grid.Column="0"
+                                                  ItemsSource="{Binding Manufacturers, Mode=OneWay}"
+                                                  HorizontalAlignment="Stretch"
+                                                  SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Style="{StaticResource InputComboBoxStyle}">
+                                            <ComboBox.Header>
+                                                <TextBlock FontWeight="Bold" FontSize="15">
+                                                            <Run Text="5. Nhà sản xuất:" />
+                                                </TextBlock>
+                                            </ComboBox.Header>
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="model:Manufacturer">
+                                                    <TextBlock Text="{x:Bind ManufacturerName}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Button HorizontalAlignment="Stretch" Grid.Column="1" Background="DarkSlateGray" Foreground="White" Click="AddNewManufacturer_Click" VerticalAlignment="Bottom">
+                                            <FontIcon Glyph="&#xED0E;" />
+                                        </Button>
+                                    </Grid>
                                 </StackPanel>
-
-                                <TextBlock Text="{Binding ItemGroupError, Mode=OneWay}"
-                                           Foreground="Red"
-                                           Visibility="{Binding ItemGroupError, Converter={StaticResource StringToVisibilityConverter}}"/>
-                            </StackPanel>
-
-
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                            <ComboBox ItemsSource="{Binding Manufacturers, Mode=OneWay}"
-                                      Width="200"
-                                      Header="CHOOSE MANUFACTURER"
-                                      SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource InputComboBoxStyle}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate x:DataType="model:Manufacturer">
-                                        <TextBlock Text="{x:Bind ManufacturerName}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <Button Content="Add new" Click="AddNewManufacturer_Click" VerticalAlignment="Bottom"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <!-- Variant Information Section -->
-                <Border Background="White" CornerRadius="8" Padding="20" BorderBrush="LightGray" BorderThickness="1" >
-                    <StackPanel Spacing="10">
-                        <TextBlock Text="VARIANT INFORMATION" Style="{StaticResource SectionHeaderTextBlockStyle}" />
-                        <TextBlock Text="{Binding VariantError, Mode=OneWay}" 
-                                   Visibility="{Binding VariantError, Converter={StaticResource StringToVisibilityConverter}}"
-                                   HorizontalAlignment="Center"
-                                   Foreground="Red"/>
-                        <!-- Quick Create for Storage -->
-                        <Grid ColumnSpacing="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="10*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid HorizontalAlignment="Stretch" ColumnSpacing="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Text="{Binding NewStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                         Grid.Column="0" 
-                                         PlaceholderText="Enter Storage (128GB, 64GB,...)"                                       
-                                         HorizontalAlignment="Stretch"
-                                         Style="{StaticResource InputTextBoxStyle}"/>
-                                <Button Grid.Column="1" Content="Add" Command="{Binding AddNewStorageCommand}" />
                             </Grid>
-                            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
-                                <ItemsControl ItemsSource="{Binding StorageList}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="x:String">
-                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
-                                                    <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
-                                                    <Button Command="{Binding DataContext.DeleteSelectedStorageCommand, ElementName=PageRoot}" 
-                                                            CommandParameter="{Binding}" 
-                                                            Width="20" Height="20" Padding="0" Margin="0" 
-                                                            Content="x" Background="Transparent" Foreground="DarkRed"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Border>
+
+                            <!--Item picture-->
+                            <Grid Grid.Column="1" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid  Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"  FontWeight="Bold" FontSize="15">
+                                        <Run Text="6. Hình ảnh sản phẩm:" />
+                                        <Run Text="*" Foreground="Red"/>
+                                    </TextBlock>
+                                    <Button CornerRadius="10,10,0,0" Margin="0,0,10,0" Grid.Column="1"  Background="DarkSlateGray" Foreground="White" Click="SelectImage_Click" HorizontalAlignment="Left">
+                                        <FontIcon Glyph="&#xEE71;" />
+                                    </Button>
+
+                                </Grid>
+                                <Border CornerRadius="8" Grid.Row="2" 
+                                        BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch">
+                                    <StackPanel x:Name="PictureContainer" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Source="{Binding Picture, Mode=TwoWay, Converter={StaticResource StringToBitmapImageConverter}}"
+                                               Stretch="Uniform" Margin="0,10,0,0"/>
+              
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock Text="{Binding ItemPictureError, Mode=OneWay}" 
+                                           Grid.Row="3"
+                                           Visibility="{Binding ItemPictureError, Converter={StaticResource StringToVisibilityConverter}}"
+                                           Foreground="Red" 
+                                           TextWrapping="Wrap"/>
+                            </Grid>
                         </Grid>
 
-                        <!-- Color Section -->
-                        <Grid ColumnSpacing="10">
+                    </Border>
+
+                    <!-- Variant Information Section -->
+                    <TextBlock Grid.Row="2"  FontSize="20" FontWeight="Bold">
+                        <Run Text="B. THÔNG TIN CHI TIẾT:" />
+                    </TextBlock>
+                    <Border Grid.Row="3" Background="White" CornerRadius="8" Padding="20" BorderBrush="DarkSlateGray" BorderThickness="1" >
+                        <Grid ColumnSpacing="20">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="Add New Color" HorizontalAlignment="Stretch" Click="AddNewColor_Click" Padding="5"/>
-                            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Height="50" CornerRadius="5" Padding="5">
-                                <ItemsControl ItemsSource="{Binding ColorList}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="x:String">
-                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
-                                                    <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
-                                                    <Button Command="{Binding DataContext.DeleteSelectedColorCommand, ElementName=PageRoot}" 
+                            <Grid>
+                                <Path Grid.Column="0" Data="M 0,0 L 0,1" Stretch="Fill" StrokeDashArray="4, 2" StrokeThickness="1" Stroke="Gray" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+                                <Grid RowSpacing="10" Margin="0,0,20,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <!-- Quick Create for Storage -->
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" ColumnSpacing="50">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" FontWeight="Bold" FontSize="15">
+                                                <Run Text="7. Dung lượng:" />
+                                                <Run Text="*" Foreground="Red"/>
+                                            </TextBlock>
+                                            <Grid Grid.Column="1" Margin="0,0,10,0" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBox Text="{Binding NewStorage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                                         Margin="0,0,0,1"  Grid.Column="0" 
+                                                         CornerRadius="10,0,0,0"
+                                                         BorderBrush="Gray"
+                                                         PlaceholderText="Nhập dung lượng..."                                       
+                                                         HorizontalAlignment="Stretch"
+                                                         Style="{StaticResource InputTextBoxStyle}"/>
+                                                <Button Grid.Column="1" BorderBrush="DarkSlateGray" Margin="0,0,0,1" CornerRadius="0,10,0,0" Background="DarkSlateGray" Foreground="White" HorizontalAlignment="Stretch"  Command="{Binding AddNewStorageCommand}">
+                                                    <FontIcon Glyph="&#xE710;"/>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1"  CornerRadius="5" Padding="5">
+                                            <ListView ItemsSource="{Binding StorageList}" Height="100">
+                                                <ListView.Resources>
+                                                    <Style TargetType="ListViewItem">
+                                                        <Setter Property="Padding" Value="5" />
+                                                        <Setter Property="Margin" Value="5" />
+                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                    </Style>
+                                                </ListView.Resources>
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:DataType="x:String">
+                                                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{x:Bind}" VerticalAlignment="Center"/>
+                                                                <Button Command="{Binding DataContext.DeleteSelectedStorageCommand, ElementName=PageRoot}" 
+                                                                        CommandParameter="{Binding}" 
+                                                                        Grid.Column="1"
+                                                                        Margin="0" Padding="1"
+                                                                        Background="Red" Foreground="White">
+                                                                    <FontIcon Glyph="&#xE711;" />
+                                                                </Button>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                                <ListView.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <ItemsWrapGrid Orientation="Horizontal" GroupPadding="0" Margin="0"/>
+                                                    </ItemsPanelTemplate>
+                                                </ListView.ItemsPanel>
+                                            </ListView>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Color Section -->
+                                    <Grid Grid.Row="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock  FontWeight="Bold" FontSize="15" >
+                                                <Run Text="8. Màu sắc:" />
+                                                <Run Text="*" Foreground="Red"/>
+                                            </TextBlock>
+                                            <Button Grid.Row="0" Background="DarkSlateGray" Foreground="White"   Click="AddNewColor_Click" HorizontalAlignment="Right" Margin="0,0,10,0" CornerRadius="10,10,0,0">
+                                                <FontIcon Glyph="&#xEE71;" />
+                                            </Button>
+                                        </Grid>
+                                        <Border  Grid.Row="3" BorderBrush="Gray" BorderThickness="1"  CornerRadius="5" Padding="5">
+                                        <ListView ItemsSource="{Binding ColorList}" Height="100">
+                                            <ListView.Resources>
+                                                <Style TargetType="ListViewItem">
+                                                    <Setter Property="Padding" Value="0" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                </Style>
+                                            </ListView.Resources>
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
+                                                            <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
+                                                            <Button Command="{Binding DataContext.DeleteSelectedColorCommand, ElementName=PageRoot}" 
                                                             CommandParameter="{Binding}" 
                                                             Width="20" Height="20" Padding="0" Margin="0" 
                                                             Content="x" Background="Transparent" Foreground="DarkRed"/>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Border>
-                        </Grid>
-
-                        <!-- Display and Manually Create Variants -->
-                        <ItemsControl ItemsSource="{Binding Variants, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="model:Variant">
-                                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,5">
-                                        <StackPanel Spacing="10" Orientation="Horizontal">
-                                            <TextBlock Text="Variant Details:" FontWeight="Bold" VerticalAlignment="Center"/>
-                                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                                <StackPanel>
-                                                    <TextBlock Text="Color:"/>
-                                                    <TextBox IsReadOnly="True" Text="{x:Bind Color.Name, Mode=TwoWay}" Width="80"/>
-                                                </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="Storage (GB):"/>
-                                                    <TextBox Text="{x:Bind Storage, Mode=TwoWay}" Width="80"/>
-                                                </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="Cost Price:"/>
-                                                    <TextBox Text="{x:Bind CostPrice, Mode=TwoWay}" Width="80"/>
-                                                </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="Selling Price:"/>
-                                                    <TextBox Text="{x:Bind SellingPrice, Mode=TwoWay}" Width="80"/>
-                                                </StackPanel>
-                                                <StackPanel>
-                                                    <TextBlock Text="Stock Quantity:"/>
-                                                    <TextBox Text="{x:Bind StockQuantity, Mode=TwoWay}" Width="80"/>
-                                                </StackPanel>
-                                            </StackPanel>
-                                            <!-- Remove Button -->
-                                            <Button Command="{Binding DataContext.RemoveVariantCommand, ElementName=PageRoot}"
-                                                    CommandParameter="{Binding}"
-                                                    Content="x" Margin="0,5,0,0" 
-                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                    Background="Red" Foreground="White" Width="30" Height="30" 
-                                                    CornerRadius="15"/>
-                                        </StackPanel>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                            <ListView.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <ItemsWrapGrid Orientation="Horizontal" GroupPadding="0" Margin="0"/>
+                                                </ItemsPanelTemplate>
+                                            </ListView.ItemsPanel>
+                                        </ListView>
                                     </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-            <!-- Create Button at the bottom -->
-            <Button Grid.Row="1" Content="Create" Command="{Binding SaveItemCommand}" HorizontalAlignment="Center" Margin="0,20,0,0" Padding="10,5"/>
+                                    </Grid>
+  
+                                </Grid>
+                            </Grid>
+
+                            <!-- Display and Manually Create Variants -->
+                            <Grid Grid.Column="1" RowSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="15" >
+                                       <Run Text="9. Danh sách sản phẩm:" />
+                                       <Run Text="*" Foreground="Red"/>
+                                </TextBlock>
+                                <Grid Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Padding="5" CornerRadius="8">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <ListView Grid.Row="0" Height="250" AllowDrop="True" CanReorderItems="True" Grid.Column="1" ItemsSource="{Binding Variants, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:Variant">
+                                                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,5">
+                                                            <Grid ColumnSpacing="10">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0" ColumnSpacing="10" HorizontalAlignment="Stretch" >
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBox Grid.Column="0" IsReadOnly="True" Text="{x:Bind Color.Name, Mode=TwoWay}">
+                                                                        <TextBox.Header>
+                                                                            <TextBlock Text="Màu sắc:" FontWeight="Bold" />
+                                                                        </TextBox.Header>
+                                                                    </TextBox>
+                                                                    <TextBox Grid.Column="1" IsReadOnly="True" Text="{x:Bind Storage, Mode=TwoWay}">
+                                                                        <TextBox.Header>
+                                                                            <TextBlock Text="Dung lượng:" FontWeight="Bold" />
+                                                                        </TextBox.Header>
+                                                                    </TextBox>
+                                                                    <TextBox Grid.Column="2" Text="{x:Bind CostPrice, Mode=TwoWay}">
+                                                                        <TextBox.Header>
+                                                                            <TextBlock Text="Giá nhập:" FontWeight="Bold" />
+                                                                        </TextBox.Header>
+                                                                    </TextBox>
+                                                                    <TextBox Grid.Column="3" Text="{x:Bind SellingPrice, Mode=TwoWay}">
+                                                                        <TextBox.Header>
+                                                                            <TextBlock Text="Giá bán:" FontWeight="Bold" />
+                                                                        </TextBox.Header>
+                                                                    </TextBox>
+                                                                    <TextBox Grid.Column="4" Text="{x:Bind StockQuantity, Mode=TwoWay}">
+                                                                        <TextBox.Header>
+                                                                            <TextBlock Text="Tồn kho:" FontWeight="Bold" />
+                                                                        </TextBox.Header>
+                                                                    </TextBox>
+
+                                                                </Grid>
+                                                                <!-- Remove Button -->
+                                                                <Button Grid.Column="1" Command="{Binding DataContext.RemoveVariantCommand, ElementName=PageRoot}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Padding="5"
+                                                                        FontWeight="Bold"
+                                                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                                        Background="Red" Foreground="White" >
+                                                                    <FontIcon Glyph="&#xE711;" />
+                                                                </Button>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </Grid>
+                                    </Border>
+                                    <!--Error display-->
+                                    <TextBlock Grid.Row="1" Text="{Binding VariantError, Mode=OneWay}" 
+                                                            Visibility="{Binding VariantError, Converter={StaticResource StringToVisibilityConverter}}"
+                                                            HorizontalAlignment="Left"
+                                                            Foreground="Red"/>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </Grid>
+                <!-- Create Button at the bottom -->
+                <Button Grid.Row="2" Content="Tạo sản phẩm" FontWeight="Bold" FontSize="18"
+                        Command="{Binding SaveItemCommand}" HorizontalAlignment="Stretch" Background="DarkSlateGray" Foreground="White" Margin="0,20,0,0" Padding="10"/>
+            </Grid>
         </Grid>
+
     </ScrollViewer>
 </Page>

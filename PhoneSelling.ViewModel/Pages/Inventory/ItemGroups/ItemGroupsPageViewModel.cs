@@ -47,7 +47,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.ItemGroups
 
             var items = await _itemRepository.GetAll();
 
-            var variantsResponse = await _variantRepositoty.GetAllVariants(new VariantPaginationQuery());
+            var variantsResponse = await _variantRepositoty.GetAllVariants(new VariantPaginationQuery{ PageSize=1000 });
             var variants = variantsResponse.Data;
 
             Data.Clear();
@@ -58,8 +58,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.ItemGroups
 
                 foreach (var item in groupItems)
                 {
-                    Debug.WriteLine(item.Id);
-                    item.Variants = variants.Where(variant => variant.Item.Id == item.Id).ToList();
+                    item.Variants = variants.Where(variant => variant.Item.Id.ToString() == item.Id.ToString()).ToList();
                 }
 
                 group.Items = groupItems;

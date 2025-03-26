@@ -19,6 +19,8 @@ using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService.Contracts
 using PhoneSelling.Data.Repositories.ManufacturerRepository;
 using PhoneSelling.ViewModel.Pages.Items;
 using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
+using Navigation.Helpers;
 
 namespace Navigation.Views.Inventory.CreateItems
 {
@@ -33,6 +35,10 @@ namespace Navigation.Views.Inventory.CreateItems
             this.InitializeComponent();
             this.DataContext = ViewModel;
             _uploadService = DIContainer.GetKeyedSingleton<IUploadService>();
+            WeakReferenceMessenger.Default.Register<Message>(this, (r, m) =>
+            {
+                DialogHelper.ShowDialogAsync(m.status ? "THÀNH CÔNG" : "LỖI", m.message,"Đóng", this.XamlRoot);
+            });
         }
 
 
@@ -42,12 +48,12 @@ namespace Navigation.Views.Inventory.CreateItems
             var panel = new StackPanel { Spacing = 20 };
 
             // TextBlock and TextBox for the color name.
-            panel.Children.Add(new TextBlock { Text = "Color Name:" });
-            var nameTextBox = new TextBox { PlaceholderText = "Enter color name", Width = 300 };
+            panel.Children.Add(new TextBlock { Text = "Tên màu:" });
+            var nameTextBox = new TextBox { PlaceholderText = "Nhập tên màu", Width = 300 };
             panel.Children.Add(nameTextBox);
 
             // Button to select image.
-            var selectImageButton = new Button { Content = "Select Image", Width = 300 };
+            var selectImageButton = new Button { Content = "Chọn hình ảnh", Width = 300 };
             panel.Children.Add(selectImageButton);
 
             // Image preview.
@@ -67,13 +73,13 @@ namespace Navigation.Views.Inventory.CreateItems
             // Create and show the dialog.
             var dialog = new ContentDialog
             {
-                Title = "Add New Color",
+                Title = "THÊM MÀU SẮC",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Tạo",
+                CloseButtonText = "Hủy",
                 XamlRoot = this.XamlRoot,
-                // Disable the save button until the image is loaded.
-                IsPrimaryButtonEnabled = false
+                RequestedTheme = ElementTheme.Light,
+                IsPrimaryButtonEnabled = false,
             };
 
             // Local variable to hold the uploaded image URL.
@@ -154,9 +160,10 @@ namespace Navigation.Views.Inventory.CreateItems
                     // Show an error dialog if duplicate found.
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Color",
-                        Content = $"A variant with the color name '{colorName}' already exists.",
-                        CloseButtonText = "OK",
+                        Title = "MÀU SẮC ĐÃ TỒN TẠI",
+                        Content = $"Sản phẩm với màu '{colorName}' đã có.",
+                        CloseButtonText = "Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot
                     };
                     await errorDialog.ShowAsync();
@@ -190,17 +197,41 @@ namespace Navigation.Views.Inventory.CreateItems
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".png");
 
-            // For WinUI 3, set the window handle.
+            
             var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
             InitializeWithWindow.Initialize(picker, hwnd);
+            // PreviewImage
+            var previewImage = new Image { Width = 100, Height = 100, Visibility = Visibility.Collapsed};
+            // ProgressRing
+            var progressRing = new ProgressRing { Width = 50, Height = 50 , Visibility = Visibility.Collapsed};
+            PictureContainer.Children.Add(previewImage);
+            PictureContainer.Children.Add(progressRing);
+
 
             StorageFile selectedFile = await picker.PickSingleFileAsync();
             if (selectedFile != null)
             {
+                // Preview Image
+                using (var stream = await selectedFile.OpenAsync(FileAccessMode.Read))
+                {
+                    var bitmapImage = new BitmapImage();
+                    await bitmapImage.SetSourceAsync(stream);
+                    previewImage.Source = bitmapImage;
+                    previewImage.Visibility = Visibility.Visible;
+                }
+                // Ring
+                progressRing.Visibility = Visibility.Visible;
+                progressRing.IsActive = true;
+                
+                // Archieve URL
                 byte[] fileBytes = await ConvertStorageFileToByteArray(selectedFile);
                 var request = new MediaUploadRequest("", fileBytes, selectedFile.Name, Media.GetMimeType(selectedFile.Name));
                 var uploadedFile = await _uploadService.UploadFileAsync(request, System.Threading.CancellationToken.None);
                 Debug.WriteLine(uploadedFile.Url);
+
+                progressRing.Visibility = Visibility.Collapsed;
+                progressRing.IsActive = false;
+                previewImage.Visibility = Visibility.Collapsed;
 
                 // Ensure we update the same ViewModel instance bound to the UI.
                 if (this.DataContext is CreateItemPageViewModel viewModel)
@@ -225,15 +256,16 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewGroup_Click(object sender, RoutedEventArgs e)
         {
             var panel = new StackPanel { Spacing = 10 };
-            var groupNameTextBox = new TextBox { PlaceholderText = "Enter group name", Width = 300 };
+            var groupNameTextBox = new TextBox { PlaceholderText = "Nhập tên nhóm", Width = 300 };
             panel.Children.Add(groupNameTextBox);
 
             var dialog = new ContentDialog
             {
-                Title = "Add New Item Group",
+                Title = "THÊM NHÓM SẢN PHẨM",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Lưu",
+                CloseButtonText = "Hủy",
+                RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot
             };
 
@@ -254,9 +286,10 @@ namespace Navigation.Views.Inventory.CreateItems
                 {
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Item Group",
-                        Content = $"An item group with the name '{groupName}' already exists.",
-                        CloseButtonText="Close",
+                        Title = "TÊN NHÓM SẢN PHẨM ĐÃ TÒN TẠI",
+                        Content = $"Nhóm sản phẩm '{groupName}' đã tồn tại.",
+                        CloseButtonText="Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot,
                     };
                     await errorDialog.ShowAsync();
@@ -292,17 +325,18 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewManufacturer_Click(object sender, RoutedEventArgs e)
         {
             var panel = new StackPanel { Spacing = 10 };
-            var manufacturerNameTextBox = new TextBox { PlaceholderText = "Enter manufacturer name", Width = 300 };
-            var manufacturerDescriptionTextBox = new TextBox { PlaceholderText = "Enter manufacturer description", Width = 300 };
+            var manufacturerNameTextBox = new TextBox { PlaceholderText = "Nhập tên nhà sản xuất", Width = 300 };
+            var manufacturerDescriptionTextBox = new TextBox { PlaceholderText = "Nhập mô tả", Width = 300 };
             panel.Children.Add(manufacturerNameTextBox);
             panel.Children.Add(manufacturerDescriptionTextBox);
 
             var dialog = new ContentDialog
             {
-                Title = "Add New Manufacturer",
+                Title = "THÊM NHÀ SẢN XUẤT",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Lưu",
+                CloseButtonText = "Đóng",
+                RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot
             };
 
@@ -324,9 +358,10 @@ namespace Navigation.Views.Inventory.CreateItems
                 {
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Manufacturer",
-                        Content = $"A manufacturer with the name '{manufacturerName}' already exists.",
-                        CloseButtonText = "OK",
+                        Title = "TÊN NHÀ SẢN XUẤT ĐÃ TỒN TẠI",
+                        Content = $"Nhà sản xuất '{manufacturerName}' đã tồn tại.",
+                        CloseButtonText = "Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot
                     };
                     await errorDialog.ShowAsync();

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using PhoneSelling.Common;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.CustomerRepository;
@@ -11,9 +12,11 @@ using PhoneSelling.ViewModel.Base;
 using PhoneSelling.ViewModel.Navigation;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 {
+    public record Message(string message, bool status);
     public partial class CreateInvoicePageViewModel : BasePageViewModel
     {
         public int dummy = 1000000000;
@@ -134,7 +137,20 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
                 var validationResult = detail.Validate();
                 if(validationResult) hasErrors = true;
             }
-            if(!hasErrors) await _invoiceRepository.CreateInvoiceAsync(Invoice);
+            if (!hasErrors)
+            {
+                try
+                {
+                    await _invoiceRepository.CreateInvoiceAsync(Invoice);
+                    Debug.WriteLine("Create Invoice Succesfully !");
+                    WeakReferenceMessenger.Default.Send(new Message("TẠO HÓA ĐƠN THÀNH CÔNG !", true));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error while creating invoice:", ex);
+                    WeakReferenceMessenger.Default.Send(new Message(ex.Message, false));
+                }
+            }
         }
     }
 }

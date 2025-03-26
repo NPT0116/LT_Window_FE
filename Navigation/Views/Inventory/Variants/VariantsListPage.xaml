@@ -34,7 +34,7 @@
 
     <Grid Padding="20">
 
-        <Grid  Padding="20" Background="White" CornerRadius="8" RowSpacing="20">
+        <Grid  Padding="20" Background="White" CornerRadius="8" RowSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -108,7 +108,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}}" Grid.Row="0" Background="DarkSlateGray" Padding="5">
+                <Grid Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}" Grid.Row="0" Background="DarkSlateGray" Padding="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="2*"/>
