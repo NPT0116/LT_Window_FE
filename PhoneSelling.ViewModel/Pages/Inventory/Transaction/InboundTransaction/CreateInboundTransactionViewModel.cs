@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using PhoneSelling.Common;
 using PhoneSelling.Data.Common.Validators;
 using PhoneSelling.Data.Models;
@@ -21,6 +22,7 @@ using System.Threading.Tasks;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
 {
+    public record Message(string message, bool status);
     public partial class CreateInboundTransactionViewModel : BasePageViewModel
     {
         private readonly IInventoryTransactionRepository _inventoryTransactionRepository;
@@ -65,15 +67,27 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
             OnPropertyChanged(nameof(itemsError));
             var emptyItemErrorString = GetErrors(nameof(Items))?.FirstOrDefault()?.ToString() ?? "";
             ItemsError = emptyItemErrorString;
-            hasErrors = true;
-            foreach(var item in Items)
+            if (!string.IsNullOrEmpty(ItemsError))
+            {
+                hasErrors = true;
+            }
+            foreach (var item in Items)
             {
                 var errors = item.Validate();
-                if(errors) hasErrors = true;
+                if (errors) hasErrors = true;
             }
-
             if (hasErrors) return;
-            await _inventoryTransactionRepository.CreateInboundTransaction(Items.ToList());
+            try
+            {
+                await _inventoryTransactionRepository.CreateInboundTransaction(Items.ToList());
+                Debug.WriteLine("Create Inbound Transaction Succesfully !");
+                WeakReferenceMessenger.Default.Send(new Message("Nhập kho thành công !", true));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error while creating inbound transaction:", ex);
+                WeakReferenceMessenger.Default.Send(new Message(ex.Message, false));
+            }
         }
 
         [RelayCommand]

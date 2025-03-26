@@ -16,6 +16,13 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository.ApiServi
     {
         protected override string Prefix => "InventoryTransaction";
 
+        public async Task<GetTransactionHistoryByVariantIDResponse> GetTransactionHistoryByVariantID(Guid variantId)
+        {
+            var endpoint = $"{ApiUrl}/{variantId.ToString()}";
+            var response = await _httpClient.GetFromJsonAsync<GetTransactionHistoryByVariantIDResponse>(endpoint);
+            return response ?? new GetTransactionHistoryByVariantIDResponse();
+
+        }
         public async Task CreateInboundInventoryTransaction(CreateInboundTransactionRequest request)
         {
             var endpoint = ApiUrl + "/inbound";

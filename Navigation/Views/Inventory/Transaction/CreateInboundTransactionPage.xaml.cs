@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +15,8 @@ using Microsoft.UI.Xaml.Navigation;
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
 using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos;
+using CommunityToolkit.Mvvm.Messaging;
+using Navigation.Helpers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,8 +34,11 @@ namespace Navigation.Views.Inventory.Transaction
             this.InitializeComponent();
             ViewModel = new();
             this.DataContext = ViewModel;
+            WeakReferenceMessenger.Default.Register<Message>(this, (r, message) =>
+            {
+                DialogHelper.ShowDialogAsync(message.status ? "THÀNH CÔNG" : "LỖI", message.message, "Đóng", this.XamlRoot);
+            });
         }
-
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)

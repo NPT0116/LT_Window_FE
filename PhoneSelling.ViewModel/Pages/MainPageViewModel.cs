@@ -5,6 +5,7 @@ using PhoneSelling.ViewModel.Pages.Inventory;
 using PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages;
 using PhoneSelling.ViewModel.Pages.Inventory.ItemGroups;
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
+using PhoneSelling.ViewModel.Pages.Inventory.Transaction.TransactionHistory;
 using PhoneSelling.ViewModel.Pages.Inventory.Variants;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
@@ -30,12 +31,13 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToPhoneCommand { get; }
         public RelayCommand GoToItemGroupsPageCommand { get; }
         public RelayCommand GoToCreateItemPageCommand { get; }
-
+        // Transaction
+        public RelayCommand GoToCreateInboundTransactionCommand { get; }
+        public RelayCommand GoToTransactionHistoryPageCommand { get; }
         // Invoice
         public RelayCommand GoToInvoiceDetailPageCommand { get; }
         public RelayCommand GoToCreateInvoiceCommand { get; }
         public RelayCommand GoToInvoiceListCommand { get; }
-        public RelayCommand GoToCreateInboundTransactionCommand { get; }
 
         public MainPageViewModel(BasePageViewModel viewModel)
         {
@@ -52,11 +54,13 @@ namespace PhoneSelling.ViewModel.Pages
             GoToPhoneCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new PhonePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(PhonePageViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
             GoToVariantCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new VariantListViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(VariantListViewModel));
+            // Transaction
+            GoToTransactionHistoryPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new TransactionHistoryPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(TransactionHistoryPageViewModel));
+            GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
             // Invoice
             GoToInvoiceDetailPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceDetailPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InvoiceDetailPageViewModel));
             GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
             GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.GetType() != typeof(InvoiceListViewModel));
-            GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
 
         }
 
@@ -74,12 +78,13 @@ namespace PhoneSelling.ViewModel.Pages
                 GoToPhoneCommand.NotifyCanExecuteChanged();
                 GoToVariantCommand.NotifyCanExecuteChanged();
                 GoToCreateItemPageCommand.NotifyCanExecuteChanged();
-
+                // Transaction
+                GoToCreateInboundTransactionCommand.NotifyCanExecuteChanged();
+                GoToTransactionHistoryPageCommand.NotifyCanExecuteChanged();
                 // Invoice
                 GoToInvoiceDetailPageCommand.NotifyCanExecuteChanged();
                 GoToInvoiceListCommand.NotifyCanExecuteChanged();
                 GoToCreateInvoiceCommand.NotifyCanExecuteChanged();
-                GoToCreateInboundTransactionCommand.NotifyCanExecuteChanged();
             }
         }
 

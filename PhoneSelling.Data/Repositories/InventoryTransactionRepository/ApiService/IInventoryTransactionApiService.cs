@@ -10,7 +10,9 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository.ApiServi
 {
     public interface IInventoryTransactionApiService
     {
+        Task<GetTransactionHistoryByVariantIDResponse> GetTransactionHistoryByVariantID(Guid variantId);
         Task CreateInboundInventoryTransaction(CreateInboundTransactionRequest request);
         Task<CreateMultipleInboundTransactionResponse> CreateInboundInventoryTransaction(CreateMultipleInboundTransactionRequest request);
+        
     }
 }

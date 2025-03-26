@@ -19,6 +19,7 @@
     <None Remove="Views\Inventory\CreateItems\CreateItemPage.xaml" />
     <None Remove="Views\Inventory\ItemGroupsPage.xaml" />
     <None Remove="Views\Inventory\Transaction\CreateInboundTransactionPage.xaml" />
+    <None Remove="Views\Inventory\Transaction\TransactionHistoryPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\Page1.xaml" />
     <None Remove="Views\Page1_1.xaml" />
@@ -135,6 +136,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Payments\Invoices\InvoiceDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Inventory\Transaction\TransactionHistoryPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="Views\Themes\Generic.xaml">
