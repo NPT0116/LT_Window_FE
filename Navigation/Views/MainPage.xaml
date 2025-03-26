@@ -58,7 +58,7 @@
                         </NavigationViewItem>
                         
                         <!--ItemGroupPage-->
-                        <NavigationViewItem Icon="List" Content="Item Groups">
+                        <NavigationViewItem Icon="ViewAll" Content="Nhóm sản phẩm">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{Binding GoToItemGroupsPageCommand}" />
