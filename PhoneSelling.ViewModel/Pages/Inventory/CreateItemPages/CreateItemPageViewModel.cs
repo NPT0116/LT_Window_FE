@@ -30,7 +30,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
     {
         // Use the validation attributes to define required fields.
         [ObservableProperty]
-        [Required(ErrorMessage = "Item Name is required.")]
+        [Required(ErrorMessage = "Tên sản phẩm không thể để trống.")]
         private string itemName;
         partial void OnItemNameChanged(string oldValue, string newValue)
         {
@@ -43,14 +43,21 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         private string? description;
 
         [ObservableProperty]
-        private string? picture;
+        [Required(ErrorMessage = "Sản phẩm phải có ảnh.")]
+        private string picture;
+        public string ItemPictureError => GetErrors(nameof(Picture))?.Cast<object>()?.FirstOrDefault()?.ToString() ?? string.Empty;
+        partial void OnPictureChanged(string newValue)
+        {
+            ValidateProperty(newValue, nameof(Picture));
+            OnPropertyChanged(nameof(ItemPictureError));
+        }
 
         [ObservableProperty]
         private DateTime? releaseDate = DateTime.UtcNow;
 
         [ObservableProperty]
         private ObservableCollection<Variant> variants;
-        public string VariantError => CheckVariant || (Variants == null || Variants.Count > 0) ? string.Empty : "At least one variant is required.";
+        public string VariantError => CheckVariant || (Variants == null || Variants.Count > 0) ? string.Empty : "Cần có ít nhất một sản phẩm.";
         private bool _checkVariant = true;
         public bool CheckVariant
         {
@@ -66,7 +73,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 
         // Selected fields
         [ObservableProperty]
-        [Required(ErrorMessage ="Item Group is required.")]
+        [Required(ErrorMessage = "Nhóm sản phẩm phải được chọn.")]
         private ItemGroup selectedItemGroup;
         partial void OnSelectedItemGroupChanged(ItemGroup oldValue, ItemGroup newValue)
         {
@@ -154,6 +161,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         private readonly IItemGroupRepository _itemGroupRepository;
         private readonly IManufacturerRepository _manufacturerRepository;
 
+
         public CreateItemPageViewModel()
         {
             // Initialize properties
@@ -213,6 +221,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
         private void UpdateUI()
         {
             OnPropertyChanged(nameof(ItemNameError));
+            OnPropertyChanged(nameof(ItemPictureError));
             OnPropertyChanged(nameof(VariantError));
             OnPropertyChanged(nameof(ItemGroupError));
         }
@@ -310,9 +319,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 Debug.WriteLine("Validation failed. Please check the entered data.");
                 return;
             }
-
-            Debug.WriteLine("Mapping ItemDto...");
-
             // Map item details to the ItemDto.
             var itemDto = new ItemDto
             {
@@ -325,7 +331,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 manufacturerID = selectedManufacturer?.Id.ToString()
             };
 
-            Debug.WriteLine($"ItemDto mapped: {itemDto.itemName}, ReleaseDate: {itemDto.releaseDate}");
 
             // Map ColorObjectList to ColorDto objects.
             var colorDtos = ColorObjectList.Select((c, index) => new Data.Repositories.ItemRepository.ApiService.Contracts.Requests.ColorDto
@@ -335,13 +340,10 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 urlImage = c.UrlImage,
                 colorId = Guid.NewGuid().ToString()
             }).ToList();
-
-            Debug.WriteLine("ColorDtos mapped:");
             foreach (var colorDto in colorDtos)
             {
                 Debug.WriteLine($"TempId: {colorDto.tempId}, Name: {colorDto.name}");
             }
-
             // Map variants to VariantDto objects.
             var variantDtos = variants.Select(v => new VariantDto
             {
@@ -352,12 +354,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 colorTempId = colorDtos.FirstOrDefault(cd => cd.name == v.Color.Name)?.tempId ?? 0
             }).ToList();
 
-            Debug.WriteLine("VariantDtos mapped:");
-            foreach (var variantDto in variantDtos)
-            {
-                Debug.WriteLine($"Storage: {variantDto.storage}, Cost: {variantDto.costPrice}, ColorTempId: {variantDto.colorTempId}");
-            }
-
             // Create the full DTO object.
             var createFullItemDto = new CreateFullItemDto
             {
@@ -366,8 +362,6 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
                 Variants = variantDtos
             };
 
-            Debug.WriteLine("Calling _itemRepository.CreateFullItem...");
-            // Save the item via the repository.
             try
             {
                 await _itemRepository.CreateFullItem(createFullItemDto);

@@ -202,7 +202,7 @@ namespace Navigation.Views.Inventory.CreateItems
             // PreviewImage
             var previewImage = new Image { Width = 100, Height = 100, Visibility = Visibility.Collapsed};
             // ProgressRing
-            var progressRing = new ProgressRing { Width = 100, Height = 100 , Visibility = Visibility.Collapsed};
+            var progressRing = new ProgressRing { Width = 50, Height = 50 , Visibility = Visibility.Collapsed};
             PictureContainer.Children.Add(previewImage);
             PictureContainer.Children.Add(progressRing);
 
