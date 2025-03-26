@@ -154,8 +154,12 @@
                             </GridView.ItemsPanel>
                         </GridView>
                         <!--List-View-->
-                        <StackPanel Grid.Row="1"
+                        <Grid Grid.Row="1"
                                     Visibility="{Binding IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
                             <Grid Background="DarkSlateGray" Padding="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"/>
@@ -172,11 +176,12 @@
                                 <TextBlock Text="GIÁ BÁN" Style="{StaticResource TableHeaderStyle}" Grid.Column="4" Foreground="White"/>
                                 <TextBlock Text="TỒN KHO" Style="{StaticResource TableHeaderStyle}" Grid.Column="5" Foreground="White"/>
                             </Grid>
-                            <ListView ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
+                            <ListView Grid.Row="1"
+                                      ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
                                       SelectionChanged="VariantList_SelectionChanged"
                                       ItemTemplate="{StaticResource ListVariantTemplate}">
                             </ListView>
-                        </StackPanel>
+                        </Grid>
 
                     </Grid>
                 </PivotItem>
