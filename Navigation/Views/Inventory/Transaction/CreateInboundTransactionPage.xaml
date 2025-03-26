@@ -42,7 +42,7 @@
 
                 </Grid.RowDefinitions>
                 <!--Form Title-->
-                <Grid>
+                <Grid Margin="0,0,0,10">
                     <Path Data="M 0,0 L 1,0" Width="300"  Stretch="Fill" Stroke="Gray" StrokeDashArray="4, 2" StrokeThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
                     <TextBlock Text="PHIẾU NHẬP HÀNG" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
                 </Grid>
