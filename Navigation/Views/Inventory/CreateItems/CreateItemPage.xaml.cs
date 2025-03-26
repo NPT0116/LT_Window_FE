@@ -160,9 +160,10 @@ namespace Navigation.Views.Inventory.CreateItems
                     // Show an error dialog if duplicate found.
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Color",
-                        Content = $"A variant with the color name '{colorName}' already exists.",
-                        CloseButtonText = "OK",
+                        Title = "MÀU SẮC ĐÃ TỒN TẠI",
+                        Content = $"Sản phẩm với màu '{colorName}' đã có.",
+                        CloseButtonText = "Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot
                     };
                     await errorDialog.ShowAsync();
@@ -255,15 +256,16 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewGroup_Click(object sender, RoutedEventArgs e)
         {
             var panel = new StackPanel { Spacing = 10 };
-            var groupNameTextBox = new TextBox { PlaceholderText = "Enter group name", Width = 300 };
+            var groupNameTextBox = new TextBox { PlaceholderText = "Nhập tên nhóm", Width = 300 };
             panel.Children.Add(groupNameTextBox);
 
             var dialog = new ContentDialog
             {
-                Title = "Add New Item Group",
+                Title = "THÊM NHÓM SẢN PHẨM",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Lưu",
+                CloseButtonText = "Hủy",
+                RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot
             };
 
@@ -284,9 +286,10 @@ namespace Navigation.Views.Inventory.CreateItems
                 {
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Item Group",
-                        Content = $"An item group with the name '{groupName}' already exists.",
-                        CloseButtonText="Close",
+                        Title = "TÊN NHÓM SẢN PHẨM ĐÃ TÒN TẠI",
+                        Content = $"Nhóm sản phẩm '{groupName}' đã tồn tại.",
+                        CloseButtonText="Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot,
                     };
                     await errorDialog.ShowAsync();
@@ -322,17 +325,18 @@ namespace Navigation.Views.Inventory.CreateItems
         private async void AddNewManufacturer_Click(object sender, RoutedEventArgs e)
         {
             var panel = new StackPanel { Spacing = 10 };
-            var manufacturerNameTextBox = new TextBox { PlaceholderText = "Enter manufacturer name", Width = 300 };
-            var manufacturerDescriptionTextBox = new TextBox { PlaceholderText = "Enter manufacturer description", Width = 300 };
+            var manufacturerNameTextBox = new TextBox { PlaceholderText = "Nhập tên nhà sản xuất", Width = 300 };
+            var manufacturerDescriptionTextBox = new TextBox { PlaceholderText = "Nhập mô tả", Width = 300 };
             panel.Children.Add(manufacturerNameTextBox);
             panel.Children.Add(manufacturerDescriptionTextBox);
 
             var dialog = new ContentDialog
             {
-                Title = "Add New Manufacturer",
+                Title = "THÊM NHÀ SẢN XUẤT",
                 Content = panel,
-                PrimaryButtonText = "Save",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Lưu",
+                CloseButtonText = "Đóng",
+                RequestedTheme = ElementTheme.Light,
                 XamlRoot = this.XamlRoot
             };
 
@@ -354,9 +358,10 @@ namespace Navigation.Views.Inventory.CreateItems
                 {
                     var errorDialog = new ContentDialog
                     {
-                        Title = "Duplicate Manufacturer",
-                        Content = $"A manufacturer with the name '{manufacturerName}' already exists.",
-                        CloseButtonText = "OK",
+                        Title = "TÊN NHÀ SẢN XUẤT ĐÃ TỒN TẠI",
+                        Content = $"Nhà sản xuất '{manufacturerName}' đã tồn tại.",
+                        CloseButtonText = "Đóng",
+                        RequestedTheme = ElementTheme.Light,
                         XamlRoot = this.XamlRoot
                     };
                     await errorDialog.ShowAsync();

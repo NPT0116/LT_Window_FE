@@ -396,17 +396,17 @@
                                                                             <TextBlock Text="Dung lượng:" FontWeight="Bold" />
                                                                         </TextBox.Header>
                                                                     </TextBox>
-                                                                    <TextBox Grid.Column="2" IsReadOnly="True" Text="{x:Bind CostPrice, Mode=TwoWay}">
+                                                                    <TextBox Grid.Column="2" Text="{x:Bind CostPrice, Mode=TwoWay}">
                                                                         <TextBox.Header>
                                                                             <TextBlock Text="Giá nhập:" FontWeight="Bold" />
                                                                         </TextBox.Header>
                                                                     </TextBox>
-                                                                    <TextBox Grid.Column="3" IsReadOnly="True" Text="{x:Bind SellingPrice, Mode=TwoWay}">
+                                                                    <TextBox Grid.Column="3" Text="{x:Bind SellingPrice, Mode=TwoWay}">
                                                                         <TextBox.Header>
                                                                             <TextBlock Text="Giá bán:" FontWeight="Bold" />
                                                                         </TextBox.Header>
                                                                     </TextBox>
-                                                                    <TextBox Grid.Column="4" IsReadOnly="True" Text="{x:Bind StockQuantity, Mode=TwoWay}">
+                                                                    <TextBox Grid.Column="4" Text="{x:Bind StockQuantity, Mode=TwoWay}">
                                                                         <TextBox.Header>
                                                                             <TextBlock Text="Tồn kho:" FontWeight="Bold" />
                                                                         </TextBox.Header>
