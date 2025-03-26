@@ -21,10 +21,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 {
-    // Inherit from ObservableValidator to support data annotation validation.
+    public record Message(string message, bool status);
     public partial class CreateItemPageViewModel : BasePageViewModel
     {
         // Use the validation attributes to define required fields.
@@ -367,8 +368,18 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 
             Debug.WriteLine("Calling _itemRepository.CreateFullItem...");
             // Save the item via the repository.
-            await _itemRepository.CreateFullItem(createFullItemDto);
-            Debug.WriteLine("Item saved successfully.");
+            try
+            {
+                await _itemRepository.CreateFullItem(createFullItemDto);
+                Debug.WriteLine("Item saved successfully.");
+                WeakReferenceMessenger.Default.Send(new Message("TẠO SẢN PHẨM THÀNH CÔNG !", true));
+
+            } catch(Exception ex)
+            {
+                Debug.WriteLine("Error while create item", ex);
+                WeakReferenceMessenger.Default.Send(new Message(ex.Message, false));
+            }
+
         }
 
         // Search Box functionality for filtering manufacturers.

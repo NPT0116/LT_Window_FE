@@ -19,6 +19,8 @@ using PhoneSelling.Data.Repositories.ManufacturerRepository.ApiService.Contracts
 using PhoneSelling.Data.Repositories.ManufacturerRepository;
 using PhoneSelling.ViewModel.Pages.Items;
 using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
+using Navigation.Helpers;
 
 namespace Navigation.Views.Inventory.CreateItems
 {
@@ -33,6 +35,10 @@ namespace Navigation.Views.Inventory.CreateItems
             this.InitializeComponent();
             this.DataContext = ViewModel;
             _uploadService = DIContainer.GetKeyedSingleton<IUploadService>();
+            WeakReferenceMessenger.Default.Register<Message>(this, (r, m) =>
+            {
+                DialogHelper.ShowDialogAsync(m.status ? "THÀNH CÔNG" : "LỖI", m.message,"Đóng", this.XamlRoot);
+            });
         }
 
 
