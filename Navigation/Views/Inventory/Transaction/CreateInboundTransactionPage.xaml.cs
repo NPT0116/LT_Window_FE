@@ -46,7 +46,7 @@ namespace Navigation.Views.Inventory.Transaction
                 var variants = await ViewModel.SearchVariants(sender.Text);
                 if (variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace Navigation.Views.Inventory.Transaction
 
                 // Update the row's properties
                 row.VariantId = variant.VariantID;
-                sender.Text = variant.Item.ItemName + variant.Color.Name + variant.Storage;
+                sender.Text = $"{variant.Item.ItemName} - {variant.Color.Name} - {variant.Storage}";
 
             }
         }

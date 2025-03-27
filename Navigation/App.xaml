@@ -13,6 +13,21 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:ViewModelToView x:Key="Vm2V"/>
             <!-- Other app resources here -->
+            <DataTemplate x:Key="SearchVariantBoxTemplate">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Image Source="{Binding Color.UrlImage}" 
+                           Width="30" 
+                           Height="30" 
+                           Stretch="UniformToFill"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Item.ItemName}" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="{Binding Color.Name}" Foreground="Gray" />
+                            <TextBlock Text="{Binding Storage}" Foreground="Gray" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
