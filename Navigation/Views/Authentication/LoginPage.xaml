@@ -7,9 +7,94 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    RequestedTheme="Light"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="50,15,10,10"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+        </Style>
+        <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Padding" Value="50,15,10,10"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+        </Style>
+        <AcrylicBrush x:Key="GlassAcrylicBrush"
+                      FallbackColor="AliceBlue"
+                      TintColor="DarkSlateGray"     
+                      TintOpacity="0.1"
+                      AlwaysUseFallback="False"/>
+        <AcrylicBrush x:Key="GlassAcrylicBrushSubBG"
+                      FallbackColor="DarkCyan"
+                      TintColor="White"
+                      TintOpacity="0.3"
+                      AlwaysUseFallback="False"/>
+    </Page.Resources>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Content="Login" Command="{Binding LoginCommand}" />
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="https://i.pinimg.com/736x/4a/16/7f/4a167f8020055aa19788e980303d756a.jpg" />
+        </Grid.Background>
+        <Grid.Shadow>
+            <ThemeShadow/>
+        </Grid.Shadow>
+        <Grid Background="{StaticResource GlassAcrylicBrush}">
+            <Grid Grid.Column="0"
+                  CornerRadius="20"
+                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  RowSpacing="10"
+                  Width="500"
+                  BorderBrush="Transparent"
+                  BorderThickness="10"
+                  Padding="50,80" Background="{StaticResource GlassAcrylicBrushSubBG}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!--Title-->
+                <TextBlock Text="ĐĂNG NHẬP" Foreground="DarkSlateGray" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Margin="0,0,0,20" />
+                <!--Username-->
+                <TextBox Grid.Row="1"
+                         Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource TextBoxStyle}"
+                         PlaceholderText="Nhập tên đăng nhập">
+                    <TextBox.Header>
+                        <TextBlock Foreground="DarkSlateGray" Text="Tên đăng nhập" />
+                    </TextBox.Header>
+                </TextBox>
+                <!--Password-->
+                <PasswordBox Grid.Row="2" PasswordRevealMode="Peek" IsPasswordRevealButtonEnabled="True"
+                             Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource PasswordBoxStyle}"
+                             PlaceholderText="Nhập mật khẩu">
+                    <PasswordBox.Header>
+                        <TextBlock Foreground="DarkSlateGray" Text="Mật khẩu" />
+                    </PasswordBox.Header>
+                    
+                </PasswordBox>
+                <!--Remember Me-->
+                <CheckBox Grid.Row="3" Content="Ghi nhớ tôi"
+                          IsChecked="{Binding IsRememberMe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          Foreground="DarkSlateGray">
+                </CheckBox>
+                <!--Login Button-->
+                <Button Grid.Row="4" Content="Đăng nhập" 
+                        Background="DarkSlateGray" Foreground="White" CornerRadius="30"
+                        Padding="18" Margin="0,10,0,0"
+                        FontWeight="Bold"
+                        BorderThickness="2"
+                        Command="{Binding LoginCommand}" 
+                        HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

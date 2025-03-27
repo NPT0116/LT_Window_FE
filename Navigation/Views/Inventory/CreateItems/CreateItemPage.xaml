@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:model="using:PhoneSelling.Data.Models"
-    xmlns:converter="using:Navigation.Converters">
+    xmlns:converter="using:Navigation.Converters"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <converter:DateTimeNullableToDateTimeOffsetConverter x:Key="DateTimeNullableToDateTimeOffsetConverter"/>
         <converter:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter" />
@@ -31,7 +32,7 @@
 
 
     </Page.Resources>
-    <ScrollViewer>
+    <ScrollViewer >
         <Grid Padding="20">
             <Grid Padding="20" Background="White" CornerRadius="8" RowSpacing="10">
                 <Grid.RowDefinitions>
