@@ -20,7 +20,7 @@
     <ScrollView>
 
         <Grid Padding="20" >
-            <Grid RowSpacing="20" Padding="20" Background="White" CornerRadius="8">
+            <Grid RowSpacing="10" Padding="20" Background="White" CornerRadius="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -167,7 +167,7 @@
                                 <!-- TABLE ROWS -->
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Invoice">
-                                        <Grid Padding="10" Background="Transparent">
+                                        <Grid Padding="10,6" Background="Transparent">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="3*"/>
