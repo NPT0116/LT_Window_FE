@@ -47,7 +47,7 @@
             <Grid Grid.Column="0"
                   CornerRadius="20"
                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                  RowSpacing="10"
+                  RowSpacing="5"
                   Width="500"
                   BorderBrush="Transparent"
                   BorderThickness="10"
