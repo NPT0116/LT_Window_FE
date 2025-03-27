@@ -13,14 +13,14 @@
         <Style x:Key="TextBoxStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="50,15,10,10"/>
             <Setter Property="Height" Value="80"/>
-            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="CornerRadius" Value="15"/>
         </Style>
         <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox">
             <Setter Property="Padding" Value="50,15,10,10"/>
             <Setter Property="Height" Value="80"/>
-            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="CornerRadius" Value="15"/>
         </Style>
@@ -61,26 +61,32 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <!--Title-->
-                <TextBlock Text="ĐĂNG NHẬP" Foreground="DarkSlateGray" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Margin="0,0,0,20" />
+                <TextBlock Text="ĐĂNG NHẬP" Foreground="DarkSlateGray" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Margin="0,0,0,10" />
                 <!--Username-->
-                <TextBox Grid.Row="1"
-                         Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource TextBoxStyle}"
-                         PlaceholderText="Nhập tên đăng nhập">
-                    <TextBox.Header>
-                        <TextBlock Foreground="DarkSlateGray" Text="Tên đăng nhập" />
-                    </TextBox.Header>
-                </TextBox>
+                <StackPanel Grid.Row="1">
+                    <TextBox 
+                             Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource TextBoxStyle}"
+                             PlaceholderText="Nhập tên đăng nhập">
+                        <TextBox.Header>
+                            <TextBlock Foreground="DarkSlateGray" Text="Tên đăng nhập" />
+                        </TextBox.Header>
+                    </TextBox>
+                    <TextBlock Grid.Row="2" Text="{Binding UserNameError, Mode=OneWay}" Foreground="DarkRed" FontWeight="SemiBold" />
+                </StackPanel>
                 <!--Password-->
-                <PasswordBox Grid.Row="2" PasswordRevealMode="Peek" IsPasswordRevealButtonEnabled="True"
-                             Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource PasswordBoxStyle}"
-                             PlaceholderText="Nhập mật khẩu">
-                    <PasswordBox.Header>
-                        <TextBlock Foreground="DarkSlateGray" Text="Mật khẩu" />
-                    </PasswordBox.Header>
+                <StackPanel Grid.Row="2">
+                    <PasswordBox PasswordRevealMode="Peek" IsPasswordRevealButtonEnabled="True"
+                                 Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource PasswordBoxStyle}"
+                                 PlaceholderText="Nhập mật khẩu">
+                        <PasswordBox.Header>
+                            <TextBlock Foreground="DarkSlateGray" Text="Mật khẩu" />
+                        </PasswordBox.Header>
                     
-                </PasswordBox>
+                    </PasswordBox>
+                    <TextBlock Text="{Binding PasswordError, Mode=OneWay}" Foreground="DarkRed" FontWeight="SemiBold"/>
+                </StackPanel>
                 <!--Remember Me-->
                 <CheckBox Grid.Row="3" Content="Ghi nhớ tôi"
                           IsChecked="{Binding IsRememberMe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -91,7 +97,7 @@
                         Background="DarkSlateGray" Foreground="White" CornerRadius="30"
                         Padding="18" Margin="0,10,0,0"
                         FontWeight="Bold"
-                        BorderThickness="2"
+                        BorderThickness="0"
                         Command="{Binding LoginCommand}" 
                         HorizontalAlignment="Stretch"/>
             </Grid>

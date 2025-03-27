@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Amazon.S3.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PhoneSelling.ViewModel.Base;
@@ -13,9 +15,22 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
     {
         public RelayCommand LoginCommand { get; set; }
         [ObservableProperty] private bool isRememberMe;
+        [Required(ErrorMessage ="Tên đăng nhập không được để trống.")]
         [ObservableProperty] private string userName;
+        partial void OnUserNameChanged(string newValue)
+        {
+            ValidateProperty(newValue, nameof(UserName));
+            OnPropertyChanged(nameof(UserNameError));
+        }
+        public string UserNameError => GetErrors(nameof(UserName)).Cast<ValidationResult>().Select(r => r.ErrorMessage).FirstOrDefault();
+        [Required(ErrorMessage = "Mật khẩu không được để trống.")]  
         [ObservableProperty] private string password;
-
+        partial void OnPasswordChanged(string newValue)
+        {
+            ValidateProperty(newValue, nameof(Password));
+            OnPropertyChanged(nameof(PasswordError));
+        }
+        public string PasswordError => GetErrors(nameof(Password)).Cast<ValidationResult>().Select(r => r.ErrorMessage).FirstOrDefault();
         // Path to store the settings file
         private readonly string settingsFilePath;
 
@@ -103,10 +118,19 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
 
         public bool CanLogin()
         {
+            ValidateAllProperties();
+            if (HasErrors)
+            {
+                Debug.WriteLine("Error While Login !");
+                Debug.WriteLine(UserNameError);
+                Debug.WriteLine(PasswordError);
+                OnPropertyChanged(nameof(UserNameError));
+                OnPropertyChanged(nameof(PasswordError));
+            }
             // Simple authentication logic for demonstration
             return UserName == "admin"
                 || UserName == "minh" || UserName == "thanh" || UserName == "Quan"
-                && Password == "123";
+                && Password == "123" && HasErrors;
         }
     }
 }
