@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PhoneSelling.Data.Models"
     xmlns:converter="using:Navigation.Converters"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />

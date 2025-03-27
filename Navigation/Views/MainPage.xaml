@@ -128,9 +128,31 @@
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            
-            <Frame x:Name="PageFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,40,0,0" 
-                   Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource Vm2V}}"/>
+            <Grid>
+                <!--<Grid Background="DarkSlateGray" >
+                    <Grid VerticalAlignment="Top"  HorizontalAlignment="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <TextBlock Grid.Column="0" Text="Xin chào, Admin !" Foreground="White" 
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Margin="0,20,70,0"/>
+                        <Button  Grid.Column="1"
+                                 VerticalAlignment="Top" HorizontalAlignment="Right"
+                                 Margin="10"
+                                 Content="NM"
+                                 Width="50"
+                                 Height="50"
+                                 Foreground="Black" FontWeight="Bold" CornerRadius="50" Background="Bisque"/>
+                    </Grid>
+                </Grid>-->
+                <Frame x:Name="PageFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                       Content="{Binding ChildPageNavigation.ViewModel,Converter={StaticResource Vm2V}}"/>
+            </Grid>
         </NavigationView>
 
     </Grid>
