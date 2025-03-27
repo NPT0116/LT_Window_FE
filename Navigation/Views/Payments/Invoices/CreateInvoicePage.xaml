@@ -265,25 +265,11 @@
                                 <!--Item Search-->
                                 <StackPanel Grid.Column="1" Spacing="10">
                                     <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
-                                    <AutoSuggestBox
-                                                    HorizontalAlignment="Stretch"
+                                    <AutoSuggestBox HorizontalAlignment="Stretch"
                                                     TextChanged="ItemSearch_TextChanged"
                                                     SuggestionChosen="ItemSearch_SuggestionChosen"
-                                                    PlaceholderText="Tìm kiếm sản phẩm ...">
-                                        <AutoSuggestBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" Spacing="10">
-                                                    <Image Source="{Binding Color.UrlImage}" Width="30" Height="30" Stretch="UniformToFill"/>
-                                                    <StackPanel Orientation="Vertical">
-                                                        <TextBlock Text="{Binding Item.ItemName}" FontWeight="Bold"/>
-                                                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                                                <TextBlock Text="{Binding Color.Name}" Foreground="Gray" FontSize="12"/>
-                                                                <TextBlock Text="{Binding Storage}" Foreground="Gray" FontSize="12"/>
-                                                            </StackPanel>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </AutoSuggestBox.ItemTemplate>
+                                                    PlaceholderText="Tìm kiếm sản phẩm ..."
+                                                    ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
                                     </AutoSuggestBox>
                                 </StackPanel>
 
