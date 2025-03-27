@@ -211,7 +211,7 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
                         <Button Width="80" Content="Lùi" Command="{x:Bind ViewModel.InvoiceQuery.PreviousPageCommand}" />
-                        <Button Width="80" Content="Tiếp" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
+                        <Button Width="80" Content="Tiến" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
                     </StackPanel>
 
                 </StackPanel>

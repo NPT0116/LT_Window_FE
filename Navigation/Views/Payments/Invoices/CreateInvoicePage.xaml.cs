@@ -185,7 +185,6 @@ namespace Navigation.Views.Payments.Invoices
         private void ItemSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             var row = (InvoiceDetail)sender.DataContext;
-            Debug.WriteLine("What");
             if (args.SelectedItem is Variant variant)
             {
                 sender.Text = $"{variant.Item.ItemName} - {variant.Color.Name} - {variant.Storage}";

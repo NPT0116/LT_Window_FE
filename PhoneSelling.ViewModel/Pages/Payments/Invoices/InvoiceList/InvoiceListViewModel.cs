@@ -29,7 +29,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList
 
         private async Task<PaginationResult<Invoice>> LoadDataAsync(InvoiceQueryParameter query)
         {
-            var invoices = await _invoiceRepository.GetAllInvoices(query);
+            var invoices = await _invoiceRepository.GetAllInvoices(new InvoiceQueryParameter { PageSize = 5});
             return invoices;
         }
     }
