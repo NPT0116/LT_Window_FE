@@ -11,6 +11,7 @@
     <Page.Resources>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
         <converter:TransactionTypeToBrushConverter x:Key="TransactionTypeToBrushConverter"/>
     </Page.Resources>
     <Grid Padding="20">
@@ -120,7 +121,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{x:Bind TransactionDate}" HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="0" Text="{x:Bind TransactionDate, Converter={StaticResource VietnamDateConverter}}" HorizontalAlignment="Left" />
                                     <TextBlock Grid.Column="1" Text="{x:Bind TransactionTypeDisplay}" Foreground="{x:Bind TransactionTypeDisplay, Converter={StaticResource TransactionTypeToBrushConverter}}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                                     <TextBlock Grid.Column="2" Text="{x:Bind Quantity, Converter={StaticResource VndCurrencyConverter}}" HorizontalAlignment="Center"  />
                                     <!--<TextBlock Grid.Column="1" Text="{x:Bind TransactionDate}" HorizontalAlignment="Left"  />-->

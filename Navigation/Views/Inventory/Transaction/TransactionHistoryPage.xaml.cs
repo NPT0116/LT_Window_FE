@@ -33,7 +33,7 @@ namespace Navigation.Views.Inventory.Transaction
                 var variants = await ViewModel.SearchVariants(sender.Text);
                 if (variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName);
                 }
             }
         }
