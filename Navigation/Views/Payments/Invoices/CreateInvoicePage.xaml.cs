@@ -177,7 +177,7 @@ namespace Navigation.Views.Payments.Invoices
                 var variants = await ViewModel.SearchVariants(sender.Text);
                 if(variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace Navigation.Views.Payments.Invoices
             Debug.WriteLine("What");
             if (args.SelectedItem is Variant variant)
             {
-                sender.Text = $"{variant.Item.ItemName} {variant.Storage} {variant.Color.Name}";
+                sender.Text = $"{variant.Item.ItemName} - {variant.Color.Name} - {variant.Storage}";
 
                 // Update the row's properties
                 row.Variant = variant;

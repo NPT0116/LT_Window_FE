@@ -23,9 +23,9 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Variants
         }
         public ObservableCollection<SortOption> SortOptions { get; } = new()
         {
-            new SortOption { DisplayName = "Cost Price", ActualValue = "costPrice" },
-            new SortOption { DisplayName = "Selling Price", ActualValue = "sellingPrice" },
-            new SortOption { DisplayName = "Stock Quantity", ActualValue = "stockQuantity" },
+            new SortOption { DisplayName = "Giá nhập", ActualValue = "costPrice" },
+            new SortOption { DisplayName = "Giá bán", ActualValue = "sellingPrice" },
+            new SortOption { DisplayName = "Tồn kho", ActualValue = "stockQuantity" },
         };
 
     }
