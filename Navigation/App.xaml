@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Navigation.Converters"
-    xmlns:local="using:Navigation">
+    xmlns:local="using:Navigation"
+    xmlns:model="using:PhoneSelling.Data.Models">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,6 +13,7 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <converters:ViewModelToView x:Key="Vm2V"/>
+            <converters:VariantNameConverter x:Key="VariantNameConverter"/>
             <!-- Other app resources here -->
             <DataTemplate x:Key="SearchVariantBoxTemplate">
                 <StackPanel Orientation="Horizontal" Spacing="10">
@@ -47,6 +49,9 @@
                 <Setter Property="Width" Value="40"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>
+            
+            <!--GridView-->
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

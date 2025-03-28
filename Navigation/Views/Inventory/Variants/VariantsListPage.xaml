@@ -108,6 +108,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+                <!-- ListView Mode: Table-like layout for Variants -->
                 <Grid Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}" Grid.Row="0" Background="DarkSlateGray" Padding="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*"/>
@@ -124,7 +125,6 @@
                     <TextBlock Foreground="White" Text="GIÁ BÁN" Style="{StaticResource TableHeaderStyle}" Grid.Column="4"/>
                     <TextBlock Foreground="White" Text="TỒN KHO" Style="{StaticResource TableHeaderStyle}" Grid.Column="5"/>
                 </Grid>
-                <!-- ListView Mode: Table-like layout for Variants -->
                 <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" Margin="0" Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisConverter}, Mode=OneWay}">
                     <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Variant">
