@@ -104,6 +104,7 @@
                 <StackPanel Grid.Column="0">
                     <Grid>
                         <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
+
                                         TextChanged="CustomerSearch_TextChanged"
                                         SuggestionChosen="CustomerSearch_SuggestionChosen"
                                         QueryIcon="Find">
@@ -327,17 +328,12 @@
 
                                 <!--Delete Button-->
                                 <Button Content="x"
-                                        Grid.Column="4"
-                                        Background="Red"
-                                        Foreground="White"
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
-                                        CommandParameter="{Binding}"
-                                        HorizontalAlignment="Center"/>
-
-                            </Grid>
+                                    Style="{StaticResource DeleteButtonStyle}"
+                                    Grid.Column="4"                        
+                                    Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center"/>
+                                </Grid>
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -366,8 +362,11 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
             
-                    <Button HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Content="TẠO HÓA ĐƠN" FontWeight="SemiBold" Padding="15" Margin="0,0,20,0" 
-                            Background="DarkBlue" Foreground="White" Command="{x:Bind ViewModel.CreateInvoiceCommand}"/>
+                    <Button HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" Content="TẠO HÓA ĐƠN" 
+                            Height="50"
+                            Margin="10"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{x:Bind ViewModel.CreateInvoiceCommand}"/>
                     <StackPanel Grid.Row="0" Grid.Column="1" >
                         <Grid>
                             <Path Stretch="Fill" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" Data="M 0,0 L 0,1" Width="2"/>
