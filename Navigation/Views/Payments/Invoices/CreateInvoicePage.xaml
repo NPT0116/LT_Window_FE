@@ -9,15 +9,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PhoneSelling.Data.Models"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:conv="using:Navigation.Converters"
+    xmlns:converter="using:Navigation.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Page.Resources>
-        <conv:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
-        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <conv:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:ValidationErrorConverter x:Key="ValidationErrorConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:DateTimeNullableToDateTimeOffsetConverter x:Key="DateTimeNullableToDateTimeOffsetConverter" />
     </Page.Resources>
     <ScrollView>
 
@@ -208,8 +209,8 @@
                     <Run Text="D. NGÀY TẠO HÓA ĐƠN" />
                     <Run Text="*" Foreground="Red" />
                 </TextBlock>
-                    <StackPanel Grid.Row="2" Grid.Column="1" >
-                    <Button x:Name="DatePickerButton"
+                <StackPanel Grid.Row="2" Grid.Column="1" >
+                    <!--<Button x:Name="DatePickerButton"
                             Padding="8"
                             HorizontalAlignment="Stretch"
                             Click="DatePickerButton_Click">
@@ -218,7 +219,12 @@
                                        Text="Chọn ngày"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
-                    </Button>
+                    </Button>-->
+                    <DatePicker x:Name="InvoiceDatePicker"
+                                Date="{x:Bind ViewModel.Invoice.Date, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                DayVisible="True"
+                                MonthVisible="True"
+                                YearVisible="True"/>
                     <TextBlock Text="{x:Bind ViewModel.Invoice.DateError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                Foreground="Red"
                                Visibility="{x:Bind ViewModel.Invoice.DateError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>

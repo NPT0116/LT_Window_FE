@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.Messaging;
 using Navigation.Helpers;
+using System.Globalization;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,13 +41,15 @@ namespace Navigation.Views.Payments.Invoices
             ViewModel = new();
             this.DataContext = ViewModel;
 
-            var flyout = new Flyout();
-            var calendarView = new CalendarView();
-            calendarView.SelectedDatesChanged += CalendarPopup_SelectedDatesChanged;
-            flyout.Content = calendarView;
+            //var flyout = new Flyout();
+            //var calendarView = new CalendarView();
+            //calendarView.SelectedDates.Add(DateTimeOffset.Now);
+
+            //calendarView.SelectedDatesChanged += CalendarPopup_SelectedDatesChanged;
+            //flyout.Content = calendarView;
 
             // Attach Flyout to the Button
-            FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
+            //FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
             // Notify
             WeakReferenceMessenger.Default.Register<Message>(this, (r, m) =>
             {
@@ -160,15 +163,15 @@ namespace Navigation.Views.Payments.Invoices
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
-        private void CalendarPopup_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        {
-            if (args.AddedDates.Count > 0)
-            {
-                DateTime selectedDate = args.AddedDates[0].DateTime;
-                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy");
-                ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
-            }
-        }
+        //private void CalendarPopup_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+        //{
+        //    if (args.AddedDates.Count > 0)
+        //    {
+        //        DateTime selectedDate = args.AddedDates[0].DateTime;
+        //        SelectedDateText.Text = selectedDate.ToString("dd MMMM yyyy", new CultureInfo("vi-VN"));
+        //        ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
+        //    }
+        //}
 
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {

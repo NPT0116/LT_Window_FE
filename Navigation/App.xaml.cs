@@ -31,6 +31,7 @@ namespace Navigation
     /// </summary>
     public partial class App : Application
     {
+
         public static Dictionary<Guid, string> CustomerDictionary { get; set; } = new Dictionary<Guid, string>();
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -38,6 +39,7 @@ namespace Navigation
         /// </summary>
         public App()
         {
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "vi-VN";
             this.InitializeComponent();
             var dataConfigure = new PhoneSelling.Data.DependencyInjection();
             dataConfigure.ConfigureServices();

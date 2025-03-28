@@ -16,7 +16,6 @@ namespace Navigation.Converters
             {
                 return new DateTimeOffset(dateTime);
             }
-            // Handle null or invalid value appropriately
             return DependencyProperty.UnsetValue;
         }
 
@@ -26,7 +25,6 @@ namespace Navigation.Converters
             {
                 return dateTimeOffset.DateTime;
             }
-            // Handle null or invalid value appropriately
             return DependencyProperty.UnsetValue;
         }
     }
