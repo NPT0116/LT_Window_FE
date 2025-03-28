@@ -404,7 +404,7 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.NewDate.HasValue)
             {
-                var selectedDate = args.NewDate.Value.DateTime;
+                var selectedDate = args.NewDate.Value.Date;
                 var endOfDay = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, 23,59,59, DateTimeKind.Utc);
                 Debug.WriteLine(endOfDay);
                 ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = endOfDay;
