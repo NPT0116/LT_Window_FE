@@ -203,7 +203,7 @@
                                       ItemContainerStyle="{StaticResource ListViewItemStyle}">
                                 <GridView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" ItemWidth="300"/>
+                                        <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Center" MaximumRowsOrColumns="3" ItemWidth="300"/>
                                     </ItemsPanelTemplate>
                                 </GridView.ItemsPanel>
                             </GridView>

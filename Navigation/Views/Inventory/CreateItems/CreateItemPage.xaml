@@ -325,13 +325,19 @@
                                             <ListView.ItemTemplate>
                                                 <DataTemplate x:DataType="x:String">
                                                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="2">
-                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="5">
-                                                            <TextBlock Text="{x:Bind}" VerticalAlignment="Center"/>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                             <TextBlock Grid.Column="0" Text="{x:Bind}" VerticalAlignment="Center"/>
                                                             <Button Command="{Binding DataContext.DeleteSelectedColorCommand, ElementName=PageRoot}" 
-                                                            CommandParameter="{Binding}" 
-                                                            Width="20" Height="20" Padding="0" Margin="0" 
-                                                            Content="x" Background="Transparent" Foreground="DarkRed"/>
-                                                        </StackPanel>
+                                                                CommandParameter="{Binding}" Grid.Column="1"
+                                                                Margin="0" Padding="1"
+                                                                Background="Red" Foreground="White">
+                                                                   <FontIcon Glyph="&#xE711;"/>
+                                                            </Button>
+                                                        </Grid>
                                                     </Border>
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>

@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Text.Json;
 
 namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
 {
@@ -371,6 +372,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.CreateItemPages
             } catch(Exception ex)
             {
                 Debug.WriteLine("Error while create item", ex);
+                Debug.WriteLine(JsonSerializer.Serialize(ex));
                 WeakReferenceMessenger.Default.Send(new Message(ex.Message, false));
             }
 

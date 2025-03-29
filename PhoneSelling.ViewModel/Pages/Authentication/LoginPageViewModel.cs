@@ -133,9 +133,10 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
                 OnPropertyChanged(nameof(PasswordError));
             }
             // Simple authentication logic for demonstration
-            return UserName == "admin"
-                || UserName == "minh" || UserName == "thanh" || UserName == "Quan"
-                && Password == "123" && HasErrors;
+ 
+            return ((UserName == "admin"
+                || UserName == "minh" || UserName == "thanh" || UserName == "Quan")
+                && Password == "123" && !HasErrors);
         }
     }
 }
