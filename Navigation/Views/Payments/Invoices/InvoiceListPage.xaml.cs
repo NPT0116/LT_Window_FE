@@ -20,7 +20,6 @@ using PhoneSelling.ViewModel.Pages;
 using Microsoft.Win32;
 
 using Navigation.Views;
-using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
 using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Text;
 using PhoneSelling.Data.Repositories.InvoiceRepository;

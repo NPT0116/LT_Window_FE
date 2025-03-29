@@ -7,10 +7,12 @@ using System.Text;
 using Amazon.S3.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using PhoneSelling.ViewModel.Base;
 
 namespace PhoneSelling.ViewModel.Pages.Authentication
 {
+    public record Message(string message, bool status);
     public partial class LoginPageViewModel : BasePageViewModel
     {
         public RelayCommand LoginCommand { get; set; }
@@ -113,6 +115,9 @@ namespace PhoneSelling.ViewModel.Pages.Authentication
 
                 // Navigation 
                 ParentPageNavigation.ViewModel = new MainPageViewModel(new DashboardPageViewModel());
+            } else if (!HasErrors)
+            {
+                WeakReferenceMessenger.Default.Send(new Message("Tên đăng nhập hoặc mật khẩu không chính xác.", false));
             }
         }
 

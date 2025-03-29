@@ -134,7 +134,7 @@
                                     <Grid ColumnSpacing="10">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="7*"/>
+                                            <ColumnDefinition Width="5*"/>
                                             <ColumnDefinition Width="4*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>

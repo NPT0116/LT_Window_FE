@@ -8,7 +8,6 @@ using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.TransactionHistory;
 using PhoneSelling.ViewModel.Pages.Inventory.Variants;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
-using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
 using PhoneSelling.ViewModel.Pages.Variants;
 using System;
@@ -35,7 +34,6 @@ namespace PhoneSelling.ViewModel.Pages
         public RelayCommand GoToCreateInboundTransactionCommand { get; }
         public RelayCommand GoToTransactionHistoryPageCommand { get; }
         // Invoice
-        public RelayCommand GoToInvoiceDetailPageCommand { get; }
         public RelayCommand GoToCreateInvoiceCommand { get; }
         public RelayCommand GoToInvoiceListCommand { get; }
 
@@ -58,7 +56,6 @@ namespace PhoneSelling.ViewModel.Pages
             GoToTransactionHistoryPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new TransactionHistoryPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(TransactionHistoryPageViewModel));
             GoToCreateInboundTransactionCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInboundTransactionViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInboundTransactionViewModel));
             // Invoice
-            GoToInvoiceDetailPageCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceDetailPageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(InvoiceDetailPageViewModel));
             GoToCreateInvoiceCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new CreateInvoicePageViewModel(), () => ChildPageNavigation.ViewModel.GetType() != typeof(CreateInvoicePageViewModel));
             GoToInvoiceListCommand = new RelayCommand(() => ChildPageNavigation.ViewModel = new InvoiceListViewModel(), () => ChildPageNavigation.GetType() != typeof(InvoiceListViewModel));
 
@@ -68,8 +65,6 @@ namespace PhoneSelling.ViewModel.Pages
         {
             if (e.PropertyName == nameof(ChildPageNavigation.ViewModel))
             {
-                Debug.WriteLine("ViewModel Propery Changed !");
-                //
                 GoBackCommand.NotifyCanExecuteChanged();
                 GoToDashboardPageCommand.NotifyCanExecuteChanged();
                 // Inventory
@@ -82,7 +77,6 @@ namespace PhoneSelling.ViewModel.Pages
                 GoToCreateInboundTransactionCommand.NotifyCanExecuteChanged();
                 GoToTransactionHistoryPageCommand.NotifyCanExecuteChanged();
                 // Invoice
-                GoToInvoiceDetailPageCommand.NotifyCanExecuteChanged();
                 GoToInvoiceListCommand.NotifyCanExecuteChanged();
                 GoToCreateInvoiceCommand.NotifyCanExecuteChanged();
             }
