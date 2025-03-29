@@ -177,7 +177,7 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var variants = await ViewModel.SearchVariants(sender.Text);
+                var variants = await App.SearchVariants(sender.Text);
                 if(variants != null)
                 {
                     sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();

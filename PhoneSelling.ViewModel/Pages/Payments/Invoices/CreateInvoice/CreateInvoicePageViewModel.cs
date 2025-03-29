@@ -82,17 +82,17 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             Customer = new();
         }
 
-        public async Task<List<Variant>> SearchVariants(string text)
-        {
-            var query = new VariantPaginationQuery
-            {
-                PageNumber = 1,
-                PageSize = 100,
-                SearchKey = text
-            };
-            var paginationResult = await _variantRepository.GetAllVariants(query);
-            return paginationResult.Data;
-        }
+        //public async Task<List<Variant>> SearchVariants(string text)
+        //{
+        //    var query = new VariantPaginationQuery
+        //    {
+        //        PageNumber = 1,
+        //        PageSize = 100,
+        //        SearchKey = text
+        //    };
+        //    var paginationResult = await _variantRepository.GetAllVariants(query);
+        //    return paginationResult.Data;
+        //}
 
         [RelayCommand]
         public void AddInvoiceDetail()
