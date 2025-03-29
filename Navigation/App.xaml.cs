@@ -70,8 +70,6 @@ namespace Navigation
 
                 // Filter out any customers with Guid.Empty, group by their ID, and build the dictionary.
                 CustomerDictionary = customers.ToDictionary(c => c.CustomerID, c => c.Name);
-
-
             }
             catch (Exception ex)
             {

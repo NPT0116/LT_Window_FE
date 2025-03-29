@@ -15,18 +15,18 @@ namespace PhoneSelling.Data.Models
         [ObservableProperty] private Guid customerID;
 
         [ObservableProperty]
-        [Required(ErrorMessage = "Tên khách hàng không được để trống")]
+        [Required(ErrorMessage = "Tên khách hàng không được để trống.")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
         private string name = string.Empty;
 
         [ObservableProperty]
-        [EmailAddress(ErrorMessage = "Email sai định dạng")]
-        [Required(ErrorMessage = "Email không được để trống")]
+        [EmailAddress(ErrorMessage = "Email sai định dạng.")]
+        [Required(ErrorMessage = "Email không được để trống.")]
         [NotifyPropertyChangedFor(nameof(HasErrors))] // Ensure UI updates
         private string email = string.Empty;
 
         [ObservableProperty]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [Phone(ErrorMessage = "Số điện thoại không hợp lệ.")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
         private string phone = string.Empty;
         [ObservableProperty] private string address = string.Empty;
@@ -70,7 +70,7 @@ namespace PhoneSelling.Data.Models
             // Validate Name: required, not empty
             if (string.IsNullOrWhiteSpace(Name))
             {
-                errors.Add(new ValidationResult("Customer name cannot be empty.", new[] { nameof(Name) }));
+                errors.Add(new ValidationResult("Tên khách hàng không được để trống.", new[] { nameof(Name) }));
             }
 
             return errors;
@@ -81,7 +81,7 @@ namespace PhoneSelling.Data.Models
             var errors = new List<ValidationResult>();
             if (string.IsNullOrWhiteSpace(Email))
             {
-                errors.Add(new ValidationResult("Customer email cannot be empty.", new[] { nameof(Email) }));
+                errors.Add(new ValidationResult("Email không được để trống.", new[] { nameof(Email) }));
             }
             else
             {
@@ -89,7 +89,7 @@ namespace PhoneSelling.Data.Models
                 var emailAttribute = new EmailAddressAttribute();
                 if (!emailAttribute.IsValid(Email))
                 {
-                    errors.Add(new ValidationResult("Customer email is not valid.", new[] { nameof(Email) }));
+                    errors.Add(new ValidationResult("Email sai định dạng.", new[] { nameof(Email) }));
                 }
             }
             return errors;
@@ -100,7 +100,7 @@ namespace PhoneSelling.Data.Models
             var errors = new List<ValidationResult>();
             if (string.IsNullOrWhiteSpace(Phone))
             {
-                errors.Add(new ValidationResult("Customer phone cannot be empty.", new[] { nameof(Phone) }));
+                errors.Add(new ValidationResult("Số điện thoại không được để trống.", new[] { nameof(Phone) }));
             }
             return errors;
         }
@@ -110,7 +110,7 @@ namespace PhoneSelling.Data.Models
             var errors = new List<ValidationResult>();
             if (string.IsNullOrWhiteSpace(Address))
             {
-                errors.Add(new ValidationResult("Customer address cannot be empty.", new[] { nameof(Address) }));
+                errors.Add(new ValidationResult("Địa chỉ không được để trống.", new[] { nameof(Address) }));
             }
 
             return errors;

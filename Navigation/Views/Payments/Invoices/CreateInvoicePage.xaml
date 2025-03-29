@@ -23,14 +23,23 @@
     <ScrollView>
 
     <Grid Padding="20" >
-         <StackPanel Padding="20" CornerRadius="8" Background="White" VerticalAlignment="Stretch">
-            <TextBlock Text="TẠO HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+         <Grid Padding="20" CornerRadius="8" Background="White" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />    
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="TẠO HÓA ĐƠN" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,20"/>
              <!--Create Customer Dialog--> 
             <ContentDialog x:Name="CreateCustomerDialog"
                            PrimaryButtonText="Lưu"
                            Closing="CustomerDialog_Closing"
                            CloseButtonText="Hủy"
                            Padding="40">
+                <ScrollView>
                 <StackPanel Spacing="15">
                         <TextBlock Text="PHIẾU NHẬP THÔNG TIN KHÁCH HÀNG" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
 
@@ -92,10 +101,11 @@
                         </TextBox.Header>
                     </TextBox>
                     </StackPanel>
+                </ScrollView>
             </ContentDialog>
 
-             <!--Search Bar and Create Button--> 
-            <Grid ColumnSpacing="10">
+             <!--Search Bar and Create Button-->
+             <Grid ColumnSpacing="10" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="2*"/>
@@ -104,7 +114,6 @@
                 <StackPanel Grid.Column="0">
                     <Grid>
                         <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
-
                                         TextChanged="CustomerSearch_TextChanged"
                                         SuggestionChosen="CustomerSearch_SuggestionChosen"
                                         QueryIcon="Find">
@@ -129,8 +138,8 @@
                 <Button Grid.Column="1" Content="Tạo khách hàng" Click="CreateCustomer_Click" HorizontalAlignment="Stretch" />
             </Grid>
 
-             <!--Display Selected Customer Section--> 
-            <StackPanel Margin="10" HorizontalAlignment="Stretch" Spacing="10">
+             <!--Display Selected Customer Section-->
+             <StackPanel Grid.Row="2" Margin="10" HorizontalAlignment="Stretch" Spacing="10">
                 <TextBlock  FontSize="18" FontWeight="Bold">
                     <Run Text="A. THÔNG TIN KHÁCH HÀNG" />
                     <Run Text="*" Foreground="Red" />
@@ -158,199 +167,175 @@
             </StackPanel>
         
              <!--Invoive Detail--> 
-            <Grid Padding="10" RowSpacing="10" >
+            <Grid Grid.Row="3" Padding="10,6" RowSpacing="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <!--Invoice# Input with Settings Button--> 
-                <TextBlock Text="B. MÃ HÓA ĐƠN" 
+                <!--Order Number Label-->
+                <TextBlock Text="B. MÃ ĐẶT HÀNG" 
                            FontWeight="Bold"
                            FontSize="18"
                            VerticalAlignment="Center" Margin="0,5,10,5" 
                            Grid.Row="0" Grid.Column="0"/>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <TextBox x:Name="InvoiceNumberTextBox" 
-                             Text="Inv-0000" 
-                             VerticalAlignment="Center"
-                             Padding="8"/>
-                    <Button 
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Background="Transparent">
-                            <FontIcon Glyph="&#xE713;" Foreground="Black"/>
-                    </Button>
-                </Grid>
-
-                 <!--Order Number Label-->
-                <TextBlock Text="C. MÃ ĐẶT HÀNG" 
-                           FontWeight="Bold"
-                           FontSize="18"
-                           VerticalAlignment="Center" Margin="0,5,10,5" 
-                           Grid.Row="1" Grid.Column="0"/>
-                <TextBox x:Name="OrderNumberTextBox"
+                    <TextBox x:Name="OrderNumberTextBox"
                          PlaceholderText="Nhập mã đặt hàng"
                          VerticalAlignment="Center"
                          Padding="8" 
-                         Grid.Row="1" Grid.Column="1"/>
+                         Grid.Row="0" Grid.Column="1"/>
 
                 <!--Date Input Field with Calendar Flyout-->
                 <TextBlock
                            FontWeight="Bold"
                            FontSize="18"
                            VerticalAlignment="Center" Margin="0,5,10,5" 
-                           Grid.Row="2" Grid.Column="0">
-                    <Run Text="D. NGÀY TẠO HÓA ĐƠN" />
+                           Grid.Row="1" Grid.Column="0">
+                    <Run Text="C. NGÀY TẠO HÓA ĐƠN" />
                     <Run Text="*" Foreground="Red" />
                 </TextBlock>
-                <StackPanel Grid.Row="2" Grid.Column="1" >
-                    <!--<Button x:Name="DatePickerButton"
-                            Padding="8"
-                            HorizontalAlignment="Stretch"
-                            Click="DatePickerButton_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="SelectedDateText"
-                                       Text="Chọn ngày"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>-->
+                <StackPanel Grid.Row="1" Grid.Column="1" >
                     <DatePicker x:Name="InvoiceDatePicker"
-                                Date="{x:Bind ViewModel.Invoice.Date, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                DayVisible="True"
-                                MonthVisible="True"
-                                YearVisible="True"/>
+                            Date="{x:Bind ViewModel.Invoice.Date, Converter={StaticResource DateTimeNullableToDateTimeOffsetConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            DayVisible="True"
+                            MonthVisible="True"
+                            YearVisible="True"/>
                     <TextBlock Text="{x:Bind ViewModel.Invoice.DateError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                               Foreground="Red"
-                               Visibility="{x:Bind ViewModel.Invoice.DateError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
+                            Foreground="Red"
+                            Visibility="{x:Bind ViewModel.Invoice.DateError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
                 </StackPanel>
             </Grid>
 
-            <Grid>
-                <!--<Path Stretch="Fill" Data="M 0,0 L 1,0" Stroke="LightGray" StrokeDashArray="4,2" StrokeThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>-->
-                <TextBlock FontWeight="Bold"
-                    FontSize="18"
-                    VerticalAlignment="Center" Margin="10,10,0,10"
+             <!--Add Invoice Detail-->
+            <Grid Grid.Row="4" >
+                <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           VerticalAlignment="Center" Margin="10,10,0,10"
                     >
-                    <Run Text="E. DANH SÁCH SẢN PHẨM" />
+                    <Run Text="D. DANH SÁCH SẢN PHẨM" />
                     <Run Text="*" Foreground="Red" />
                 </TextBlock>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0"
+                            CornerRadius="10,10,0,0" HorizontalAlignment="Left" 
+                            Background="Gray" Foreground="White" Margin="0,0,0,0" 
+                            Content="Thêm sản phẩm" Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
+                    <ListView x:Name="ItemTable" Grid.Row="1"
+                            ItemsSource="{x:Bind ViewModel.Invoice.InvoiceDetails, Mode=TwoWay}"
+                            CanReorderItems="True" AllowDrop="True"
+                            SelectionMode="None"
+                            DragItemsStarting="ItemTable_DragItemsStarting" DragOver="ItemTable_DragOver" Drop="ItemTable_Drop"
+                            BorderBrush="LightGray" BorderThickness="1"
+                            Padding="10">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:InvoiceDetail">
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
+                                    <Grid Padding="5" ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="8*"/>
+                                            <ColumnDefinition Width="10*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Drag Handle-->
+                                        <TextBlock Text="≡" VerticalAlignment="Center" />
+
+
+                                        <!--Item Search-->
+                                        <StackPanel Grid.Column="1" Spacing="10">
+                                            <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
+                                            <AutoSuggestBox HorizontalAlignment="Stretch"
+                                                            TextChanged="ItemSearch_TextChanged"
+                                                            SuggestionChosen="ItemSearch_SuggestionChosen"
+                                                            PlaceholderText="Tìm kiếm sản phẩm ..."
+                                                            ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
+                                            </AutoSuggestBox>
+                                        </StackPanel>
+
+                                        <!--Quantity & Price Grid-->
+                                        <Grid Grid.Column="2" HorizontalAlignment="Stretch"  ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="10*"/>
+                                                <ColumnDefinition Width="9*"/>
+                                                <ColumnDefinition Width="9*"/>
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Quantity NumberBox-->
+                                            <StackPanel HorizontalAlignment="Stretch" Spacing="10">
+                                                <TextBlock Text="Số lượng:" FontWeight="Bold"/>
+                                                    <NumberBox x:Name="QuantityBox"
+                                                       Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                       SpinButtonPlacementMode="Inline"
+                                                       Minimum="1"
+                                                       SmallChange="1"
+                                                       LargeChange="10"
+                                                       HorizontalAlignment="Stretch"
+                                                       >
+                                                    </NumberBox>
+
+                                            </StackPanel>
+
+                                            <!--Price NumberBox-->
+                                            <StackPanel Grid.Column="1"  HorizontalAlignment="Stretch" Spacing="10">
+                                                <TextBlock Text="Đơn giá:" FontWeight="Bold" />
+                                                <TextBox x:Name="PriceBox"
+                                                         IsReadOnly="True"
+                                                         Text="{Binding Price}"
+                                                         HorizontalAlignment="Stretch">
+                                                    <interactivity:Interaction.Behaviors>
+                                                        <interactivity:EventTriggerBehavior EventName="ValueChanged">
+                                                            <interactivity:CallMethodAction MethodName="RecalculateTotal"
+                                                                            TargetObject="{Binding ViewModel, ElementName=PageRoot}"/>
+                                                            </interactivity:EventTriggerBehavior>
+                                                    </interactivity:Interaction.Behaviors>
+                                                </TextBox>
+                                            </StackPanel>
+                                            <!-- Total -->
+                                            <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
+                                                <TextBlock Text="Thành tiền:" FontWeight="Bold" />
+                                                <TextBox Text="{Binding Total}" IsReadOnly="True"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Delete Button-->
+                                        <Button Content="x"
+                                            Style="{StaticResource DeleteButtonStyle}"
+                                            Grid.Column="4"                        
+                                            Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalAlignment="Center"/>
+                                        </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+                <TextBlock Grid.Row="2"
+                           Text="{x:Bind ViewModel.Invoice.InvoiceDetailsError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           Foreground="Red"
+                           Visibility="{x:Bind ViewModel.Invoice.InvoiceDetailsError, Converter={StaticResource NullToVisibilityConverter},Mode=OneWay}"/>
             </Grid>
 
-            <Button CornerRadius="10,10,0,0" HorizontalAlignment="Left" 
-                    Background="Gray" Foreground="White" Margin="0,0,00,0" 
-                    Content="Thêm sản phẩm" Click="{x:Bind ViewModel.AddInvoiceDetail}"/>
-
-            <ListView x:Name="ItemTable"
-                      ItemsSource="{x:Bind ViewModel.Invoice.InvoiceDetails, Mode=TwoWay}"
-                      CanReorderItems="True" AllowDrop="True"
-                      SelectionMode="None"
-                      DragItemsStarting="ItemTable_DragItemsStarting" DragOver="ItemTable_DragOver" Drop="ItemTable_Drop"
-                      BorderBrush="LightGray" BorderThickness="1"
-                      Padding="10">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:InvoiceDetail">
-                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
-                            <Grid Padding="5" ColumnSpacing="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="8*"/>
-                                    <ColumnDefinition Width="10*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!--Drag Handle-->
-                                <TextBlock Text="≡" VerticalAlignment="Center" />
-
-
-                                <!--Item Search-->
-                                <StackPanel Grid.Column="1" Spacing="10">
-                                    <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
-                                    <AutoSuggestBox HorizontalAlignment="Stretch"
-                                                    TextChanged="ItemSearch_TextChanged"
-                                                    SuggestionChosen="ItemSearch_SuggestionChosen"
-                                                    PlaceholderText="Tìm kiếm sản phẩm ..."
-                                                    ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
-                                    </AutoSuggestBox>
-                                </StackPanel>
-
-                                <!--Quantity & Price Grid-->
-                                <Grid Grid.Column="2" HorizontalAlignment="Stretch"  ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="10*"/>
-                                        <ColumnDefinition Width="9*"/>
-                                        <ColumnDefinition Width="9*"/>
-
-                                    </Grid.ColumnDefinitions>
-
-                                    <!--Quantity NumberBox-->
-                                    <StackPanel HorizontalAlignment="Stretch" Spacing="10">
-                                        <TextBlock Text="Số lượng:" FontWeight="Bold"/>
-                                            <NumberBox x:Name="QuantityBox"
-                                               Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                               SpinButtonPlacementMode="Inline"
-                                               Minimum="1"
-                                               SmallChange="1"
-                                               LargeChange="10"
-                                               HorizontalAlignment="Stretch"
-                                               >
-                                            </NumberBox>
-
-                                    </StackPanel>
-
-                                    <!--Price NumberBox-->
-                                    <StackPanel Grid.Column="1"  HorizontalAlignment="Stretch" Spacing="10">
-                                        <TextBlock Text="Đơn giá:" FontWeight="Bold" />
-                                        <TextBox x:Name="PriceBox"
-                                                 IsReadOnly="True"
-                                                 Text="{Binding Price}"
-                                                 HorizontalAlignment="Stretch">
-                                            <interactivity:Interaction.Behaviors>
-                                                <interactivity:EventTriggerBehavior EventName="ValueChanged">
-                                                    <interactivity:CallMethodAction MethodName="RecalculateTotal"
-                                                                    TargetObject="{Binding ViewModel, ElementName=PageRoot}"/>
-                                                    </interactivity:EventTriggerBehavior>
-                                            </interactivity:Interaction.Behaviors>
-                                        </TextBox>
-                                    </StackPanel>
-                                    <!-- Total -->
-                                    <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
-                                        <TextBlock Text="Thành tiền:" FontWeight="Bold" />
-                                        <TextBox Text="{Binding Total}" IsReadOnly="True"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <!--Delete Button-->
-                                <Button Content="x"
-                                    Style="{StaticResource DeleteButtonStyle}"
-                                    Grid.Column="4"                        
-                                    Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
-                                    CommandParameter="{Binding}"
-                                    HorizontalAlignment="Center"/>
-                                </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        
-            <TextBlock Text="{
-                x:Bind ViewModel.Invoice.InvoiceDetailsError, 
-                Mode=TwoWay, 
-                UpdateSourceTrigger=PropertyChanged}" 
-                       Foreground="Red"
-                       Visibility="{x:Bind ViewModel.Invoice.InvoiceDetailsError, 
-                                    Converter={StaticResource NullToVisibilityConverter},
-                                    Mode=OneWay}"/>
-
-
              <!--Create Invoice Button and total amount display-->
-            <StackPanel Margin="0,20,0,0">
+            <StackPanel Grid.Row="5" Margin="0,20,0,0">
                 <Path Data="M 0,0 L 1,0" Stretch="Fill" Stroke="Gray" StrokeDashArray="4,2" StrokeThickness="2" HorizontalAlignment="Stretch"/>
                 <Grid Margin="0,30,0, 0">
                     <Grid.ColumnDefinitions>
@@ -384,7 +369,7 @@
 
             </StackPanel>
 
-        </StackPanel>
+        </Grid>
     </Grid>
     </ScrollView>
 </Page>

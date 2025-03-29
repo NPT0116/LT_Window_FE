@@ -98,19 +98,10 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.SelectedItem is Customer selectedCustomer)
             {
-                if (selectedCustomer.Name == "➕ Create New Customer")
-                {
-                    sender.Text = "";
-                    // Open modal to add new customer
-                    await ShowCreateCustomerDialog();
-                }
-                else
-                {
-                    Debug.WriteLine("set sender text");
-                    sender.Text = selectedCustomer.Name; // Set input to customer's name
-                    ViewModel.Customer = selectedCustomer; // Update ViewModel if needed
-                    ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
-                }
+                Debug.WriteLine("set sender text");
+                sender.Text = selectedCustomer.Name; // Set input to customer's name
+                ViewModel.Customer = selectedCustomer;
+                ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
             }
         }
 
@@ -127,33 +118,28 @@ namespace Navigation.Views.Payments.Invoices
                 Debug.WriteLine(hasErrors);
                 if (hasErrors)
                 {
-                    args.Cancel = true;  // 🔹 Prevent the dialog from closing
+                    args.Cancel = true;
                     return;
                 }
 
                 Debug.WriteLine(JsonSerializer.Serialize(ViewModel.Customer, new JsonSerializerOptions
                 {
-                    WriteIndented = true, // Pretty-print JSON output
+                    WriteIndented = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Ignore null values
                 }));
                 try
                 {
                     await ViewModel.CreateCustomer();
+                    ViewModel.Invoice.CustomerID = ViewModel.Customer.CustomerID;
+                    App.CustomerDictionary[ViewModel.Customer.CustomerID] = ViewModel.Customer.Name;
+                    DialogHelper.ShowDialogAsync("THÀNH CÔNG", "Tạo khách hàng mới thành công", "Đóng", this.XamlRoot);
                 } catch(Exception ex)
                 {
                     ViewModel.Customer.Name = String.Empty;
                     ViewModel.Customer.Phone = String.Empty;
                     ViewModel.Customer.Email = String.Empty;
-                    var errorDialog = new ContentDialog
-                    {
-                        Title = "LỖI TẠO KHÁCH HÀNG",
-                        Content = ex.Message,
-                        CloseButtonText = "Đóng",
-                        XamlRoot = this.XamlRoot,
-                        RequestedTheme = ElementTheme.Light
-                    };
-                    await errorDialog.ShowAsync();
+                    DialogHelper.ShowDialogAsync("LỖI", $"{ex.Message}", "Đóng", this.XamlRoot);
                 }
 
             }
