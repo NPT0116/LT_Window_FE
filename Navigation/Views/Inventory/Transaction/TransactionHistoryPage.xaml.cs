@@ -24,7 +24,6 @@ namespace Navigation.Views.Inventory.Transaction
             ViewModel = new TransactionHistoryPageViewModel();
             this.DataContext = ViewModel;
             _inventoryTransactionRepository = DIContainer.GetKeyedSingleton<IInventoryTransactionRepository>();
-
         }
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
