@@ -20,7 +20,7 @@
     <ScrollView>
 
         <Grid Padding="20" >
-            <Grid RowSpacing="20" Padding="20" Background="White" CornerRadius="8">
+            <Grid RowSpacing="10" Padding="20" Background="White" CornerRadius="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -167,7 +167,7 @@
                                 <!-- TABLE ROWS -->
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Invoice">
-                                        <Grid Padding="10" Background="Transparent">
+                                        <Grid Padding="10,6" Background="Transparent">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="3*"/>
@@ -211,7 +211,8 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
                         <Button Width="80" Content="Lùi" Command="{x:Bind ViewModel.InvoiceQuery.PreviousPageCommand}" />
-                        <Button Width="80" Content="Tiếp" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
+                        <TextBlock FontWeight="Bold" FontSize="15" Margin="5" Text="{x:Bind ViewModel.InvoiceQuery.Query.PageNumber, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Width="80" Content="Tiến" Command="{x:Bind ViewModel.InvoiceQuery.NextPageCommand}" />
                     </StackPanel>
 
                 </StackPanel>

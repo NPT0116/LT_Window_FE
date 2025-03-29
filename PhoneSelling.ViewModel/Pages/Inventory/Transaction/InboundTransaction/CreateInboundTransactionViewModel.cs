@@ -40,17 +40,17 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
         }
 
-        public async Task<List<Variant>> SearchVariants(string text)
-        {
-            var query = new VariantPaginationQuery
-            {
-                PageNumber = 1,
-                PageSize = 5,
-                SearchKey = text
-            };
-            var paginationResult = await _variantRepository.GetAllVariants(query);
-            return paginationResult.Data;
-        }
+        //public async Task<List<Variant>> SearchVariants(string text)
+        //{
+        //    var query = new VariantPaginationQuery
+        //    {
+        //        PageNumber = 1,
+        //        PageSize = 100,
+        //        SearchKey = text
+        //    };
+        //    var paginationResult = await _variantRepository.GetAllVariants(query);
+        //    return paginationResult.Data;
+        //}
 
         [RelayCommand]
         public void AddVariant()

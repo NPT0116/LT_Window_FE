@@ -33,7 +33,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.TransactionHistory
             var query = new VariantPaginationQuery
             {
                 PageNumber = 1,
-                PageSize = 5,
+                PageSize = 100,
                 SearchKey = text
             };
             var paginationResult = await _variantRepository.GetAllVariants(query);

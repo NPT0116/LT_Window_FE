@@ -43,10 +43,10 @@ namespace Navigation.Views.Inventory.Transaction
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var variants = await ViewModel.SearchVariants(sender.Text);
+                var variants = await App.SearchVariants(sender.Text);
                 if (variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();
                 }
             }
         }
@@ -57,11 +57,9 @@ namespace Navigation.Views.Inventory.Transaction
 
             if (args.SelectedItem is Variant variant)
             {
-                sender.Text = $"{variant.Item.ItemName} {variant.Storage} {variant.Color.Name}";
-
                 // Update the row's properties
                 row.VariantId = variant.VariantID;
-                sender.Text = variant.Item.ItemName + variant.Color.Name + variant.Storage;
+                sender.Text = $"{variant.Item.ItemName} - {variant.Color.Name} - {variant.Storage}";
 
             }
         }

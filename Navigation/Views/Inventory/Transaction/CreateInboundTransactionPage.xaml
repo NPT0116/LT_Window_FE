@@ -15,184 +15,211 @@
     <Page.Resources>
         <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+
+        <!-- Container Style -->
+        <Style x:Key="PageContainerStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+
+
+        <!-- ListView Item Container Style -->
+        <Style x:Key="ListViewItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#FFE0E0E0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Form Title Style -->
+        <Style x:Key="FormTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
     </Page.Resources>
 
     <Grid Padding="20">
-        <Grid Padding="20" Background="White" CornerRadius="8" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <!-- Header -->
-            <TextBlock Grid.Row="0"
-                    Text="NHẬP HÀNG" 
-                    FontSize="40" 
-                    HorizontalAlignment="Center" 
-                    FontWeight="Bold"
-                    Margin="0,0,0,20"/>
-            
-            <Grid  Grid.Row="1">
+        <!-- Bọc nội dung chính trong một Border để tạo hiệu ứng nổi bật -->
+        <Border Style="{StaticResource PageContainerStyle}">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <!--Form Title-->
-                <Grid Margin="0,0,0,10">
-                    <Path Data="M 0,0 L 1,0" Width="300"  Stretch="Fill" Stroke="Gray" StrokeDashArray="4, 2" StrokeThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
-                    <TextBlock Text="PHIẾU NHẬP HÀNG" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+
+                <!-- Header -->
+                <TextBlock Grid.Row="0"
+                           Text="NHẬP HÀNG" 
+                           FontSize="40" 
+                           HorizontalAlignment="Center" 
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <!-- Nội dung chính -->
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Form Title with dashed separator -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Path Grid.Row="0" Data="M 0,0 L 1,0" Width="300" Stretch="Fill" Stroke="Gray" StrokeDashArray="4, 2" StrokeThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                        <TextBlock Margin="10" Grid.Row="1" Text="PHIẾU NHẬP HÀNG" Style="{StaticResource FormTitleStyle}"/>
+                    </Grid>
+
+                    <!-- Button Thêm sản phẩm -->
+                    <Button Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            Width="200"
+                            Content="Thêm sản phẩm"
+                            Command="{x:Bind ViewModel.AddVariantCommand}"
+                            CornerRadius="10,10,0,0" 
+                            Background="DimGray" Foreground="White"/>
+
+                    <!-- Danh sách Items -->
+                    <ListView Grid.Row="2"
+                              x:Name="ItemTable"
+                              ItemsSource="{x:Bind ViewModel.Items, Mode=TwoWay}"
+                              CanReorderItems="True"
+                              AllowDrop="True"
+                              SelectionMode="None"
+                              BorderBrush="LightGray"
+                              BorderThickness="1"
+                              Padding="10"
+                              ItemContainerStyle="{StaticResource ListViewItemContainerStyle}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:CreateInboundTransactionDto">
+                                <Border BorderBrush="Gray" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="10">
+                                    <Grid ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="7*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!-- Drag Handle -->
+                                        <TextBlock Text="≡"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="20"
+                                                   FontWeight="SemiBold"
+                                                   Grid.Column="0"
+                                                   Foreground="Gray"
+                                                   Width="30"
+                                                   AllowDrop="True"/>
+                                        <!-- Chọn sản phẩm -->
+                                        <StackPanel Grid.Column="1" Spacing="5" Orientation="Vertical">
+                                            <TextBlock Text="Chọn sản phẩm:" FontWeight="Bold"/>
+                                            <AutoSuggestBox x:Name="ItemSearchBox"
+                                                            TextChanged="ItemSearch_TextChanged"
+                                                            SuggestionChosen="ItemSearch_SuggestionChosen"
+                                                            PlaceholderText="Tìm kiếm sản phẩm..."
+                                                            ItemTemplate="{StaticResource SearchVariantBoxTemplate}"/>
+                                            <TextBlock VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Text="{x:Bind VariantIdError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                       Foreground="Red"
+                                                       Visibility="{x:Bind VariantIdError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <!-- Số lượng & Giá -->
+                                        <StackPanel Grid.Column="2" Spacing="5" Orientation="Vertical">
+                                            <Grid>
+                                                <Path Stroke="Gray" Data="M 0,0 L 0,1" StrokeThickness="2"
+                                                      Stretch="Fill"
+                                                      StrokeDashArray="4,4"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Stretch"/>
+                                                <StackPanel Margin="20,0">
+                                                    <TextBlock Text="Số lượng:" FontWeight="Bold"/>
+                                                    <NumberBox x:Name="QuantityBox"
+                                                               Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                               SpinButtonPlacementMode="Inline"
+                                                               Minimum="0"
+                                                               SmallChange="1"
+                                                               LargeChange="10"
+                                                               HorizontalAlignment="Stretch"
+                                                               Margin="5"/>
+                                                    <TextBlock Text="{x:Bind QuantityError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="Red"
+                                                               Visibility="{x:Bind QuantityError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                        <!-- Nút Xóa -->
+                                        <Button Content="X"
+                                                Click="Button_Click"
+                                                Style="{StaticResource DeleteButtonStyle}"
+                                                Grid.Column="3"
+                                                HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!-- Thông báo lỗi Items -->
+                    <TextBlock Grid.Row="3"
+                               Height="20"
+                               Text="{x:Bind ViewModel.ItemsError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                               Foreground="Red"
+                               Margin="10"
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Nút tạo phiếu nhập -->
+                    <Button Grid.Row="4"
+                            Content="Nhập sản phẩm"
+                            Command="{x:Bind ViewModel.CreateTransactionCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            FontSize="16"
+                            Height="50"
+                            HorizontalAlignment="Stretch"/>
                 </Grid>
 
-                <!-- Add Item Button -->
-                <Button Grid.Row="1"
-                        HorizontalAlignment="Left"
-                        Width="200"
-                        Background="DimGray"
-                        Foreground="White"
-                        Content="Thêm sản phẩm"
-                        FontWeight="Bold"
-                        Padding="10"
-                        Command="{x:Bind ViewModel.AddVariantCommand}"
-                        CornerRadius="10,10,0,0"/>
-                 <!-- Items List -->
-                <ListView Grid.Row="2"
-                          VerticalAlignment="Stretch"
-                        x:Name="ItemTable"
-                        ItemsSource="{x:Bind ViewModel.Items, Mode=TwoWay}"
-                        CanReorderItems="True"
-                        AllowDrop="True"
-                        SelectionMode="None"
-                        BorderBrush="LightGray"
-                        BorderThickness="1"
-                        Padding="10">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:CreateInboundTransactionDto">
-                            <Border BorderBrush="Gray" 
-                                BorderThickness="0,0,0,1" 
-                                Padding="10">
-                                    <Grid ColumnSpacing="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="7*"/>
-                                        <ColumnDefinition Width="4*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <!-- Drag Handle -->
-
-                                    <TextBlock Text="≡"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="20"
-                                            FontWeight="SemiBold"
-                                            Grid.Column="0"
-                                            Foreground="Gray"
-                                            Width="30"
-                                            AllowDrop="True"/>
-
-                                    <StackPanel Grid.Column="1" Spacing="5"  Orientation="Vertical" >
-
-                                        <!-- Item Search -->
-                                        <TextBlock Text="Chọn sản phẩm:" FontWeight="Bold"/>
-                                        <AutoSuggestBox x:Name="ItemSearchBox"
-                                                    TextChanged="ItemSearch_TextChanged"
-                                                    SuggestionChosen="ItemSearch_SuggestionChosen"
-                                                    PlaceholderText="Search item..."
-                                                    Height="50"
-                                                    Margin="10,0">
-                                            <AutoSuggestBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Spacing="10">
-                                                        <Image Source="{Binding Color.UrlImage}" 
-                                                        Width="30" 
-                                                        Height="30" 
-                                                        Stretch="UniformToFill"/>
-                                                        <StackPanel Orientation="Vertical">
-                                                            <TextBlock Text="{Binding Item.ItemName}" 
-                                                                FontWeight="Bold"/>
-                                                            <TextBlock Text="{Binding Color.Name}" 
-                                                                Foreground="Gray" 
-                                                                FontSize="12"/>
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </AutoSuggestBox.ItemTemplate>
-                                        </AutoSuggestBox>
-                                        <!-- Variant Error Message -->
-                                        <TextBlock 
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"
-                                                Text="{x:Bind VariantIdError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                Foreground="Red"
-                                                Visibility="{x:Bind VariantIdError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
-                                    </StackPanel>
-
-                                    <!-- Quantity & Price Grid -->
-                                    <StackPanel Grid.Column="2" Spacing="5" Orientation="Vertical"  CornerRadius="8" Padding="5">
-                                        <Grid>
-                                            <Path Stroke="Gray" Data="M 0,0 L 0,1" StrokeThickness="2"
-                                                Stretch="Fill"
-                                                StrokeDashArray="4,4"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Stretch"
-                                                />
-                                            <StackPanel Margin="20,0">
-                                                <TextBlock Text="Số lượng:" FontWeight="Bold" />
-
-                                                <NumberBox x:Name="QuantityBox"
-                                                        Value="{x:Bind Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        SpinButtonPlacementMode="Inline"
-                                                        Minimum="0"
-                                                        SmallChange="1"
-                                                        LargeChange="10"
-                                                        HorizontalAlignment="Stretch"
-                                                        Margin="5"/>
-                                                <TextBlock Text="{x:Bind QuantityError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Foreground="Red"
-                                                        Visibility="{x:Bind QuantityError, Converter={StaticResource NullToVisibilityConverter}, Mode=OneWay}"/>
-                                            </StackPanel>
-
-                                        </Grid>
-                                    </StackPanel>
-
-                                    <!-- Delete Button -->
-                                    <Button Content="X"
-                                        FontWeight="Bold"
-                                        Background="Red"
-                                        Foreground="White"
-                                        Click="Button_Click"
-                                        FontSize="16"
-                                        Grid.Column="3"
-                                        HorizontalAlignment="Center"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-
-                <!-- Items Error Message -->
-                <TextBlock Grid.Row="3"
-                           Height="20"
-                           Text="{x:Bind ViewModel.ItemsError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="Red"
-                           Margin="10"
-                           HorizontalAlignment="Center"/>
-                <Button Grid.Row="4"
-                        Background="DarkSlateGray"
-                        FontWeight="SemiBold"
-                        Foreground="White"
-                        Content="Nhập sản phẩm"
-                        Command="{x:Bind ViewModel.CreateTransactionCommand}"
-                        FontSize="16"
-                        Height="50"
-                        HorizontalAlignment="Stretch"/>
+                <!-- Footer (nếu cần) -->
             </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </Page>

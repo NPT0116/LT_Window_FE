@@ -24,16 +24,15 @@ namespace Navigation.Views.Inventory.Transaction
             ViewModel = new TransactionHistoryPageViewModel();
             this.DataContext = ViewModel;
             _inventoryTransactionRepository = DIContainer.GetKeyedSingleton<IInventoryTransactionRepository>();
-
         }
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var variants = await ViewModel.SearchVariants(sender.Text);
+                var variants = await App.SearchVariants(sender.Text);
                 if (variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName);
                 }
             }
         }

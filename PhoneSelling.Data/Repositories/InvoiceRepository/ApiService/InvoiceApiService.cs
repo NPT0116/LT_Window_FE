@@ -7,12 +7,14 @@ using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Common;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Contracts.Responses;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService.Query;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
@@ -69,10 +71,20 @@ namespace PhoneSelling.Data.Repositories.InvoiceRepository.ApiService
                     queryParams.Add("customerPhone", queryParameters.CustomerPhone);
                 }
 
+                if (!string.IsNullOrWhiteSpace(queryParameters.PageNumber.ToString()))
+                {
+                    queryParams.Add("pageNumber", queryParameters.PageNumber.ToString());
+                }
+                if (!string.IsNullOrWhiteSpace(queryParameters.PageSize.ToString()))
+                {
+                    queryParams.Add("pageSize", queryParameters.PageSize.ToString());
+                }
+
+
                 // Nối query string vào ApiUrl
                 var urlWithQuery = QueryHelpers.AddQueryString(ApiUrl, queryParams);
-                Debug.WriteLine(urlWithQuery);
                 var response = await _httpClient.GetFromJsonAsync<GetAllInvoiceReponse>(urlWithQuery);
+
                 return response;
             }
             catch (Exception ex)

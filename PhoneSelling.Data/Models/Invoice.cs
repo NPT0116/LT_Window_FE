@@ -21,7 +21,7 @@ namespace PhoneSelling.Data.Models
         [ObservableProperty]
         [NotDefault(ErrorMessage = "Ngày tạo hóa đơn không được để trống")]
         [NotifyPropertyChangedFor(nameof(HasErrors))]
-        private DateTime date;
+        private DateTime date = DateTime.UtcNow;
         
         [ObservableProperty]
         [MinCollectionCount(1, ErrorMessage = "Danh sách hóa đơn chi tiết không được để trống")]

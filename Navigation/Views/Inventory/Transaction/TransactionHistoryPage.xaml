@@ -11,6 +11,7 @@
     <Page.Resources>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
         <converter:TransactionTypeToBrushConverter x:Key="TransactionTypeToBrushConverter"/>
     </Page.Resources>
     <Grid Padding="20">
@@ -30,21 +31,11 @@
                             TextChanged="ItemSearch_TextChanged"
                             SuggestionChosen="ItemSearch_SuggestionChosen"
                             PlaceholderText="Nhập tên sản phẩm ..."
-                            Margin="10,0">
+                            Margin="10,0"
+                            ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
                 <AutoSuggestBox.Header>
                     <TextBlock Text="TÌM KIẾM SẢN PHẨM:" FontSize="18" FontWeight="Bold"/>
                 </AutoSuggestBox.Header>
-                <AutoSuggestBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <Image Source="{Binding Color.UrlImage}" Width="30" Height="30" Stretch="UniformToFill"/>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Item.ItemName}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Color.Name}" Foreground="Gray" FontSize="12"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </AutoSuggestBox.ItemTemplate>
             </AutoSuggestBox>
             <!--Display variant information-->
             <Grid Grid.Row="2" RowSpacing="10" Margin="10,0">
@@ -130,7 +121,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{x:Bind TransactionDate}" HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="0" Text="{x:Bind TransactionDate, Converter={StaticResource VietnamDateConverter}}" HorizontalAlignment="Left" />
                                     <TextBlock Grid.Column="1" Text="{x:Bind TransactionTypeDisplay}" Foreground="{x:Bind TransactionTypeDisplay, Converter={StaticResource TransactionTypeToBrushConverter}}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                                     <TextBlock Grid.Column="2" Text="{x:Bind Quantity, Converter={StaticResource VndCurrencyConverter}}" HorizontalAlignment="Center"  />
                                     <!--<TextBlock Grid.Column="1" Text="{x:Bind TransactionDate}" HorizontalAlignment="Left"  />-->

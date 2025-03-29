@@ -34,6 +34,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Amazon.Runtime.Internal.Util;
 using PhoneSelling.Data.Repositories.InvoiceRepository.ApiService;
+using System.Text.Json;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -393,16 +394,20 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.NewDate.HasValue)
             {
-                var selectedDate = args.NewDate.Value.DateTime;
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
+                var selectedDate = args.NewDate.Value.Date;
+                var startOfDay = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, 0, 0, 0, DateTimeKind.Utc);
+                Debug.WriteLine(startOfDay);
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.FromDate = startOfDay;
             }
         }
         private void CalendarToDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             if (args.NewDate.HasValue)
             {
-                var selectedDate = args.NewDate.Value.DateTime;
-                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = DateTime.SpecifyKind(selectedDate, DateTimeKind.Utc);
+                var selectedDate = args.NewDate.Value.Date;
+                var endOfDay = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, 23,59,59, DateTimeKind.Utc);
+                Debug.WriteLine(endOfDay);
+                ViewModel.InvoiceQuery.Query.InvoiceDatetimeQueryParameter.ToDate = endOfDay;
             }
         }
         private void ResetDefault_button(object sender, RoutedEventArgs e)

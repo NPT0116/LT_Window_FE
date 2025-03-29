@@ -19,7 +19,6 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
     public record Message(string message, bool status);
     public partial class CreateInvoicePageViewModel : BasePageViewModel
     {
-        public int dummy = 1000000000;
         private readonly ICustomerRepository _customerRepository;
         private readonly IVariantRepository _variantRepository;
         private readonly IInvoiceRepository _invoiceRepository;
@@ -78,20 +77,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 
         public async Task CreateCustomer()
         {
-            await _customerRepository.CreateQuickCustomerAsync(Customer);
-            Customer = new();
-        }
-
-        public async Task<List<Variant>> SearchVariants(string text)
-        {
-            var query = new VariantPaginationQuery
-            {
-                PageNumber = 1,
-                PageSize = 5,
-                SearchKey = text
-            };
-            var paginationResult = await _variantRepository.GetAllVariants(query);
-            return paginationResult.Data;
+            Customer = await _customerRepository.CreateQuickCustomerAsync(Customer);
         }
 
         [RelayCommand]

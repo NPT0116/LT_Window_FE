@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.Messaging;
 using Navigation.Helpers;
+using System.Globalization;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,13 +41,15 @@ namespace Navigation.Views.Payments.Invoices
             ViewModel = new();
             this.DataContext = ViewModel;
 
-            var flyout = new Flyout();
-            var calendarView = new CalendarView();
-            calendarView.SelectedDatesChanged += CalendarPopup_SelectedDatesChanged;
-            flyout.Content = calendarView;
+            //var flyout = new Flyout();
+            //var calendarView = new CalendarView();
+            //calendarView.SelectedDates.Add(DateTimeOffset.Now);
+
+            //calendarView.SelectedDatesChanged += CalendarPopup_SelectedDatesChanged;
+            //flyout.Content = calendarView;
 
             // Attach Flyout to the Button
-            FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
+            //FlyoutBase.SetAttachedFlyout(DatePickerButton, flyout);
             // Notify
             WeakReferenceMessenger.Default.Register<Message>(this, (r, m) =>
             {
@@ -95,19 +98,10 @@ namespace Navigation.Views.Payments.Invoices
         {
             if (args.SelectedItem is Customer selectedCustomer)
             {
-                if (selectedCustomer.Name == "➕ Create New Customer")
-                {
-                    sender.Text = "";
-                    // Open modal to add new customer
-                    await ShowCreateCustomerDialog();
-                }
-                else
-                {
-                    Debug.WriteLine("set sender text");
-                    sender.Text = selectedCustomer.Name; // Set input to customer's name
-                    ViewModel.Customer = selectedCustomer; // Update ViewModel if needed
-                    ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
-                }
+                Debug.WriteLine("set sender text");
+                sender.Text = selectedCustomer.Name; // Set input to customer's name
+                ViewModel.Customer = selectedCustomer;
+                ViewModel.Invoice.CustomerID = selectedCustomer.CustomerID;
             }
         }
 
@@ -124,33 +118,28 @@ namespace Navigation.Views.Payments.Invoices
                 Debug.WriteLine(hasErrors);
                 if (hasErrors)
                 {
-                    args.Cancel = true;  // 🔹 Prevent the dialog from closing
+                    args.Cancel = true;
                     return;
                 }
 
                 Debug.WriteLine(JsonSerializer.Serialize(ViewModel.Customer, new JsonSerializerOptions
                 {
-                    WriteIndented = true, // Pretty-print JSON output
+                    WriteIndented = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase, // Ensure JSON uses camelCase
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull // Ignore null values
                 }));
                 try
                 {
                     await ViewModel.CreateCustomer();
+                    ViewModel.Invoice.CustomerID = ViewModel.Customer.CustomerID;
+                    App.CustomerDictionary[ViewModel.Customer.CustomerID] = ViewModel.Customer.Name;
+                    DialogHelper.ShowDialogAsync("THÀNH CÔNG", "Tạo khách hàng mới thành công", "Đóng", this.XamlRoot);
                 } catch(Exception ex)
                 {
                     ViewModel.Customer.Name = String.Empty;
                     ViewModel.Customer.Phone = String.Empty;
                     ViewModel.Customer.Email = String.Empty;
-                    var errorDialog = new ContentDialog
-                    {
-                        Title = "LỖI TẠO KHÁCH HÀNG",
-                        Content = ex.Message,
-                        CloseButtonText = "Đóng",
-                        XamlRoot = this.XamlRoot,
-                        RequestedTheme = ElementTheme.Light
-                    };
-                    await errorDialog.ShowAsync();
+                    DialogHelper.ShowDialogAsync("LỖI", $"{ex.Message}", "Đóng", this.XamlRoot);
                 }
 
             }
@@ -160,24 +149,24 @@ namespace Navigation.Views.Payments.Invoices
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
-        private void CalendarPopup_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        {
-            if (args.AddedDates.Count > 0)
-            {
-                DateTime selectedDate = args.AddedDates[0].DateTime;
-                SelectedDateText.Text = selectedDate.ToString("dd MMM yyyy");
-                ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
-            }
-        }
+        //private void CalendarPopup_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+        //{
+        //    if (args.AddedDates.Count > 0)
+        //    {
+        //        DateTime selectedDate = args.AddedDates[0].DateTime;
+        //        SelectedDateText.Text = selectedDate.ToString("dd MMMM yyyy", new CultureInfo("vi-VN"));
+        //        ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
+        //    }
+        //}
 
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var variants = await ViewModel.SearchVariants(sender.Text);
+                var variants = await App.SearchVariants(sender.Text);
                 if(variants != null)
                 {
-                    sender.ItemsSource = variants;
+                    sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();
                 }
             }
         }
@@ -185,10 +174,9 @@ namespace Navigation.Views.Payments.Invoices
         private void ItemSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             var row = (InvoiceDetail)sender.DataContext;
-            Debug.WriteLine("What");
             if (args.SelectedItem is Variant variant)
             {
-                sender.Text = $"{variant.Item.ItemName} {variant.Storage} {variant.Color.Name}";
+                sender.Text = $"{variant.Item.ItemName} - {variant.Color.Name} - {variant.Storage}";
 
                 // Update the row's properties
                 row.Variant = variant;
