@@ -113,7 +113,7 @@
                  <!--Search Section--> 
                 <StackPanel Grid.Column="0">
                     <Grid>
-                        <AutoSuggestBox PlaceholderText="Tìm theo tên ( hoặc số điện thoại )"
+                        <AutoSuggestBox PlaceholderText="Tìm theo email ( hoặc số điện thoại )"
                                         TextChanged="CustomerSearch_TextChanged"
                                         SuggestionChosen="CustomerSearch_SuggestionChosen"
                                         QueryIcon="Find">

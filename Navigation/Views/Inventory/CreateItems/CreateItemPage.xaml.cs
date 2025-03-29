@@ -158,15 +158,7 @@ namespace Navigation.Views.Inventory.CreateItems
                 if (duplicateExists)
                 {
                     // Show an error dialog if duplicate found.
-                    var errorDialog = new ContentDialog
-                    {
-                        Title = "MÀU SẮC ĐÃ TỒN TẠI",
-                        Content = $"Sản phẩm với màu '{colorName}' đã có.",
-                        CloseButtonText = "Đóng",
-                        RequestedTheme = ElementTheme.Light,
-                        XamlRoot = this.XamlRoot
-                    };
-                    await errorDialog.ShowAsync();
+                    DialogHelper.ShowDialogAsync("MÀU SẮC ĐÃ TỒN TẠI", $"Sản phẩm với màu '{colorName}' đã có.","Đóng", this.XamlRoot);
                     return;
                 }
 
@@ -284,15 +276,7 @@ namespace Navigation.Views.Inventory.CreateItems
 
                 if (duplicateExists)
                 {
-                    var errorDialog = new ContentDialog
-                    {
-                        Title = "TÊN NHÓM SẢN PHẨM ĐÃ TÒN TẠI",
-                        Content = $"Nhóm sản phẩm '{groupName}' đã tồn tại.",
-                        CloseButtonText="Đóng",
-                        RequestedTheme = ElementTheme.Light,
-                        XamlRoot = this.XamlRoot,
-                    };
-                    await errorDialog.ShowAsync();
+                    DialogHelper.ShowDialogAsync("TÊN NHÓM SẢN PHẨM ĐÃ TÒN TẠI", $"Nhóm sản phẩm '{groupName}' đã tồn tại.", "Đóng", this.XamlRoot);
                     return;
                 }
             }
@@ -356,15 +340,7 @@ namespace Navigation.Views.Inventory.CreateItems
 
                 if (duplicateExists)
                 {
-                    var errorDialog = new ContentDialog
-                    {
-                        Title = "TÊN NHÀ SẢN XUẤT ĐÃ TỒN TẠI",
-                        Content = $"Nhà sản xuất '{manufacturerName}' đã tồn tại.",
-                        CloseButtonText = "Đóng",
-                        RequestedTheme = ElementTheme.Light,
-                        XamlRoot = this.XamlRoot
-                    };
-                    await errorDialog.ShowAsync();
+                    DialogHelper.ShowDialogAsync("TÊN NHÀ SẢN XUẤT ĐÃ TỒN TẠI", $"Nhà sản xuất '{manufacturerName}' đã tồn tại.", "Đóng", this.XamlRoot);
                     return;
                 }
             }
