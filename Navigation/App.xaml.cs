@@ -20,6 +20,10 @@ using PhoneSelling.ViewModel.Pages;
 using PhoneSelling.Data.Repositories.CustomerRepository;
 using PhoneSelling.DependencyInjection;
 using System.Diagnostics;
+using PhoneSelling.Data.Models;
+using PhoneSelling.Data.Repositories.VariantRepository.ApiService.Contracts.Requests;
+using System.Threading.Tasks;
+using PhoneSelling.Data.Repositories.VariantRepository;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,6 +37,7 @@ namespace Navigation
     {
 
         public static Dictionary<Guid, string> CustomerDictionary { get; set; } = new Dictionary<Guid, string>();
+        public static IVariantRepository _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -73,7 +78,17 @@ namespace Navigation
                 System.Diagnostics.Debug.WriteLine($"Error loading customer dictionary: {ex.Message}");
             }
         }
-
+        public static async Task<List<Variant>> SearchVariants(string text)
+        {
+            var query = new VariantPaginationQuery
+            {
+                PageNumber = 1,
+                PageSize = 100,
+                SearchKey = text
+            };
+            var paginationResult = await _variantRepository.GetAllVariants(query);
+            return paginationResult.Data;
+        }
         public static Window MainWindow { get; private set; }
     }
 }
