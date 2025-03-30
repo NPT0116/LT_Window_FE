@@ -27,6 +27,8 @@ namespace PhoneSelling.Data.Models
         private Guid variantId = new Guid();
 
         [ObservableProperty] private string quantityError = string.Empty;
+        [ObservableProperty] private string variantIDError = string.Empty;
+
         [ObservableProperty] private string invoiceIDError = string.Empty;
         [ObservableProperty] private string priceError = string.Empty;
         public Action? RecalculateCallback { get; set; }
@@ -64,7 +66,16 @@ namespace PhoneSelling.Data.Models
             ValidateAllProperties();
 
             QuantityError = GetFirstError(nameof(Quantity));
+            Debug.WriteLine(QuantityError);
             InvoiceIDError = GetFirstError(nameof(InvoiceID));
+            Debug.WriteLine(InvoiceIDError);
+            VariantIDError = GetFirstError(nameof(VariantId));
+            Debug.WriteLine(VariantIDError);
+            if (!string.IsNullOrEmpty(VariantIDError))
+            {
+                OnPropertyChanged(nameof(VariantIDError));
+            }
+
 
             return HasErrors;
         }

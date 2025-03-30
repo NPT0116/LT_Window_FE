@@ -203,7 +203,7 @@ namespace Navigation.Views.Payments.Invoices
 
                 // Retrieve variant details asynchronously
                 Variant variantDetail = await _variantRepository.GetVariantById(detail.VariantId);
-                var variantName = $"{index++}. {variantDetail.Item.ItemName} - {variantDetail.Storage} - {variantDetail.Color.Name}";
+                var variantName = $"{index++}. {variantDetail.Item.ItemName} - {variantDetail.Color.Name} - {variantDetail.Storage}";
 
                 var variantText = new TextBlock
                 {
@@ -226,7 +226,7 @@ namespace Navigation.Views.Payments.Invoices
 
                 var priceText = new TextBlock
                 {
-                    Text = $"{detail.Price}",
+                    Text = currencyConverter.Convert(detail.Price, typeof(string), null, "vi-VN") as string,
                     FontSize = 15,
                     VerticalAlignment = VerticalAlignment.Center
                 };
@@ -234,7 +234,7 @@ namespace Navigation.Views.Payments.Invoices
 
                 var totalText = new TextBlock
                 {
-                    Text = $"{detail.Total}",
+                    Text = currencyConverter.Convert(detail.Total, typeof(string), null, "vi-VN") as string,
                     FontSize = 15,
                     VerticalAlignment = VerticalAlignment.Center
                 };

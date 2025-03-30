@@ -247,31 +247,39 @@
                                 <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="5">
                                     <Grid Padding="5" ColumnSpacing="10">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="8*"/>
-                                            <ColumnDefinition Width="10*"/>
+                                            <ColumnDefinition Width="12*"/>
                                             <ColumnDefinition Width="2*"/>
                                         </Grid.ColumnDefinitions>
 
                                         <!--Drag Handle-->
-                                        <TextBlock Text="≡" VerticalAlignment="Center" />
+                                        <TextBlock Text="≡" VerticalAlignment="Center" Margin="10"/>
 
 
                                         <!--Item Search-->
-                                        <StackPanel Grid.Column="1" Spacing="10">
-                                            <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
-                                            <AutoSuggestBox HorizontalAlignment="Stretch"
-                                                            TextChanged="ItemSearch_TextChanged"
-                                                            SuggestionChosen="ItemSearch_SuggestionChosen"
-                                                            PlaceholderText="Tìm kiếm sản phẩm ..."
-                                                            ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
-                                            </AutoSuggestBox>
-                                        </StackPanel>
+                                        <Grid  Grid.Column="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/> 
+                                                <RowDefinition Height="Auto"/>    
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Spacing="10">
+                                                <TextBlock Text="Tên sản phẩm:" FontWeight="Bold"/>
+                                                <AutoSuggestBox HorizontalAlignment="Stretch"
+                                                                Text=""
+                                                                TextChanged="ItemSearch_TextChanged"
+                                                                SuggestionChosen="ItemSearch_SuggestionChosen"
+                                                                PlaceholderText="Tìm kiếm sản phẩm ..."
+                                                                ItemTemplate="{StaticResource SearchVariantBoxTemplate}">
+                                                </AutoSuggestBox>
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="1" Text="{Binding VariantIDError, Mode=TwoWay}" Foreground="Red" />                    
+                                        </Grid>
 
                                         <!--Quantity & Price Grid-->
                                         <Grid Grid.Column="2" HorizontalAlignment="Stretch"  ColumnSpacing="10">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="10*"/>
+                                                <ColumnDefinition Width="12*"/>
                                                 <ColumnDefinition Width="9*"/>
                                                 <ColumnDefinition Width="9*"/>
 
@@ -297,7 +305,7 @@
                                                 <TextBlock Text="Đơn giá:" FontWeight="Bold" />
                                                 <TextBox x:Name="PriceBox"
                                                          IsReadOnly="True"
-                                                         Text="{Binding Price}"
+                                                         Text="{Binding Price, Converter={StaticResource VndCurrencyConverter}}"
                                                          HorizontalAlignment="Stretch">
                                                     <interactivity:Interaction.Behaviors>
                                                         <interactivity:EventTriggerBehavior EventName="ValueChanged">
@@ -310,12 +318,12 @@
                                             <!-- Total -->
                                             <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Spacing="10">
                                                 <TextBlock Text="Thành tiền:" FontWeight="Bold" />
-                                                <TextBox Text="{Binding Total}" IsReadOnly="True"/>
+                                                <TextBox Text="{Binding Total,  Converter={StaticResource VndCurrencyConverter}}" IsReadOnly="True"/>
                                             </StackPanel>
                                         </Grid>
 
                                         <!--Delete Button-->
-                                        <Button Content="x"
+                                        <Button Content="X"
                                             Style="{StaticResource DeleteButtonStyle}"
                                             Grid.Column="4"                        
                                             Command="{Binding ViewModel.RemoveInvoiceDetailCommand, ElementName=PageRoot}"
