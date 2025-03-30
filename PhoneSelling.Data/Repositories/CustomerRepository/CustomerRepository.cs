@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PhoneSelling.Data.Repositories.CustomerRepository
@@ -79,12 +80,14 @@ namespace PhoneSelling.Data.Repositories.CustomerRepository
         public async Task<Customer> GetCustomerByEmailAsync(string email)
         {
             var response = await _apiService.GetCustomerByEmailAsync(email);
+            Debug.WriteLine(JsonSerializer.Serialize(response));
             if (response == null )
                 throw new Exception($"Internal Sever Error");
             if (!response.Succeeded)
                 throw new Exception(response.Message);
             var dto = response.Data;
             var customer = CustomerMapper.MapToCustomer(dto);
+            Debug.WriteLine(JsonSerializer.Serialize(customer));
             return customer;
         }
 

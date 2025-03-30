@@ -80,10 +80,10 @@ namespace Navigation.Views.Payments.Invoices
                 else
                 {
                     Debug.WriteLine("Search by email");
+                    Debug.WriteLine(text);
                     customer = await ViewModel.SearchCustomersByEmail(text);
                 }
                 var customerSuggestions = customer != null ? new List<Customer>() { customer } : new List<Customer>();
-                //customerSuggestions.Add(new Customer { Name = "➕ Create New Customer", Phone = "", Email = "" });
 
                 sender.ItemsSource = customerSuggestions;
             }
@@ -133,37 +133,32 @@ namespace Navigation.Views.Payments.Invoices
                     await ViewModel.CreateCustomer();
                     ViewModel.Invoice.CustomerID = ViewModel.Customer.CustomerID;
                     App.CustomerDictionary[ViewModel.Customer.CustomerID] = ViewModel.Customer.Name;
+                    Debug.WriteLine("Create customer successfully !");
                     DialogHelper.ShowDialogAsync("THÀNH CÔNG", "Tạo khách hàng mới thành công", "Đóng", this.XamlRoot);
                 } catch(Exception ex)
                 {
                     ViewModel.Customer.Name = String.Empty;
                     ViewModel.Customer.Phone = String.Empty;
                     ViewModel.Customer.Email = String.Empty;
+                    Debug.WriteLine("Create customer fail !");
                     DialogHelper.ShowDialogAsync("LỖI", $"{ex.Message}", "Đóng", this.XamlRoot);
                 }
 
             }
         }
-        private void DatePickerButton_Click(object sender, RoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
-
-        //private void CalendarPopup_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        //{
-        //    if (args.AddedDates.Count > 0)
-        //    {
-        //        DateTime selectedDate = args.AddedDates[0].DateTime;
-        //        SelectedDateText.Text = selectedDate.ToString("dd MMMM yyyy", new CultureInfo("vi-VN"));
-        //        ViewModel.Invoice.Date = selectedDate.ToUniversalTime();
-        //    }
-        //}
 
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 var variants = await App.SearchVariants(sender.Text);
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    var row = (InvoiceDetail)sender.DataContext;
+                    row.Variant = null;
+                    row.VariantId = Guid.Empty;
+                    row.Price = 0;
+                }
                 if(variants != null)
                 {
                     sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName).ToList();
@@ -181,7 +176,8 @@ namespace Navigation.Views.Payments.Invoices
                 // Update the row's properties
                 row.Variant = variant;
                 row.VariantId = variant.VariantID;
-                row.Price = variant.SellingPrice; // Ensure Price is taken from the selected Variant
+                row.Price = variant.SellingPrice;
+                row.VariantIDError = String.Empty;
             }
         }
 

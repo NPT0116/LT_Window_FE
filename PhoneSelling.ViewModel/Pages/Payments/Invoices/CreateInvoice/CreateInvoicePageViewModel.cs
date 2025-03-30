@@ -26,13 +26,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
         [ObservableProperty] private Invoice invoice;
         [ObservableProperty] private TrulyObservableCollection<Variant> searchItems;
 
-        //[ObservableProperty] private Variant variant = new();
-        //public string VariantDisplayName => Variant != null ? $"{Variant.Item.ItemName} {Variant.Storage} {Variant.Color.Name}" : "";
 
-        //partial void OnVariantChanged(Variant oldValue, Variant newValue)
-        //{
-        //    OnPropertyChanged(nameof(VariantDisplayName)); // Notify UI to update name
-        //}
         public CreateInvoicePageViewModel()
         {
             _customerRepository = DIContainer.GetKeyedSingleton<ICustomerRepository>();
@@ -77,6 +71,7 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
 
         public async Task CreateCustomer()
         {
+            Customer.Email = Customer.Email.ToLower();
             Customer = await _customerRepository.CreateQuickCustomerAsync(Customer);
         }
 
@@ -92,6 +87,8 @@ namespace PhoneSelling.ViewModel.Pages.Payments.Invoices
             };
             RecalculateTotal();
             newDetail.RecalculateCallback = RecalculateTotal;
+            newDetail.Variant.Id = Guid.Empty;
+            newDetail.Variant.VariantID = Guid.Empty;
             Invoice.InvoiceDetails.Add(newDetail);
         }
         [RelayCommand]
