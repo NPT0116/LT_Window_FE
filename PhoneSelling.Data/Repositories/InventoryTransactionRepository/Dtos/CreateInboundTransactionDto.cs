@@ -15,7 +15,7 @@ namespace PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos
     {
         [ObservableProperty]
         [NotDefault(ErrorMessage ="Sản phẩm không được để trống")]
-        private Guid variantId;
+        private Guid variantId = Guid.Empty;
         
         [ObservableProperty]
         [Range(1, int.MaxValue, ErrorMessage ="Số lượng nhập kho phải lớn hơn 0")]

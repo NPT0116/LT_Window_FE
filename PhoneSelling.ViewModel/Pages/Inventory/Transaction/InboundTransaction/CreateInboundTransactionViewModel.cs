@@ -31,7 +31,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         [property:MinCollectionCount(1, ErrorMessage = "Danh sách sản phẩm không được để trống")]
         private TrulyObservableCollection<CreateInboundTransactionDto> items = new()
         {
-            new CreateInboundTransactionDto { }
+            new CreateInboundTransactionDto { VariantId = Guid.Empty }
         };
         [ObservableProperty] private string itemsError = string.Empty;
         public CreateInboundTransactionViewModel()
@@ -40,22 +40,10 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
             _variantRepository = DIContainer.GetKeyedSingleton<IVariantRepository>();
         }
 
-        //public async Task<List<Variant>> SearchVariants(string text)
-        //{
-        //    var query = new VariantPaginationQuery
-        //    {
-        //        PageNumber = 1,
-        //        PageSize = 100,
-        //        SearchKey = text
-        //    };
-        //    var paginationResult = await _variantRepository.GetAllVariants(query);
-        //    return paginationResult.Data;
-        //}
-
         [RelayCommand]
         public void AddVariant()
         {
-            Items.Add(new CreateInboundTransactionDto { });
+            Items.Add(new CreateInboundTransactionDto { VariantId = Guid.Empty });
             ItemsError = String.Empty;
         }
 
@@ -85,7 +73,8 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error while creating inbound transaction:", ex);
+                Items.Clear();  
+                Debug.WriteLine("Error While Creating Inbound Transaction:", ex);
                 WeakReferenceMessenger.Default.Send(new Message(ex.Message, false));
             }
         }
@@ -93,7 +82,13 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction
         [RelayCommand]
         public void RemoveVariant(CreateInboundTransactionDto item)
         {
-            Items.Remove(item);
+            Debug.WriteLine("Remove command is active !");
+            Debug.WriteLine(JsonSerializer.Serialize(item));
+            if (item is CreateInboundTransactionDto reItem &&  Items.Contains(reItem))
+            {
+                Debug.WriteLine("Oke to remove !");
+                Items.Remove(reItem);
+            }
         }
     }
 }

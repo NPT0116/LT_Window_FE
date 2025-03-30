@@ -152,6 +152,7 @@
                                         <StackPanel Grid.Column="1" Spacing="5" Orientation="Vertical">
                                             <TextBlock Text="Chọn sản phẩm:" FontWeight="Bold"/>
                                             <AutoSuggestBox x:Name="ItemSearchBox"
+                                                            Text=""
                                                             TextChanged="ItemSearch_TextChanged"
                                                             SuggestionChosen="ItemSearch_SuggestionChosen"
                                                             PlaceholderText="Tìm kiếm sản phẩm..."
