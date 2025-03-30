@@ -21,6 +21,7 @@ namespace PhoneSelling.ViewModel.Pages.Inventory.Transaction.TransactionHistory
         private IInventoryTransactionRepository _inventoryTransactionRepository { get; set; }
         [ObservableProperty] private Variant selectedVariant = new Variant();
         [ObservableProperty] private List<HistoryTransaction> transactionHistory;
+        [ObservableProperty] private bool isTransactionHistoryEmpty = true;
 
         public TransactionHistoryPageViewModel()
         {

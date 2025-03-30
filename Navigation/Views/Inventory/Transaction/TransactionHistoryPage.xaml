@@ -13,6 +13,7 @@
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
         <converter:VietnamDateConverter x:Key="VietnamDateConverter" />
         <converter:TransactionTypeToBrushConverter x:Key="TransactionTypeToBrushConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
     <Grid Padding="20">
         <Grid Padding="20" CornerRadius="8" Background="White" RowSpacing="20">
@@ -23,7 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- Title -->
-            <TextBlock Text="LỊCH SỬ NHẬP HÀNG" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center"/>
+            <TextBlock Text="LỊCH SỬ NHẬP/XUẤT HÀNG" FontWeight="Bold" FontSize="40" HorizontalAlignment="Center"/>
             <!-- Search Variant Bar -->
 
             <AutoSuggestBox Grid.Row="1"
@@ -112,6 +113,7 @@
                         <TextBlock Grid.Column="1" FontWeight="Bold" Text="PHÂN LOẠI" Foreground="White" HorizontalAlignment="Center"  Margin="5"/>
                         <TextBlock Grid.Column="2" FontWeight="Bold" Text="SỐ LƯỢNG" Foreground="White" HorizontalAlignment="Center"  Margin="5"/>
                     </Grid>
+                    <TextBlock Grid.Row="1" Text="Sản phẩm không có lịch sử nhập/xuất hàng" HorizontalAlignment="Center" FontWeight="SemiBold" Margin="10" Visibility="{x:Bind ViewModel.IsTransactionHistoryEmpty, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
                     <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.TransactionHistory, Mode=OneWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:HistoryTransaction">

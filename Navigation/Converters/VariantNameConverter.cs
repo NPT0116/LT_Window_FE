@@ -31,7 +31,7 @@ namespace Navigation.Converters
                     }
                 }
 
-                return $"{itemName} - {storage} - {colorName}";
+                return $"{itemName} - {colorName} - {storage}";
             }
             return "";
         }

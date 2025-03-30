@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
 using PhoneSelling.Data.Models;
@@ -29,11 +30,18 @@ namespace Navigation.Views.Inventory.Transaction
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
+                Debug.WriteLine("SearchBox Changed !");
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    Debug.WriteLine("Item is unselected !");
+                    ViewModel.SelectedVariant = new Variant();
+                    ViewModel.TransactionHistory = null;
+                }
                 var variants = await App.SearchVariants(sender.Text);
                 if (variants != null)
                 {
                     sender.ItemsSource = variants.OrderBy(v => v.Item.ItemName);
-                }
+                } 
             }
         }
 
@@ -51,6 +59,14 @@ namespace Navigation.Views.Inventory.Transaction
         public async Task LoadTransactionHistory(Guid id)
         {
             ViewModel.TransactionHistory = await _inventoryTransactionRepository.GetTransactionHistoryByVariantID(id);
+            if (ViewModel.TransactionHistory.Count() > 0) {
+                Debug.WriteLine("Product has history");
+                ViewModel.IsTransactionHistoryEmpty = false;
+            } else
+            {
+                Debug.WriteLine("Product has no history");
+                ViewModel.IsTransactionHistoryEmpty = true;
+            }
         }
 
     }

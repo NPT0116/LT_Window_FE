@@ -77,7 +77,7 @@
                                     </Interactivity:Interaction.Behaviors>
                                 </NavigationViewItem>
                                 <!-- TransactionHistoryPage -->
-                                <NavigationViewItem Icon="Calendar" Content="Lịch sử nhập hàng" IsExpanded="True">
+                                <NavigationViewItem Icon="Calendar" Content="Lịch sử nhập/xuất hàng" IsExpanded="True">
                                     <Interactivity:Interaction.Behaviors>
                                         <Core:EventTriggerBehavior EventName="Tapped">
                                             <Core:InvokeCommandAction Command="{Binding GoToTransactionHistoryPageCommand}" />
