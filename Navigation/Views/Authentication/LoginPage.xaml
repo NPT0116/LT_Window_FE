@@ -83,7 +83,6 @@
                         <PasswordBox.Header>
                             <TextBlock Foreground="DarkSlateGray" Text="Mật khẩu" />
                         </PasswordBox.Header>
-                    
                     </PasswordBox>
                     <TextBlock Text="{Binding PasswordError, Mode=OneWay}" Foreground="DarkRed" FontWeight="SemiBold"/>
                 </StackPanel>

@@ -136,9 +136,6 @@
     <Page Update="Controls\Variant\VariantSearch.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\Payments\Invoices\InvoiceDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Views\Inventory\Transaction\TransactionHistoryPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

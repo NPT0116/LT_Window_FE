@@ -18,7 +18,6 @@ using PhoneSelling.ViewModel.Pages.Authentication;
 
 using PhoneSelling.ViewModel.Pages.Payments.Invoices;
 using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceList;
-using PhoneSelling.ViewModel.Pages.Payments.Invoices.InvoiceDetailPage;
 using Navigation.Views.Payments.Invoices;
 
 using PhoneSelling.ViewModel.Pages.Inventory.Transaction.InboundTransaction;
@@ -56,7 +55,6 @@ namespace Navigation.Converters
             {typeof(TransactionHistoryPageViewModel), typeof(TransactionHistoryPage)},
 
             // Invoice
-            {typeof(InvoiceDetailPageViewModel), typeof(InvoiceDetailPage) },
             {typeof(CreateInvoicePageViewModel),typeof(CreateInvoicePage)},
             {typeof(InvoiceListViewModel),typeof(InvoiceListPage)},
         };

@@ -153,7 +153,7 @@
                         ItemsSource="{x:Bind ViewModel.QueryViewModel.Items, Mode=OneWay}" 
                         Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisConverter}, Mode=OneWay}"
                         ItemContainerStyle="{StaticResource GridViewItemStyle}"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="data:Variant">
@@ -195,7 +195,7 @@
                     </GridView.ItemTemplate>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" ItemWidth="300"/>
+                            <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Center" MaximumRowsOrColumns="3" ItemWidth="300"/>
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>

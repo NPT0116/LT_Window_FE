@@ -17,6 +17,8 @@ using PhoneSelling.Data.Models;
 using PhoneSelling.Data.Repositories.InventoryTransactionRepository.Dtos;
 using CommunityToolkit.Mvvm.Messaging;
 using Navigation.Helpers;
+using System.Diagnostics;
+using System.Text.Json;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -41,8 +43,14 @@ namespace Navigation.Views.Inventory.Transaction
         }
         private async void ItemSearch_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            Debug.WriteLine("Text Changed");
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
+                if (string.IsNullOrEmpty(sender.Text))
+                {
+                    var row = (CreateInboundTransactionDto)sender.DataContext;
+                    row.VariantId = Guid.Empty;
+                }
                 var variants = await App.SearchVariants(sender.Text);
                 if (variants != null)
                 {
@@ -54,6 +62,7 @@ namespace Navigation.Views.Inventory.Transaction
         private void ItemSearch_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             var row = (CreateInboundTransactionDto)sender.DataContext;
+            Debug.WriteLine("Item Chosen !");
 
             if (args.SelectedItem is Variant variant)
             {
@@ -66,6 +75,7 @@ namespace Navigation.Views.Inventory.Transaction
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine("Remove Button Click !");
             if (sender is Button button && button.DataContext is CreateInboundTransactionDto item)
             {
                 ViewModel.RemoveVariant(item);
