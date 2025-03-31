@@ -15,6 +15,7 @@
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
+        <converter:ImageFallBackConverter x:Key="ImageFallBackConverter"/>
 
         <!-- List Template -->
         <DataTemplate x:Key="ListItemGroupTemplate" x:DataType="model:ItemGroup">
@@ -23,21 +24,21 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Item">
-            <StackPanel Orientation="Vertical" Spacing="2" Padding="10,5" Tapped="Item_Tapped">
-                <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" FontSize="18"/>
-                <Grid ColumnSpacing="40" Padding="5">
+            <StackPanel Orientation="Vertical" Padding="10,5" Tapped="Item_Tapped">
+                <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" FontSize="18" Tapped="Item_Tapped"    />
+                <Grid   Padding="5" Tapped="Item_Tapped">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Ngày ra mắt:" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ReleaseDate}" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ReleaseDate}" Padding="30,0,0,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Sản phẩm con:" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind Variants.Count}" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind Variants.Count}" Padding="30,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -81,7 +82,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
-                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage}" />
+                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage, Converter={StaticResource ImageFallBackConverter}}" />
                     <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource VariantNameConverter}}" TextWrapping="Wrap" FontWeight="Bold" FontSize="18" />
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -109,7 +110,11 @@
                 </Grid>
             </Border>
         </DataTemplate>
-
+        <Style x:Key="GridViewItemStyle" TargetType="GridViewItem">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        </Style>
 
         <!-- Container Style for toàn trang -->
         <Style x:Key="PageContainerStyle" TargetType="Border">
@@ -167,7 +172,7 @@
                 <Pivot Grid.Row="1" x:Name="MainPivot">
                     <!-- Pivot 1: Nhóm sản phẩm -->
                     <PivotItem Header="Nhóm sản phẩm">
-                        <ListView ItemsSource="{Binding Data, Mode=OneWay}" 
+                        <ListView ItemsSource="{x:Bind ViewModel.Data, Mode=OneWay}" 
                                   Margin="0,10,0,0"
                                   SelectionChanged="GroupList_SelectionChanged"
                                   ItemTemplate="{StaticResource ListItemGroupTemplate}"
@@ -176,7 +181,7 @@
                     </PivotItem>
                     <!-- Pivot 2: Chi tiết nhóm -->
                     <PivotItem Header="Chi tiết nhóm">
-                        <ListView ItemsSource="{Binding SelectedItemGroup.Items, Mode=OneWay}"
+                        <ListView ItemsSource="{x:Bind ViewModel.SelectedItemGroup.Items, Mode=OneWay}"
                                   Margin="0,10,0,0"
                                   SelectionChanged="ItemList_SelectionChanged"
                                   ItemTemplate="{StaticResource ListItemTemplate}"
@@ -192,15 +197,15 @@
                             </Grid.RowDefinitions>
                             <ToggleSwitch Header="Chế độ lưới"
                                           Grid.Row="0"
-                                          IsOn="{Binding IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsOn="{x:Bind ViewModel.IsGridView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <!-- Grid-View -->
-                            <GridView Visibility="{Binding IsGridView, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                            <GridView Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                                       Grid.Row="1"
-                                      ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
+                                      ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
                                       SelectionChanged="VariantList_SelectionChanged"
                                       ItemTemplate="{StaticResource GridViewTemplate}" 
                                       MaxHeight="900"
-                                      ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                                      ItemContainerStyle="{StaticResource GridViewItemStyle}">
                                 <GridView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Center" MaximumRowsOrColumns="3" ItemWidth="300"/>
@@ -209,7 +214,7 @@
                             </GridView>
                             <!-- List-View -->
                             <Grid Grid.Row="1"
-                                  Visibility="{Binding IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
+                                  Visibility="{x:Bind ViewModel.IsGridView, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
@@ -231,7 +236,7 @@
                                     <TextBlock Text="TỒN KHO" Style="{StaticResource TableHeaderStyle}" Grid.Column="5" Foreground="White"/>
                                 </Grid>
                                 <ListView Grid.Row="1"
-                                          ItemsSource="{Binding SelectedItem.Variants, Mode=OneWay}"
+                                          ItemsSource="{x:Bind ViewModel.SelectedItem.Variants, Mode=OneWay}"
                                           SelectionChanged="VariantList_SelectionChanged"
                                           ItemTemplate="{StaticResource ListVariantTemplate}"
                                           ItemContainerStyle="{StaticResource ListViewItemStyle}">
