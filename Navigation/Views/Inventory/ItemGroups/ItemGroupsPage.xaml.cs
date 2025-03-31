@@ -28,11 +28,8 @@ namespace Navigation.Views.Inventory.ItemGroups
         private void GroupList_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (sender is ListView lv && lv.SelectedItem is ItemGroup group)
             {
-                if (this.DataContext is ItemGroupsPageViewModel viewModel)
-                {
-                    viewModel.SelectedItemGroup = group;
-                    viewModel.SelectedItem = group.Items.FirstOrDefault();
-                }
+                ViewModel.SelectedItemGroup = group;
+                ViewModel.SelectedItem = group.Items.FirstOrDefault();
             }
         }
         private void GroupItem_Tapped(object sender, TappedRoutedEventArgs args)
@@ -48,10 +45,7 @@ namespace Navigation.Views.Inventory.ItemGroups
         {
             if (sender is ListView lv && lv.SelectedItem is Item item)
             {
-                if (this.DataContext is ItemGroupsPageViewModel viewModel)
-                {
-                    viewModel.SelectedItem = item;
-                }
+                ViewModel.SelectedItem = item;
             }
         }
         private void Item_Tapped(object sender, TappedRoutedEventArgs a)
