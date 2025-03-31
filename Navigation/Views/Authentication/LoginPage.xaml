@@ -38,7 +38,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="https://i.pinimg.com/736x/4a/16/7f/4a167f8020055aa19788e980303d756a.jpg" />
+            <ImageBrush ImageSource="ms-appx:///Assets/loginBackground.jpg" />
         </Grid.Background>
         <Grid.Shadow>
             <ThemeShadow/>
