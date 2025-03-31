@@ -23,6 +23,7 @@
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
         <converter:VariantNameConverter x:Key="VariantNameConverter"/>
         <converter:VndCurrencyConverter x:Key="VndCurrencyConverter" />
+        <converter:ImageFallBackConverter x:Key="ImageFallBackConverter"/>
         <!-- Style for table headers -->
         <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="Bold"/>
@@ -164,7 +165,7 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="2*" />
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage}" />
+                                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage, Converter={StaticResource ImageFallBackConverter}}" />
                                     <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource VariantNameConverter}}" TextWrapping="Wrap" FontWeight="Bold" FontSize="18" />
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>

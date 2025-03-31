@@ -15,6 +15,7 @@
         <converter:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:VariantNameConverter x:Key="VariantNameConverter" />
+        <converter:ImageFallBackConverter x:Key="ImageFallBackConverter"/>
 
         <!-- List Template -->
         <DataTemplate x:Key="ListItemGroupTemplate" x:DataType="model:ItemGroup">
@@ -24,20 +25,20 @@
         </DataTemplate>
         <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Item">
             <StackPanel Orientation="Vertical" Spacing="2" Padding="10,5" Tapped="Item_Tapped">
-                <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" FontSize="18"/>
-                <Grid ColumnSpacing="40" Padding="5">
+                <TextBlock Text="{x:Bind ItemName}" FontWeight="Bold" FontSize="18" Tapped="Item_Tapped"    />
+                <Grid   Padding="5" Tapped="Item_Tapped">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Ngày ra mắt:" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ReleaseDate}" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ReleaseDate}" Padding="30,0,0,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Sản phẩm con:" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind Variants.Count}" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind Variants.Count}" Padding="30,0,0,0"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -81,7 +82,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
-                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage}" />
+                    <Image Grid.Row="0" Source="{x:Bind Color.UrlImage, Converter={StaticResource ImageFallBackConverter}}" />
                     <TextBlock Grid.Row="1" Text="{x:Bind Converter={StaticResource VariantNameConverter}}" TextWrapping="Wrap" FontWeight="Bold" FontSize="18" />
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
